@@ -7,9 +7,14 @@ export default defineNuxtConfig({
 	// Habilita o modo de DEV TOOLS no projeto - depuracao e etc
 	devtools: { enabled: true },
 
-	// Define o cabeçalho do Nuxt
+	// Define o CSS global do projeto
+	css: ["@/assets/index.css"],
+
+	// Define o cabeçalho do Nuxt [meta tags]
 	app: {
 		head: {
+			charset: "utf-8",
+			viewport: "width=device-width, initial-scale=1",
 			link: [
 				{
 					rel: "icon",
@@ -20,6 +25,16 @@ export default defineNuxtConfig({
 		},
 	},
 
+	// Define o modus operandi dos componentes
+	components: [
+		{
+			path: "~/components",
+			pathPrefix: true,
+		},
+	],
+
+	// Define o modo de renderizacao do Nuxt
+	// Definição e configurações do Nuxt3
 	build: {
 		transpile: ["vuetify"],
 	},
