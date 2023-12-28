@@ -7,7 +7,10 @@
 		/>
 	</Head>
 	<v-container fluid class="ma-0 pa-0 text-center">
-		Bem vindo ao projeto base de 2024 :)
+		<Banner />
+		<!-- Bem vindo ao projeto base de 2024 :) -->
 	</v-container>
 </template>
-<script setup></script>
+<script setup>
+import Banner from "@/components/sections/home/Banner.vue";
+</script>
