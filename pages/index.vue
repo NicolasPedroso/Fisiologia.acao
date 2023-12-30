@@ -9,8 +9,10 @@
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<Banner />
 		<!-- Bem vindo ao projeto base de 2024 :) -->
+		<Gallery />
 	</v-container>
 </template>
 <script setup>
 import Banner from "@/components/sections/home/Banner.vue";
+import Gallery from "@/components/sections/home/Gallery.vue";
 </script>
