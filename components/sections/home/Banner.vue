@@ -2,7 +2,8 @@
 	<div>
 		<!--Primeiro elemento fora o navbar-->
 		<v-parallax
-			height="800"
+			height="60vw"
+			max-height="800"
 			alt="Parralax de folhas"
 			class="banner-image"
 			src="/imagens/banner.jpeg"
@@ -32,7 +33,7 @@
 <style scoped>
 @import url("http://fonts.googleapis.com/css2?family=Raleway&display=swap");
 
-@media (max-width: 600px) {
+@media (max-width: 599px) {
 	.banner-content {
 		top: 5% !important;
 	}
@@ -45,7 +46,7 @@
 	}
 }
 
-@media (min-width: 601px) and (max-width: 1263px) {
+@media (min-width: 600px) and (max-width: 1279px) {
 	.banner-image {
 		height: 1000px !important;
 	}
