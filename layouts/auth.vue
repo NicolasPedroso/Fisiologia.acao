@@ -24,6 +24,6 @@
 
 .auth-card {
 	border-radius: 25px;
-	padding: 30px;
+	padding: 50px;
 }
 </style>

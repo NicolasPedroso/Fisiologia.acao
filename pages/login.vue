@@ -22,7 +22,9 @@
 				:rules="emptyFieldRule"
 			></v-text-field>
 		</v-form>
-		<span class="mt-6"> Esqueceu a senha? </span>
+		<v-row class="mt-2 d-flex justify-center">
+			<nuxt-link to="/"> Esqueceu a senha? </nuxt-link>
+		</v-row>
 	</v-container>
 </template>
 <script setup>
