@@ -34,7 +34,7 @@
 
 @media (max-width: 600px) {
 	.banner-content {
-		top: 12.5% !important;
+		top: 5% !important;
 	}
 
 	.banner-image {
@@ -50,7 +50,7 @@
 		height: 1000px !important;
 	}
 	.banner-content {
-		top: 15% !important;
+		top: 6% !important;
 	}
 
 	.banner-title {
@@ -66,7 +66,7 @@
 .banner-content {
 	width: 100vw;
 	position: absolute;
-	top: 15%;
+	top: 10%;
 }
 
 .banner-title {
