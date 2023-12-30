@@ -1,14 +1,16 @@
 <template>
-	<v-app full-height>
+	<v-app style="overflow-x: hidden !important">
 		<Navbar />
 		<NuxtPage></NuxtPage>
 		<Subscribe />
+		<ButtonTop />
 		<Footer />
 	</v-app>
 </template>
 
 <script setup>
-import Footer from "~/components/sections/layout/Footer.vue";
-import Subscribe from "~/components/sections/layout/Subscribe.vue";
 import Navbar from "~/components/sections/layout/Navbar.vue";
+import Subscribe from "~/components/sections/layout/Subscribe.vue";
+import ButtonTop from "~/components/sections/layout/ButtonTop.vue";
+import Footer from "~/components/sections/layout/Footer.vue";
 </script>
