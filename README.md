@@ -1,75 +1,73 @@
-# Nuxt 3 Minimal Starter
+# Projeto base de Front-End [2024]
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+| "Projeto base da Ecomp, re-feito em 2024, com as tecnologias de Vue3, Nuxt e vuetify. Neste repositório também está junto o projeto base do Back-end. _**Observação**_: trocar essa descrição para a do projeto em vigor"
 
-## Setup
+## 🐧 Hub de links
 
-Make sure to install the dependencies:
+-   [Drive das capacitações](https://drive.google.com/drive/folders/1-QaQPkIuueEKMuzhoTjl3KAsc6K7oM88?usp=drive_link)
+-   Documentação Nuxt3
+-   Documentação Vue3
+-   Documentação Vuetify3
 
-```bash
-# npm
-npm install
+## ☕ Membros do Projeto
 
-# pnpm
-pnpm install
+-   **PO**: 🐧
+-   **SM**: 🐧
+-   **Back-end**: 🐧
+-   **Back-end**: 🐧
+-   **Front-end**: 🐧
+-   **Front-end**: 🐧
 
-# yarn
-yarn install
+## 🚀 Infos do Projeto
 
-# bun
-bun install
-```
+1. [Kanban]()
+2. [KPI]()
+3. [Backlog]()
+4. [Pasta do Projeto no acervo]()
+5. [Layout]()
 
-## Development Server
+## 💻 Rodando o Front-end
 
-Start the development server on `http://localhost:3000`:
+Todos os comandos estão feitos para o Linux [Ubuntu]
 
-```bash
-# npm
-npm run dev
+1.  Trocando a **versão do NODE** - se necessário
 
-# pnpm
-pnpm run dev
+    ```bash
+    nvm install 20;
+    nvm use 20;
+    ```
 
-# yarn
-yarn dev
+2.  **Instalando** os pacotes do projeto Fazer isso na primeira vez que clonar o projeto. **Certifique** de estar na pasta do FRONT-END
+    ```bash
+    npm install;
+    ```
+3.  **Rodando** o projeto
+    ```bash
+    npm run dev;
+    ```
 
-# bun
-bun run dev
-```
+Esse "**manual**" de projeto deverá ser atualizado para contemplar mais o projeto e guias rápidos de setup
 
-## Production
+Mas se precisarem de ajuda, não hesitem de contatar **Projetos** ou **Qualita** :)
 
-Build the application for production:
+## **🖳 Fazendo PULL REQUESTS**
 
-```bash
-# npm
-npm run build
+Tutorial para fazer o Pull Request para a diretoria de Qualidade
 
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+1. **Ir na aba de PULL REQUESTS**
+   Base: develop
+   compare: branch-para-ser-mergeada
+2. **Colocar um titulo: "merge BRANCH-ALVO into DEVELOP"**
+3. **Colocar uma descrição do que foi feito, adendos e falar sobre os conflitos de merge se aparecer**
+4. **Clicar em Pull Request**
+5. **Preencher o [FORMS do PIFEPY](https://app.pipefy.com/public/form/n7RAK_kl)**
+    - Nome do dev
+    - De qual projeto a issue se refere
+    - Nome da issue a ser avaliada
+    - Arquivo mostrando testes feitos na issue: print do postman e/ou print ou video da tela do site/app
+    - descrição dos testes, o que eles mostram, o que foi feito, etc
+    - comentários adicionais (opcional)
+    - alguma observação, como conflito e etc.
+6. **Esperar qualita avaliar**
+    - se houver erro, qualita irá comentar no PR
+    - se o dev corrigir algo na issue, comentar no PR com a tag [toqualita] descrevendo o que foi corrigido
