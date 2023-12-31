@@ -3,10 +3,10 @@
 		<v-main fluid class="auth-wrapper d-flex justify-center align-center">
 			<v-card
 				min-width="300px"
-				width="100%"
+				width="90vw"
 				max-width="600px"
 				color="rgba(255, 255, 255, 0.9)"
-				class="auth-card"
+				class="auth-card pa-4 pa-sm-10"
 			>
 				<NuxtPage />
 			</v-card>
@@ -24,6 +24,5 @@
 
 .auth-card {
 	border-radius: 25px;
-	padding: 50px;
 }
 </style>
