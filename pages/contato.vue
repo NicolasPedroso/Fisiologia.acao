@@ -1,9 +1,9 @@
 <template>
 	<Head>
-		<Title>Página inicial</Title>
+		<Title>Contato</Title>
 		<meta
 			name="description"
-			content="Página inicial do projeto base 2024 da Ecomp."
+			content="Veja como entrar em contato com a Ecomp ou mande uma mensagem para nós!"
 		/>
 	</Head>
 	<v-container fluid class="ma-0 pa-0">
