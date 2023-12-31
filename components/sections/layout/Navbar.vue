@@ -84,7 +84,7 @@ function openDrawer() {
 }
 
 const navbarItems = [
-	{ link: "/", label: "Dashboard", menu: false },
+	{ link: "/dashboard", label: "Dashboard", menu: false },
 	{ link: "/", label: "Home", menu: false },
 	{ link: "/", label: "Sobre", menu: false },
 	{
@@ -97,7 +97,7 @@ const navbarItems = [
 		menu: true,
 		items: ["HTML5", "CSS3", "Sass", "JQuery"],
 	},
-	{ link: "/", label: "Contato", menu: false },
+	{ link: "/contato", label: "Contato", menu: false },
 ];
 </script>
 <style scoped>
