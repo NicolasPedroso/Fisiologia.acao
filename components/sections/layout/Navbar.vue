@@ -47,32 +47,34 @@
 			/>
 		</div>
 		<!-- drawer diz se esta aberto ou fechado -->
-		<v-navigation-drawer
-			v-model="drawer"
-			absolute
-			location="right"
-			color="#121212"
-			disable-resize-watcher
-			disable-route-watcher
-			class="navbar-drawer"
-		>
-			<div class="d-flex flex-column">
-				<div class="d-flex justify-end pr-6 pt-6">
-					<v-icon color="white" size="40px" @click="openDrawer()">
-						mdi-close
-					</v-icon>
+		<ClientOnly>
+			<v-navigation-drawer
+				v-model="drawer"
+				absolute
+				location="right"
+				color="#121212"
+				disable-resize-watcher
+				disable-route-watcher
+				class="navbar-drawer"
+			>
+				<div class="d-flex flex-column">
+					<div class="d-flex justify-end pr-6 pt-6">
+						<v-icon color="white" size="40px" @click="openDrawer()">
+							mdi-close
+						</v-icon>
+					</div>
+					<template v-for="(item, index) in navbarItems" :key="index">
+						<nuxt-link
+							v-if="!item.menu"
+							:to="item.link"
+							class="navbar-panel-button px-3 mb-3 ml-6"
+						>
+							<span> {{ item.label }} </span>
+						</nuxt-link>
+					</template>
 				</div>
-				<template v-for="(item, index) in navbarItems" :key="index">
-					<nuxt-link
-						v-if="!item.menu"
-						:to="item.link"
-						class="navbar-panel-button px-3 mb-3 ml-6"
-					>
-						<span> {{ item.label }} </span>
-					</nuxt-link>
-				</template>
-			</div>
-		</v-navigation-drawer>
+			</v-navigation-drawer>
+		</ClientOnly>
 	</section>
 </template>
 <script setup>
