@@ -1,7 +1,7 @@
 <template>
 	<v-app style="overflow-x: hidden !important">
 		<Navbar />
-		<NuxtPage></NuxtPage>
+		<NuxtPage />
 		<Subscribe />
 		<ButtonTop />
 		<Footer />
