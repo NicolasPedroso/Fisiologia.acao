@@ -7,8 +7,8 @@
 		/>
 	</Head>
 	<v-app theme="dark">
+		<!-- Drawer que contém os links para as páginas -->
 		<ClientOnly>
-			<!-- Drawer que contém os links para as páginas -->
 			<v-navigation-drawer v-model="drawer">
 				<template v-slot:image>
 					<div class="drawer-color" />
@@ -28,8 +28,10 @@
 					</v-list-item>
 				</v-list>
 			</v-navigation-drawer>
-			<!-- Drawer que contém os links para as páginas -->
-			<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
+		</ClientOnly>
+		<!-- Drawer que contém os links para as páginas -->
+		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
+		<ClientOnly>
 			<v-app-bar app class="primary-color">
 				<v-app-bar-nav-icon
 					class="text-color"
@@ -42,18 +44,20 @@
 					<v-btn @click="logout()" class="text-color"> Sair </v-btn>
 				</template>
 			</v-app-bar>
-			<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
-			<!-- Conteúdo -->
-			<v-main>
-				<NuxtPage />
-			</v-main>
-			<!-- Conteúdo -->
-			<!-- Footer -->
+		</ClientOnly>
+		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
+		<!-- Conteúdo -->
+		<v-main>
+			<NuxtPage />
+		</v-main>
+		<!-- Conteúdo -->
+		<!-- Footer -->
+		<ClientOnly>
 			<v-footer inset app class="primary-color">
 				<span class="text-color"> &copy; Ecomp 2024 </span>
 			</v-footer>
-			<!-- Footer -->
 		</ClientOnly>
+		<!-- Footer -->
 	</v-app>
 </template>
 <script setup>
@@ -67,9 +71,9 @@ const dashboardPages = [
 		link: "/",
 	},
 	{
-		icon: "mdi-image",
-		text: "Galeria",
-		link: "/dashboard/gallery",
+		icon: "mdi-account",
+		text: "Testemunhos",
+		link: "/dashboard/testimony",
 	},
 ];
 
