@@ -4,11 +4,11 @@
 			<v-card
 				min-width="300px"
 				width="100%"
-				max-width="500px"
+				max-width="600px"
 				color="rgba(255, 255, 255, 0.9)"
 				class="auth-card"
 			>
-				<NuxtPage></NuxtPage>
+				<NuxtPage />
 			</v-card>
 		</v-main>
 	</v-app>
@@ -18,7 +18,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 .auth-wrapper {
 	background: url("/imagens/banner.jpeg") no-repeat center center fixed;
-	filter: grayscale(25%);
+	filter: grayscale(50%);
 	background-size: cover;
 }
 
