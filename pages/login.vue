@@ -29,7 +29,7 @@
 </template>
 <script setup>
 // Importing components
-import TitleAuth from "~/components/sections/auth/TitleAuth.vue";
+import TitleAuth from "~/components/auth/TitleAuth.vue";
 
 // Importing functions and vue hooks
 import { ref } from "vue";
