@@ -99,6 +99,12 @@ const galleryImgs = [
 	width: 360px;
 	height: 500px;
 	border-radius: 5%;
+	filter: grayscale(75%);
+	transition: filter 0.25s;
+}
+
+.gallery-card:hover {
+	filter: grayscale(0%);
 }
 
 @media (max-width: 428px) {
