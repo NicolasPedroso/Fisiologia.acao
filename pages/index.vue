@@ -11,7 +11,9 @@
 		<!-- Bem vindo ao projeto base de 2024 :) -->
 		<Gallery />
 		<v-divider />
-		<Testimony :testimonies="testimonies" />
+		<ClientOnly>
+			<Testimony :testimonies="testimonies" />
+		</ClientOnly>
 	</v-container>
 </template>
 <script setup>
@@ -21,5 +23,30 @@ import Gallery from "@/components/sections/home/Gallery.vue";
 
 const { data: testimonies } = await useAsyncData("get", () =>
 	$fetch(`http://localhost:8000/testimonies`)
+		.then((res) => {
+			return res.length > 0
+				? res
+				: [
+						{
+							id: 0,
+							name: "Nome",
+							from: "Fonte",
+							text: "Testemunho",
+							image: "/banco-testes/imagem-teste-03.jpg",
+						},
+				  ];
+		})
+		.catch((err) => {
+			console.log(err);
+			return [
+				{
+					id: 0,
+					name: "Nome",
+					from: "Fonte",
+					text: "Testemunho",
+					image: "/banco-testes/imagem-teste-03.jpg",
+				},
+			];
+		})
 );
 </script>
