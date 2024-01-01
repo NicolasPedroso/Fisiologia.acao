@@ -147,6 +147,7 @@ const snackbar = ref({
 	active: false,
 });
 // Variaveis do formulario de CRUD do testemunho
+const URLBase = "http://localhost:8000/testimonies";
 const valid = ref(false);
 const dialog = ref(false);
 const editing = ref(false);
@@ -182,7 +183,15 @@ const {
 	pending,
 	data: testimonyItems,
 } = await useAsyncData("get", () =>
-	$fetch(`http://localhost:8000/testimonies`)
+	$fetch(`${URLBase}`).catch((err) => {
+		console.error(err);
+		snackbar.value = {
+			text: `Erro ao acessar os testemunhos: ${err.message}`,
+			color: "error",
+			active: true,
+		};
+		return [];
+	})
 );
 
 // Function para abrir o formulario de criação
@@ -215,7 +224,7 @@ async function sendTestimony() {
 	if (!valid.value) return;
 
 	// Envia para o backend
-	await $fetch("http://localhost:8000/testimonies", {
+	await $fetch(`${URLBase}`, {
 		method: "POST",
 		body: testimonyForm.value,
 	})
@@ -229,9 +238,9 @@ async function sendTestimony() {
 			refresh();
 		})
 		.catch((error) => {
-			console.log(`Erro: ${error}`);
+			console.error(`Erro: ${error}`);
 			snackbar.value = {
-				text: `Erro ao criar testemunho: ${error}`,
+				text: `Erro ao criar testemunho: ${error.message}`,
 				color: "error",
 				active: true,
 			};
@@ -243,7 +252,7 @@ async function updateTestimony(id) {
 	if (!valid.value) return;
 
 	// Envia para o backend
-	await $fetch(`http://localhost:8000/testimonies/${id}`, {
+	await $fetch(`${URLBase}/${id}`, {
 		method: "PUT",
 		body: testimonyForm.value,
 	})
@@ -257,9 +266,9 @@ async function updateTestimony(id) {
 			refresh();
 		})
 		.catch((error) => {
-			console.log(`Erro: ${error}`);
+			console.error(`Erro: ${error}`);
 			snackbar.value = {
-				text: `Erro ao atualizar testemunho: ${error}`,
+				text: `Erro ao atualizar testemunho: ${error.message}`,
 				color: "error",
 				active: true,
 			};
@@ -270,7 +279,7 @@ async function updateTestimony(id) {
 async function deleteTestimony(id) {
 	const ok = window.confirm("Você quer mesmo deletar este testemunho?");
 	if (ok) {
-		await $fetch(`http://localhost:8000/testimonies/${id}`, {
+		await $fetch(`${URLBase}/${id}`, {
 			method: "DELETE",
 		})
 			.then(() => {
