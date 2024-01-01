@@ -2,7 +2,7 @@
 	<v-container>
 		<div class="my-5">
 			<span class="contact-title raleway"> Get In Touch </span>
-			<v-form ref="form" class="mt-5">
+			<v-form v-model="valid" @submit.prevent class="mt-5">
 				<v-row>
 					<v-col cols="12" md="6" lg="6">
 						<span class="forms-title">First Name</span>
@@ -31,7 +31,6 @@
 						/>
 					</v-col>
 				</v-row>
-
 				<div class="forms-content-extra mt-3">
 					<span class="forms-title">Email</span>
 					<v-text-field
@@ -45,7 +44,6 @@
 						color="#04aa6d"
 					/>
 				</div>
-
 				<div class="forms-content mt-3">
 					<span class="forms-title">Subject</span>
 					<v-text-field
@@ -59,7 +57,6 @@
 						color="#04aa6d"
 					/>
 				</div>
-
 				<div class="forms-content mt-3">
 					<span class="forms-title">Message</span>
 					<ClientOnly>
@@ -76,21 +73,23 @@
 						/>
 					</ClientOnly>
 				</div>
+				<v-btn
+					width="180"
+					height="45"
+					color="#04aa6d"
+					class="form-button mt-3"
+					type="submit"
+					@click="sendMessage"
+				>
+					Send Message
+				</v-btn>
 			</v-form>
-			<v-btn
-				width="180"
-				height="45"
-				depression
-				color="#04aa6d"
-				class="form-button mt-3"
-				@click="sendMessage()"
-			>
-				Send Message
-			</v-btn>
 		</div>
 	</v-container>
 </template>
 <script setup>
+const URLBase = "http://localhost:8000/forms";
+const valid = ref(false);
 const message = ref({
 	firstName: "",
 	lastName: "",
@@ -111,6 +110,18 @@ const rules = {
 	subject: [(v) => !!v || "Assunto é obrigatório!"],
 	content: [(v) => !!v || "Mensagem é obrigatória!"],
 };
+
+async function sendMessage() {
+	if (!valid.value) return;
+
+	// Envia para o backend
+	await $fetch(`${URLBase}`, {
+		method: "POST",
+		body: message.value,
+	}).catch((error) => {
+		console.error(`Erro: ${error}`);
+	});
+}
 </script>
 <style scoped>
 .contact-title {
