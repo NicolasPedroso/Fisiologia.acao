@@ -8,8 +8,10 @@
 	</Head>
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<Banner />
+		<WorkTypes />
 		<!-- Bem vindo ao projeto base de 2024 :) -->
 		<Gallery />
+		<WeOffer />
 		<v-divider />
 		<ClientOnly>
 			<Testimony :testimonies="testimonies" />
@@ -17,9 +19,11 @@
 	</v-container>
 </template>
 <script setup>
-import Banner from "@/components/sections/home/Banner.vue";
+import Banner from "~/components/sections/home/Banner.vue";
+import WorkTypes from "~/components/sections/home/WorkTypes.vue";
+import WeOffer from "~/components/sections/home/WeOffer.vue";
 import Testimony from "~/components/sections/home/Testimony.vue";
-import Gallery from "@/components/sections/home/Gallery.vue";
+import Gallery from "~/components/sections/home/Gallery.vue";
 
 const { data: testimonies } = await useAsyncData("get", () =>
 	$fetch(`http://localhost:8000/testimonies`)
