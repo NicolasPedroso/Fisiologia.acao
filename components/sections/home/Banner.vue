@@ -67,7 +67,7 @@
 .banner-content {
 	width: 100vw;
 	position: absolute;
-	top: 10%;
+	top: 5.5%;
 }
 
 .banner-title {
