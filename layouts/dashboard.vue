@@ -61,13 +61,19 @@
 	</v-app>
 </template>
 <script setup>
-// Variables
+// Imports from Vue and Nuxt
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+
+// Variáveis de ambiente
 const router = useRouter();
 const drawer = ref(false);
+
+// Array de paginas que serão exibidas no drawer
 const dashboardPages = [
 	{
 		icon: "mdi-monitor-dashboard",
-		text: "Dashboard 1",
+		text: "Dashboard",
 		link: "/",
 	},
 	{
@@ -75,23 +81,36 @@ const dashboardPages = [
 		text: "Testemunhos",
 		link: "/dashboard/testimony",
 	},
+
+	{
+		icon: "mdi-email",
+		text: "Contato",
+		link: "/dashboard/contact",
+	},
 ];
 
+// Tema que será utilizado na dashboard
+const theme = {
+	/* Fundo do Drawer da dashboard */
+	drawerBackground: "url(/banco-testes/imagem-teste-06.jpg)",
+	drawerTextColor: "#ffffff",
+	/* Cores de fundo da dashboard  */
+	backgroundColor: "#202224",
+	/* Cores de texto da dashboard  */
+	textColor: "#ffffff",
+};
+
+// Métodos e funções
 function logout() {
 	router.push("/login");
 }
 </script>
 <style scoped>
-/* 
-	Fundo do Drawer da dashboard
-	Comentar esta CLASSE definira o drawer para o padrao: Dark Theme - Vuetify
-*/
 .drawer-color {
 	height: 100%;
 	width: 100%;
-
 	/* Imagens e alterações do fundo do Drawer */
-	background-image: url(/banco-testes/imagem-teste-06.jpg);
+	background-image: v-bind("theme.drawerBackground");
 	filter: brightness(0.5);
 	background-size: cover;
 	background-position: center center;
@@ -100,22 +119,14 @@ function logout() {
 .drawer-text {
 	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-	color: rgb(255, 255, 255) !important;
+	color: v-bind("theme.drawerTextColor") !important;
 }
-/* 
-	Cores de fundo da dashboard 
-	Comentar esta CLASSE definira o drawer para o padrao: Dark Theme - Vuetify	
-*/
 .primary-color {
-	background-color: #202224 !important;
+	background-color: v-bind("theme.backgroundColor") !important;
 }
-/* 
-	Cores de texto da dashboard 
-	Comentar esta CLASSE definira o drawer para o padrao: Dark Theme - Vuetify	
-*/
 .text-color {
 	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-	color: rgb(255, 255, 255) !important;
+	color: v-bind("theme.textColor") !important;
 }
 </style>
