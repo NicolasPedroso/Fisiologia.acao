@@ -37,7 +37,7 @@ Todos os comandos estão feitos para o Linux [Ubuntu]
     nvm use 20;
     ```
 
-2.  **Instalando** os pacotes do projeto Fazer isso na primeira vez que clonar o projeto. **Certifique** de estar na pasta do FRONT-END
+2.  **Instalando** os pacotes do projeto. **Certifique** de estar na pasta do FRONT-END
     ```bash
     npm install;
     ```
