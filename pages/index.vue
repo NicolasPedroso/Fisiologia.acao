@@ -25,8 +25,10 @@ import WeOffer from "~/components/sections/home/WeOffer.vue";
 import Testimony from "~/components/sections/home/Testimony.vue";
 import Gallery from "~/components/sections/home/Gallery.vue";
 
+const { public: config } = useRuntimeConfig();
+
 const { data: testimonies } = await useAsyncData("get", () =>
-	$fetch(`http://localhost:8000/testimonies`)
+	$fetch(`${config.baseURL}/testimonies`)
 		.then((res) => {
 			return res.length > 0
 				? res

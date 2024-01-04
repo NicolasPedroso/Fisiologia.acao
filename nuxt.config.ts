@@ -25,6 +25,12 @@ export default defineNuxtConfig({
 		},
 	},
 
+	runtimeConfig: {
+		public: {
+			baseURL: "http://localhost:8000",
+		},
+	},
+
 	// Define o modus operandi dos componentes
 	components: [
 		{
