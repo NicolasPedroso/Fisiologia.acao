@@ -148,6 +148,22 @@ function signIn() {
 definePageMeta({
 	layout: "auth",
 });
+useSeoMeta({
+	title: "Registro",
+	description: "Página de registro para a dashboard.",
+});
+useHead({
+	htmlAttrs: {
+		lang: "pt-br",
+	},
+	link: [
+		{
+			rel: "icon",
+			type: "image/ico",
+			href: "/favicon.ico",
+		},
+	],
+});
 </script>
 <style scoped>
 .auth-link {

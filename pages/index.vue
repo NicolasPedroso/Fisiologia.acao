@@ -1,19 +1,12 @@
 <template>
-	<Head>
-		<Title>Página inicial</Title>
-		<meta
-			name="description"
-			content="Página inicial do projeto base 2024 da Ecomp."
-		/>
-	</Head>
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<Banner />
-		<WorkTypes />
-		<!-- Bem vindo ao projeto base de 2024 :) -->
-		<Gallery />
-		<WeOffer />
-		<v-divider />
 		<ClientOnly>
+			<Banner />
+			<WorkTypes />
+			<!-- Bem vindo ao projeto base de 2024 :) -->
+			<Gallery />
+			<WeOffer />
+			<v-divider />
 			<Testimony :testimonies="testimonies" />
 		</ClientOnly>
 	</v-container>
@@ -55,4 +48,22 @@ const { data: testimonies } = await useAsyncData("get", () =>
 			];
 		})
 );
+
+// Cabeçalhos da pagina
+useSeoMeta({
+	title: "Página inicial",
+	description: "Página inicial do projeto base 2024 da Ecomp.",
+});
+useHead({
+	htmlAttrs: {
+		lang: "pt-br",
+	},
+	link: [
+		{
+			rel: "icon",
+			type: "image/ico",
+			href: "/favicon.ico",
+		},
+	],
+});
 </script>

@@ -113,6 +113,22 @@ function login() {
 definePageMeta({
 	layout: "auth",
 });
+useSeoMeta({
+	title: "Login",
+	description: "Página para login para acesso a dashboard.",
+});
+useHead({
+	htmlAttrs: {
+		lang: "pt-br",
+	},
+	link: [
+		{
+			rel: "icon",
+			type: "image/ico",
+			href: "/favicon.ico",
+		},
+	],
+});
 </script>
 <style scoped>
 .auth-link {

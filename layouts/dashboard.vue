@@ -1,11 +1,4 @@
 <template>
-	<Head>
-		<Title>Dashboard</Title>
-		<meta
-			name="description"
-			content="Página para controlar os conteudos da DataBase."
-		/>
-	</Head>
 	<v-app theme="dark">
 		<!-- Drawer que contém os links para as páginas -->
 		<ClientOnly>
@@ -104,6 +97,27 @@ const theme = {
 function logout() {
 	router.push("/login");
 }
+
+// Cabeçalhos da pagina
+useSeoMeta({
+	title: "Dashboard",
+	description: "Página para controlar os conteudos da DataBase.",
+
+	// Endereço da imagem que será exibida quando a página for compartilhada
+	// ogImage: "endereco-da-imagem",
+});
+useHead({
+	htmlAttrs: {
+		lang: "pt-br",
+	},
+	link: [
+		{
+			rel: "icon",
+			type: "image/ico",
+			href: "/favicon.ico",
+		},
+	],
+});
 </script>
 <style scoped>
 .drawer-color {

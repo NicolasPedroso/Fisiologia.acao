@@ -1,11 +1,4 @@
 <template>
-	<Head>
-		<Title>Contato</Title>
-		<meta
-			name="description"
-			content="Veja como entrar em contato com a Ecomp ou mande uma mensagem para nós!"
-		/>
-	</Head>
 	<v-container fluid class="ma-0 pa-0">
 		<Banner :title="'CONTATO'" />
 		<InfoBox />
@@ -14,5 +7,24 @@
 <script setup>
 import Banner from "@/components/sections/contact/Banner.vue";
 import InfoBox from "~/components/sections/contact/InfoBox.vue";
+
+// Cabeçalhos da pagina
+useSeoMeta({
+	title: "Contato",
+	description:
+		"Veja como entrar em contato com a Ecomp ou mande uma mensagem para nós!",
+});
+useHead({
+	htmlAttrs: {
+		lang: "pt-br",
+	},
+	link: [
+		{
+			rel: "icon",
+			type: "image/ico",
+			href: "/favicon.ico",
+		},
+	],
+});
 </script>
 <style scoped></style>
