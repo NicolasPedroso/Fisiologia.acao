@@ -4,7 +4,7 @@
 			alt="Parralax de folhas"
 			height="600"
 			class="banner-image"
-			src="/imagens/banner.jpeg"
+			src="/imagens/banner.png"
 		/>
 		<div
 			class="banner-content d-flex justify-center align-center flex-column"
@@ -16,7 +16,7 @@
 	</div>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
 	title: {
 		type: String,
 		required: true,
@@ -41,10 +41,10 @@ const props = defineProps({
 
 .banner-title {
 	text-align: center;
-	color: #fff;
+	color: #eec9ff94;
 	font-size: calc(4vw + 50px);
 	line-height: 1.5;
-	font-family: "Raleway", Arial, sans-serif;
+	font-family: "FZNDGrana", Arial, sans-serif;
 	font-weight: 400;
 	text-transform: uppercase;
 	margin: 0px 20px 0px 20px;
