@@ -144,7 +144,7 @@ useHead({
 });
 </script>
 <style scoped>
-@media (max-width: 959px) {
+/* @media (max-width: 959px) {
 	.disco-data-iterator {
 		height: 3200px !important;
 	}
@@ -157,7 +157,7 @@ useHead({
 }
 .disco-data-iterator {
 	height: 1200px;
-}
+} */
 .disco-wrapper {
 	background:
 		radial-gradient(
