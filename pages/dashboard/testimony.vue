@@ -304,6 +304,7 @@ async function deleteTestimony(id) {
 // Cabeçalho da pagina
 definePageMeta({
 	layout: "dashboard",
+	middleware: ["guest"],
 })
 </script>
 <style scoped></style>

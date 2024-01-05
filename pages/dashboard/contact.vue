@@ -126,6 +126,7 @@ async function deleteContact(id) {
 // Cabeçalho da pagina
 definePageMeta({
 	layout: "dashboard",
+	middleware: ["guest"],
 })
 </script>
 <style scoped></style>

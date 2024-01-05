@@ -105,6 +105,7 @@ function login() {
 // Layout da página e cabeçalho
 definePageMeta({
 	layout: "auth",
+	middleware: ["auth"],
 })
 useSeoMeta({
 	title: "Login",

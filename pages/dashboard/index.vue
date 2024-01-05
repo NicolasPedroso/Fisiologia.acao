@@ -23,6 +23,7 @@
 <script setup>
 definePageMeta({
 	layout: "dashboard",
+	middleware: ["guest"],
 })
 </script>
 <style scoped></style>

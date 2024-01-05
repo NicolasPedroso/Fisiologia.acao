@@ -140,6 +140,7 @@ function signIn() {
 // Layout da página e cabeçalho
 definePageMeta({
 	layout: "auth",
+	middleware: ["auth"],
 })
 useSeoMeta({
 	title: "Registro",
