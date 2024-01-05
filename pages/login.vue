@@ -1,11 +1,4 @@
 <template>
-	<Head>
-		<Title>Login</Title>
-		<meta
-			name="description"
-			content="Página para login para acesso a dashboard."
-		/>
-	</Head>
 	<!-- SnackBar -->
 	<v-snackbar
 		v-model="snackbar.active"

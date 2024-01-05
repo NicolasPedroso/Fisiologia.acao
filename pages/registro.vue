@@ -1,11 +1,4 @@
 <template>
-	<Head>
-		<Title>Registro</Title>
-		<meta
-			name="description"
-			content="Página de registro para a dashboard."
-		/>
-	</Head>
 	<!-- SnackBar -->
 	<v-snackbar
 		v-model="snackbar.active"
