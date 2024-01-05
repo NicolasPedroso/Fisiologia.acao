@@ -1,11 +1,11 @@
 <template>
 	<section class="navbar-wrapper d-flex justify-center">
 		<div class="navbar-content d-flex justify-space-between align-center">
-			<span class="navbar-title pl-5 pl-lg-0">GREATNESS.</span>
+			<span class="navbar-title pl-5 pl-lg-0">FZND GRN</span>
 
 			<!--Links para pc-->
 			<div class="hidden-md-and-down">
-				<template v-for="(item, index) in navbarItems" :key="index">
+				<template v-for="item in navbarItems">
 					<v-menu
 						v-if="item.menu"
 						offset-y
@@ -63,7 +63,7 @@
 							mdi-close
 						</v-icon>
 					</div>
-					<template v-for="(item, index) in navbarItems" :key="index">
+					<template v-for="item in navbarItems">
 						<nuxt-link
 							v-if="!item.menu"
 							:to="item.link"
@@ -71,6 +71,16 @@
 						>
 							<span> {{ item.label }} </span>
 						</nuxt-link>
+						<template v-else>
+							<nuxt-link
+								v-for="(subItem, index) in item.items"
+								:key="index"
+								:to="item.link"
+								class="navbar-panel-button px-3 mb-3 ml-6"
+							>
+								<span> {{ subItem }} </span>
+							</nuxt-link>
+						</template>
 					</template>
 				</div>
 			</v-navigation-drawer>
@@ -90,9 +100,9 @@ const navbarItems = [
 	{ link: "/", label: "Home", menu: false },
 	{ link: "/", label: "Sobre", menu: false },
 	{
-		label: "Serviços",
-		menu: true,
-		items: ["WebDesign", "eCommerce", "Branding", "API"],
+		link: "/discografia",
+		label: "Discografia",
+		menu: false,
 	},
 	{
 		label: "Dropdown",
@@ -114,8 +124,8 @@ const navbarItems = [
 
 .navbar-title {
 	color: #ffffff;
-	font-family: "Raleway", Arial, sans-serif;
-	font-size: 20px;
+	font-family: "FZNDGrana", Arial, sans-serif;
+	font-size: 25px;
 	line-height: 1.7;
 	font-weight: bold;
 	text-shadow: 0px 0px 50px #000000;
@@ -159,7 +169,7 @@ const navbarItems = [
 
 .navbar-panel-button {
 	font-family: "Raleway", Arial, sans-serif;
-	color: #e8ffec;
+	color: #ffffff;
 	font-size: 16px;
 	font-weight: thin;
 	text-decoration: none;
