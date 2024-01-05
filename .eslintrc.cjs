@@ -1,9 +1,14 @@
 module.exports = {
+	root: true,
 	env: {
 		browser: true,
 		es2021: true,
 	},
-	extends: ["eslint:recommended", "plugin:vue/vue3-recommended"],
+	extends: [
+		"eslint:recommended",
+		"plugin:vue/vue3-recommended",
+		"plugin:prettier/recommended",
+	],
 	overrides: [
 		{
 			env: {
@@ -20,8 +25,17 @@ module.exports = {
 		sourceType: "module",
 	},
 	plugins: ["vue"],
-	ignorePatterns: ["plugins/"],
+	ignorePatterns: [
+		"plugins/",
+		"node_modules/",
+		"dist/",
+		"public/",
+		"tsconfig.json",
+	],
 	rules: {
+		"vue/require-default-prop": "off",
+		"prettier/prettier": "error",
+		"vue/component-name-in-template-casing": ["error", "PascalCase"],
 		"vue/multi-word-component-names": "off",
 		"vue/html-indent": "off",
 		"vue/html-self-closing": "off",
@@ -38,4 +52,4 @@ module.exports = {
 			},
 		],
 	},
-};
+}

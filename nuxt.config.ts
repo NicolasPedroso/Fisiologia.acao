@@ -1,5 +1,6 @@
-// Imports from Nuxt
-import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+// Plugins imports
+import vuetify, { transformAssetUrls } from "vite-plugin-vuetify"
+import eslintPlugin from "vite-plugin-eslint"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // Exports from Nuxt
@@ -45,12 +46,12 @@ export default defineNuxtConfig({
 		transpile: ["vuetify"],
 	},
 	modules: [
-		["@nuxtjs/eslint-module", {}],
+		["@nuxtjs/eslint-module", { lintOnStart: false }],
 		(_options, nuxt) => {
 			nuxt.hooks.hook("vite:extendConfig", (config) => {
 				// @ts-expect-error
-				config.plugins.push(vuetify({ autoImport: true }));
-			});
+				config.plugins.push(vuetify({ autoImport: true }))
+			})
 		},
 	],
 	vite: {
@@ -59,5 +60,6 @@ export default defineNuxtConfig({
 				transformAssetUrls,
 			},
 		},
+		plugins: [eslintPlugin()],
 	},
-});
+})
