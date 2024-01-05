@@ -45,6 +45,7 @@ export default defineNuxtConfig({
 		transpile: ["vuetify"],
 	},
 	modules: [
+		["@nuxtjs/eslint-module", {}],
 		(_options, nuxt) => {
 			nuxt.hooks.hook("vite:extendConfig", (config) => {
 				// @ts-expect-error
