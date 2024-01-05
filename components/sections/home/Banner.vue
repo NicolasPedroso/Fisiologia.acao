@@ -6,15 +6,15 @@
 			max-height="800"
 			alt="Parralax de folhas"
 			class="banner-image"
-			src="/imagens/banner.jpeg"
+			src="/imagens/banner.png"
 		/>
 		<div
-			class="banner-content d-flex justify-center align-center flex-column"
+			class="banner-content pb-6 d-flex justify-center align-center flex-column"
 		>
 			<span class="banner-title">Eles queriam que eu vivesse</span>
 			<span class="banner-subtitle">Imortal é ter que carregar isso</span>
 			<div class="banner-btns d-flex flex-row">
-				<v-btn flat color="#558B2F" class="banner-button">
+				<v-btn flat color="deep-purple darken-3" class="banner-button">
 					Ouvir
 				</v-btn>
 				<v-btn
@@ -34,11 +34,11 @@
 @import url("http://fonts.googleapis.com/css2?family=Raleway&display=swap");
 
 @media (max-width: 599px) {
-	.banner-content {
-		top: 5% !important;
+	.banner-image {
+		height: 1000px !important;
 	}
 
-	.banner-image {
+	.banner-content {
 		height: 1000px !important;
 	}
 	.banner-title {
@@ -50,12 +50,13 @@
 	.banner-image {
 		height: 1000px !important;
 	}
+
 	.banner-content {
-		top: 6% !important;
+		height: 1000px !important;
 	}
 
 	.banner-title {
-		font-size: 50px !important;
+		font-size: 35px !important;
 	}
 }
 
@@ -66,8 +67,9 @@
 
 .banner-content {
 	width: 100vw;
+	height: 800px;
 	position: absolute;
-	top: 5.5%;
+	top: 0;
 }
 
 .banner-title {
