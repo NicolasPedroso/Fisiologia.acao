@@ -29,3 +29,7 @@ Mas tem um porem, de padrao no Nuxt3 eh possivel nao importar os componentes, so
     },
   ],
 ```
+
+### Obs
+
+colocar um error.vue na pasta raiz do FRONT-END fará que esta página seja a tela de erro quando nao achar paginas
