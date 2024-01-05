@@ -71,15 +71,15 @@ const props = defineProps({
 }
 
 .testtimony-carousel:deep(.v-btn--active) {
-	color: #558b2f !important;
+	color: #6a1b9a !important;
 }
 
 .testtimony-carousel:deep(.v-btn--icon) {
-	color: #558b2f !important;
+	color: #6a1b9a !important;
 }
 
 .testimony-apresentation-ocupation {
-	color: #558b2f;
+	color: #6a1b9a;
 }
 
 .testimony-text {

@@ -14,7 +14,7 @@
 							variant="outlined"
 							clearable
 							single-line
-							color="#04aa6d"
+							color="#4527A0"
 						/>
 					</v-col>
 					<v-col cols="12" md="6" lg="6">
@@ -27,7 +27,7 @@
 							variant="outlined"
 							clearable
 							single-line
-							color="#04aa6d"
+							color="#4527A0"
 						/>
 					</v-col>
 				</v-row>
@@ -41,7 +41,7 @@
 						variant="outlined"
 						clearable
 						single-line
-						color="#04aa6d"
+						color="#4527A0"
 					/>
 				</div>
 				<div class="forms-content mt-3">
@@ -54,7 +54,7 @@
 						variant="outlined"
 						clearable
 						single-line
-						color="#04aa6d"
+						color="#4527A0"
 					/>
 				</div>
 				<div class="forms-content mt-3">
@@ -68,7 +68,7 @@
 							variant="outlined"
 							clearable
 							auto-grow
-							color="#04aa6d"
+							color="#4527A0"
 							density="comfortable"
 						/>
 					</ClientOnly>
@@ -76,7 +76,7 @@
 				<v-btn
 					width="180"
 					height="45"
-					color="#04aa6d"
+					color="#4527A0"
 					class="form-button mt-3"
 					type="submit"
 					@click="sendMessage"

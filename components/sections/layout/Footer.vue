@@ -28,10 +28,16 @@
 				</span>
 				<span class="footer-copyright">
 					Feito para a
-					<a href="https://ecomp.co/" class="footer-copyright-link"
-						>Ecomp</a
+					<a href="https://ecomp.co/" class="footer-copyright-link">
+						Ecomp
+					</a>
+					por
+					<a
+						href="https://github.com/tuildes"
+						class="footer-copyright-link"
 					>
-					por Gustavo Frehse
+						@tuildes
+					</a>
 				</span>
 			</v-col>
 			<!--Links de Redes Sociais-->
@@ -107,12 +113,12 @@ a {
 
 .footer-copyright-link {
 	font-size: 90%;
-	font-weight: 400px;
+	font-weight: 800px;
 	font-family: Raleway;
-	color: #3a7700 !important;
+	color: #4527a0 !important;
 }
 
 .footer-icon {
-	color: #3a7700;
+	color: #4527a0;
 }
 </style>

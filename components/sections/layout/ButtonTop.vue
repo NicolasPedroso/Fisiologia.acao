@@ -3,7 +3,7 @@
 		variant="tonal"
 		icon="mdi-chevron-up"
 		size="50px"
-		color="#04aa6d"
+		color="#4527A0"
 		@click.stop="scrollToTop"
 		position="fixed"
 		class="button"

@@ -10,9 +10,9 @@
 					class="worktype-item raleway d-flex flex-column align-center justify-center"
 				>
 					<v-avatar size="90" color="#efefef">
-						<v-icon size="50" color="#558b2f">{{
-							item.icon
-						}}</v-icon>
+						<v-icon size="50" color="deep-purple darken-2">
+							{{ item.icon }}
+						</v-icon>
 					</v-avatar>
 					<span class="worktype-title">{{ item.name }}</span>
 					<span class="worktype-description">{{ item.text }}</span>
@@ -20,10 +20,11 @@
 						class="worktype-btn banner-button-border"
 						depressed
 						text
-						color="#558b2f"
+						color="deep-purple darken-2"
 						outlined
-						>Learn More</v-btn
 					>
+						Learn More
+					</v-btn>
 				</v-col>
 			</v-row>
 		</div>
@@ -90,7 +91,7 @@ const typesLearn = [
 }
 
 .banner-button-border {
-	border: 2px solid #558b2f !important;
+	border: 2px solid #4527a0 !important;
 	transition:
 		color 0.5s,
 		background-color 0.5s;
@@ -98,6 +99,6 @@ const typesLearn = [
 
 .banner-button-border:hover {
 	color: #fff !important;
-	background-color: #558b2f !important;
+	background-color: #4527a0 !important;
 }
 </style>

@@ -82,6 +82,6 @@ const dataInfos = [
 .data-text-green {
 	font-family: Raleway;
 	font-size: 18px;
-	color: #04aa6d;
+	color: #4527a0;
 }
 </style>

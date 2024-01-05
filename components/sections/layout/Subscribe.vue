@@ -84,7 +84,7 @@
 .subscribe-your-submit {
 	padding: 15px 8vw 15px 8vw;
 	border-radius: 5px;
-	background-color: #04aa6d;
+	background-color: rgb(86, 45, 211);
 	color: #fff;
 	font-weight: 800;
 	text-transform: uppercase;

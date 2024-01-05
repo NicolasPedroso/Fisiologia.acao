@@ -21,7 +21,11 @@
 					selected-class="we-offer-tab-enabled"
 				>
 					<span class="d-none d-lg-flex">{{ item.name }}</span>
-					<v-icon class="d-flex d-lg-none" color="#558b2f" size="40">
+					<v-icon
+						class="d-flex d-lg-none"
+						color="deep-purple darken-3"
+						size="40"
+					>
 						{{ item.icon }}
 					</v-icon>
 				</v-tab>
@@ -358,14 +362,14 @@ const tabsIcons = [
 }
 
 .we-offer-tab-enabled {
-	color: #558b2f !important;
+	color: #4527a0 !important;
 	background-color: #fff !important;
 }
 
 .we-offer-tab-disabled {
 	text-transform: capitalize;
 	background-color: #f2f2f2;
-	color: #dfdfdf;
+	color: #00000068;
 	padding: 0px 80px;
 	border-radius: 5px;
 	border: 2px solid #f2f2f2;
