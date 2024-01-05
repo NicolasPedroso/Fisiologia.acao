@@ -4,9 +4,9 @@
 		icon="mdi-chevron-up"
 		size="50px"
 		color="#4527A0"
-		@click.stop="scrollToTop"
 		position="fixed"
 		class="button"
+		@click.stop="scrollToTop"
 	>
 	</v-btn>
 </template>

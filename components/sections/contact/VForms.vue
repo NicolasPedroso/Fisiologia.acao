@@ -2,7 +2,7 @@
 	<v-container>
 		<div class="my-5">
 			<span class="contact-title raleway"> Get In Touch </span>
-			<v-form v-model="valid" @submit.prevent class="mt-5">
+			<v-form v-model="valid" class="mt-5" @submit.prevent>
 				<v-row>
 					<v-col cols="12" md="6" lg="6">
 						<span class="forms-title">First Name</span>
@@ -97,6 +97,7 @@ const message = ref({
 	subject: "",
 	content: "",
 });
+
 const rules = {
 	firstName: [(v) => !!v || "Primeiro nome é obrigatório!"],
 	lastName: [(v) => !!v || "Último nome é obrigatório!"],

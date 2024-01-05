@@ -12,36 +12,36 @@
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<TitleAuth :title="'Registro'" />
-		<v-form @submit.prevent v-model="valid">
+		<v-form v-model="valid" @submit.prevent>
 			<v-text-field
+				v-model="name"
 				class="mt-3 mr-10"
 				label="Nome"
 				prepend-icon="mdi-account"
-				v-model="name"
 				:rules="rules.name"
 			/>
 			<v-text-field
+				v-model="email"
 				class="mt-3 mr-10"
 				label="E-mail"
 				prepend-icon="mdi-email"
-				v-model="email"
 				:rules="rules.email"
 			/>
 			<v-text-field
+				v-model="password"
 				class="mt-3"
 				label="Senha"
 				prepend-icon="mdi-lock"
-				v-model="password"
 				:rules="rules.password"
 				:type="show ? 'text' : 'password'"
 				:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
 				@click:append="show = !show"
 			/>
 			<v-text-field
+				v-model="passwordC"
 				class="mt-3"
 				label="Confirmar senha"
 				prepend-icon="mdi-lock"
-				v-model="passwordC"
 				:rules="rules.passwordC"
 				:type="show ? 'text' : 'password'"
 				:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"

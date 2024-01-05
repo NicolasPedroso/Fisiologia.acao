@@ -36,7 +36,7 @@
 	</v-container>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
 	testimonies: {
 		type: Array,
 		required: true,

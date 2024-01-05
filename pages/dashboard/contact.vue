@@ -17,12 +17,12 @@
 		<v-row class="my-6 mx-1 d-flex align-center">
 			<v-spacer></v-spacer>
 			<v-text-field
+				v-model="search"
 				label="Pesquisar"
 				variant="solo"
 				hide-details
 				prepend-icon="mdi-magnify"
 				clearable
-				v-model="search"
 			></v-text-field>
 		</v-row>
 		<!-- Primeira seção: Title, ADD, Search -->
@@ -34,10 +34,10 @@
 			:items="formItems"
 			items-per-page="10"
 		>
-			<template v-slot:item.name="{ item }">
+			<template #[`item.name`]="{ item }">
 				{{ item.firstName + " " + item.lastName }}
 			</template>
-			<template v-slot:item.actions="{ item }">
+			<template #actions="{ item }">
 				<div>
 					<!-- DELETE button -->
 					<v-btn
@@ -64,7 +64,6 @@ const snackbar = ref({
 });
 // Variaveis do formulario de CRUD do testemunho
 const URLBase = "http://localhost:8000/forms";
-const valid = ref(false);
 
 // Variaveis da DATA TABLE
 const search = ref("");
@@ -97,18 +96,6 @@ const {
 		return [];
 	})
 );
-
-// Function para abrir o formulario de criação
-function openCreate() {
-	editing.value = false;
-	dialog.value = true;
-	testimonyForm.value = {
-		name: "",
-		from: "",
-		image: "",
-		text: "",
-	};
-}
 
 // Deletar o testemunho
 async function deleteContact(id) {

@@ -20,12 +20,12 @@
 			</v-btn>
 			<v-spacer></v-spacer>
 			<v-text-field
+				v-model="search"
 				label="Pesquisar"
 				variant="solo"
 				hide-details
 				prepend-icon="mdi-magnify"
 				clearable
-				v-model="search"
 			></v-text-field>
 		</v-row>
 		<!-- Primeira seção: Title, ADD, Search -->
@@ -37,12 +37,12 @@
 			:items="testimonyItems"
 			items-per-page="10"
 		>
-			<template v-slot:item.image="{ value }">
+			<template #[`item.image`]="{ value }">
 				<v-avatar size="150">
 					<v-img :src="value" cover />
 				</v-avatar>
 			</template>
-			<template v-slot:item.actions="{ item }">
+			<template #[`item.actions`]="{ item }">
 				<div class="d-flex" style="gap: 5px">
 					<!-- EDIT button -->
 					<v-btn icon size="35" color="blue" @click="openEdit(item)">
@@ -65,9 +65,9 @@
 		<!-- Data Table -->
 		<!-- Dialog de CRUD -->
 		<v-dialog
+			v-model="dialog"
 			width="95vw"
 			max-width="800px"
-			v-model="dialog"
 			persistent
 			scrim="black"
 		>
@@ -77,36 +77,36 @@
 						{{ editing ? "Editar" : "Adicionar" }} testemunho
 					</span>
 				</v-card-title>
-				<v-form @submit.prevent v-model="valid">
+				<v-form v-model="valid" @submit.prevent>
 					<v-card-text>
 						<v-row>
 							<v-col cols="12" md="6">
 								<v-text-field
-									label="Nome"
 									v-model="testimonyForm.name"
+									label="Nome"
 									:rules="[rules.required]"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-text-field
-									label="Fonte"
 									v-model="testimonyForm.from"
+									label="Fonte"
 									:rules="[rules.required]"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-text-field
-									label="Imagem [URL]"
 									v-model="testimonyForm.image"
+									label="Imagem [URL]"
 									:rules="[rules.required]"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-textarea
+									v-model="testimonyForm.text"
 									label="Texto"
 									no-resize
 									rows="7"
-									v-model="testimonyForm.text"
 									:rules="[rules.required]"
 								></v-textarea>
 							</v-col>

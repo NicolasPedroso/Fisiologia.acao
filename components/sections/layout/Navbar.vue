@@ -5,7 +5,7 @@
 
 			<!--Links para pc-->
 			<div class="hidden-md-and-down">
-				<template v-for="item in navbarItems">
+				<template v-for="(item, i) in navbarItems" :key="i">
 					<v-menu
 						v-if="item.menu"
 						offset-y
@@ -13,7 +13,7 @@
 						flat
 						transition="scroll-y-reverse-transition"
 					>
-						<template v-slot:activator="{ props }">
+						<template #activator="{ props }">
 							<span v-bind="props" class="navbar-button px-3">
 								{{ item.label }}
 							</span>
@@ -63,7 +63,7 @@
 							mdi-close
 						</v-icon>
 					</div>
-					<template v-for="item in navbarItems">
+					<template v-for="(item, i) in navbarItems" :key="i">
 						<nuxt-link
 							v-if="!item.menu"
 							:to="item.link"

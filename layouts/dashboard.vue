@@ -3,8 +3,8 @@
 		<!-- Drawer que contém os links para as páginas -->
 		<ClientOnly>
 			<v-navigation-drawer v-model="drawer">
-				<template v-slot:image>
-					<div class="drawer-color" />
+				<template #image>
+					<div class="drawer-color"></div>
 				</template>
 				<v-list>
 					<v-list-item
@@ -15,7 +15,7 @@
 						<v-list-item-title class="drawer-text">
 							{{ item.text }}
 						</v-list-item-title>
-						<template v-slot:prepend>
+						<template #prepend>
 							<v-icon class="drawer-text">{{ item.icon }}</v-icon>
 						</template>
 					</v-list-item>
@@ -33,8 +33,8 @@
 				<v-toolbar-title class="text-color">
 					Painel do Administrador
 				</v-toolbar-title>
-				<template v-slot:append>
-					<v-btn @click="logout()" class="text-color"> Sair </v-btn>
+				<template #append>
+					<v-btn class="text-color" @click="logout()"> Sair </v-btn>
 				</template>
 			</v-app-bar>
 		</ClientOnly>

@@ -9,7 +9,9 @@
 			class="d-flex flex-row align-center"
 		>
 			<v-col cols="auto">
-				<v-icon size="30">{{ item.icon }}</v-icon>
+				<v-icon size="30">
+					{{ item.icon }}
+				</v-icon>
 			</v-col>
 			<v-col cols="auto">
 				<span :class="item.class">
@@ -27,7 +29,9 @@
 			class="d-flex flex-row align-center"
 		>
 			<v-col cols="auto">
-				<v-icon size="30">{{ item.icon }}</v-icon>
+				<v-icon size="30">
+					{{ item.icon }}
+				</v-icon>
 			</v-col>
 			<v-col cols="auto">
 				<span :class="item.class">
