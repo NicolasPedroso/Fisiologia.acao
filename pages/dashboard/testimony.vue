@@ -145,25 +145,25 @@ const snackbar = ref({
 	text: "",
 	color: "",
 	active: false,
-});
+})
 // Variaveis do formulario de CRUD do testemunho
-const URLBase = "http://localhost:8000/testimonies";
-const valid = ref(false);
-const dialog = ref(false);
-const editing = ref(false);
+const URLBase = "http://localhost:8000/testimonies"
+const valid = ref(false)
+const dialog = ref(false)
+const editing = ref(false)
 const testimonyForm = ref({
 	id: 0,
 	name: "",
 	from: "",
 	image: "",
 	text: "",
-});
+})
 const rules = {
 	required: (value) => !!value || "Campo obrigatório",
-};
+}
 
 // Variaveis da DATA TABLE
-const search = ref("");
+const search = ref("")
 const headers = [
 	{ title: "ID", value: "id", sortable: true },
 	{ title: "Nome", value: "name", sortable: true },
@@ -171,7 +171,7 @@ const headers = [
 	{ title: "Imagem", value: "image", sortable: false },
 	{ title: "Texto", value: "text", sortable: true },
 	{ title: "", value: "actions", sortable: false },
-];
+]
 
 /*
 	Requisição para pegar os dados da tabela
@@ -184,44 +184,44 @@ const {
 	data: testimonyItems,
 } = await useAsyncData("get", () =>
 	$fetch(`${URLBase}`).catch((err) => {
-		console.error(err);
+		console.error(err)
 		snackbar.value = {
 			text: `Erro ao acessar os testemunhos: ${err.message}`,
 			color: "error",
 			active: true,
-		};
-		return [];
-	})
-);
+		}
+		return []
+	}),
+)
 
 // Function para abrir o formulario de criação
 function openCreate() {
-	editing.value = false;
-	dialog.value = true;
+	editing.value = false
+	dialog.value = true
 	testimonyForm.value = {
 		name: "",
 		from: "",
 		image: "",
 		text: "",
-	};
+	}
 }
 
 function openEdit(item) {
-	editing.value = true;
-	dialog.value = true;
+	editing.value = true
+	dialog.value = true
 	testimonyForm.value = {
 		id: item.id,
 		name: item.name,
 		from: item.from,
 		image: item.image,
 		text: item.text,
-	};
+	}
 }
 
 // Criar o testemunho
 async function sendTestimony() {
 	// Verifica se o formulario é valido
-	if (!valid.value) return;
+	if (!valid.value) return
 
 	// Envia para o backend
 	await $fetch(`${URLBase}`, {
@@ -233,23 +233,23 @@ async function sendTestimony() {
 				text: "Testemunho criado com sucesso",
 				color: "success",
 				active: true,
-			};
-			dialog.value = false;
-			refresh();
+			}
+			dialog.value = false
+			refresh()
 		})
 		.catch((error) => {
-			console.error(`Erro: ${error}`);
+			console.error(`Erro: ${error}`)
 			snackbar.value = {
 				text: `Erro ao criar testemunho: ${error.message}`,
 				color: "error",
 				active: true,
-			};
-		});
+			}
+		})
 }
 
 async function updateTestimony(id) {
 	// Verifica se o formulario é valido
-	if (!valid.value) return;
+	if (!valid.value) return
 
 	// Envia para o backend
 	await $fetch(`${URLBase}/${id}`, {
@@ -261,23 +261,23 @@ async function updateTestimony(id) {
 				text: "Testemunho atualizado com sucesso",
 				color: "success",
 				active: true,
-			};
-			dialog.value = false;
-			refresh();
+			}
+			dialog.value = false
+			refresh()
 		})
 		.catch((error) => {
-			console.error(`Erro: ${error}`);
+			console.error(`Erro: ${error}`)
 			snackbar.value = {
 				text: `Erro ao atualizar testemunho: ${error.message}`,
 				color: "error",
 				active: true,
-			};
-		});
+			}
+		})
 }
 
 // Deletar o testemunho
 async function deleteTestimony(id) {
-	const ok = window.confirm("Você quer mesmo deletar este testemunho?");
+	const ok = window.confirm("Você quer mesmo deletar este testemunho?")
 	if (ok) {
 		await $fetch(`${URLBase}/${id}`, {
 			method: "DELETE",
@@ -287,23 +287,23 @@ async function deleteTestimony(id) {
 					text: "Testemunho deletado com sucesso",
 					color: "success",
 					active: true,
-				};
-				refresh();
+				}
+				refresh()
 			})
 			.catch((error) => {
-				console.log(`Erro: ${error}`);
+				console.log(`Erro: ${error}`)
 				snackbar.value = {
 					text: `Erro ao deletar testemunho: ${error}`,
 					color: "error",
 					active: true,
-				};
-			});
+				}
+			})
 	}
 }
 
 // Cabeçalho da pagina
 definePageMeta({
 	layout: "dashboard",
-});
+})
 </script>
 <style scoped></style>

@@ -11,8 +11,8 @@
 	</v-container>
 </template>
 <script setup>
-import VForms from "./VForms.vue";
-import DataInfo from "./DataInfo.vue";
+import VForms from "./VForms.vue"
+import DataInfo from "./DataInfo.vue"
 </script>
 <style scoped>
 .contact-info-wrapper {

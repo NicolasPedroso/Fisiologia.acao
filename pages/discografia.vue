@@ -67,12 +67,12 @@
 	</v-container>
 </template>
 <script setup>
-import { shallowRef } from "vue";
+import { shallowRef } from "vue"
 
-import Banner from "@/components/global/Banner.vue";
-import MusicCard from "@/components/sections/music/MusicCard.vue";
+import Banner from "@/components/global/Banner.vue"
+import MusicCard from "@/components/sections/music/MusicCard.vue"
 
-const search = shallowRef("");
+const search = shallowRef("")
 const albums = [
 	{
 		title: "bittersweet memories",
@@ -151,14 +151,14 @@ const albums = [
 		percentage: 33,
 		image: "https://images.genius.com/aaf59281c51b44c1d2184dddfd30a705.1000x1000x1.png",
 	},
-];
+]
 
 // Cabeçalhos da pagina
 useSeoMeta({
 	title: "Discografia",
 	description:
 		"Veja uma sequência de álbuns e músicas recomendadas por @tuildes :)",
-});
+})
 useHead({
 	htmlAttrs: {
 		lang: "pt-br",
@@ -170,7 +170,7 @@ useHead({
 			href: "/favicon.ico",
 		},
 	],
-});
+})
 </script>
 <style scoped>
 /* @media (max-width: 959px) {

@@ -78,7 +78,7 @@ let footerItems = [
 	["Shop", "Privacidade", "Testemunhas", "Manual", "Tradução"],
 	["Ache Designers", "Encontre Devs", "Times", "Anuncie", "API"],
 	["Sobre", "Ajuda", "Contato", "Termos", "Encontros"],
-];
+]
 </script>
 
 <style scoped>

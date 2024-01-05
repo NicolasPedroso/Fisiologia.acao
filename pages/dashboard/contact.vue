@@ -61,12 +61,12 @@ const snackbar = ref({
 	text: "",
 	color: "",
 	active: false,
-});
+})
 // Variaveis do formulario de CRUD do testemunho
-const URLBase = "http://localhost:8000/forms";
+const URLBase = "http://localhost:8000/forms"
 
 // Variaveis da DATA TABLE
-const search = ref("");
+const search = ref("")
 const headers = [
 	{ title: "ID", value: "id", sortable: true },
 	{ title: "Nome", value: "name", sortable: true },
@@ -74,7 +74,7 @@ const headers = [
 	{ title: "Assunto", value: "subject", sortable: false },
 	{ title: "Messagem", value: "content", sortable: true },
 	{ title: "", value: "actions", sortable: false },
-];
+]
 
 /*
 	Requisição para pegar os dados da tabela
@@ -87,19 +87,19 @@ const {
 	data: formItems,
 } = await useAsyncData("get", () =>
 	$fetch(`${URLBase}`).catch((err) => {
-		console.error(err);
+		console.error(err)
 		snackbar.value = {
 			text: `Erro ao acessar os contatos: ${err.message}`,
 			color: "error",
 			active: true,
-		};
-		return [];
-	})
-);
+		}
+		return []
+	}),
+)
 
 // Deletar o testemunho
 async function deleteContact(id) {
-	const ok = window.confirm("Você quer mesmo deletar este contato?");
+	const ok = window.confirm("Você quer mesmo deletar este contato?")
 	if (ok) {
 		await $fetch(`${URLBase}/${id}`, {
 			method: "DELETE",
@@ -109,23 +109,23 @@ async function deleteContact(id) {
 					text: "Contato deletado com sucesso",
 					color: "success",
 					active: true,
-				};
-				refresh();
+				}
+				refresh()
 			})
 			.catch((error) => {
-				console.log(`Erro: ${error}`);
+				console.log(`Erro: ${error}`)
 				snackbar.value = {
 					text: `Erro ao deletar contato: ${error}`,
 					color: "error",
 					active: true,
-				};
-			});
+				}
+			})
 	}
 }
 
 // Cabeçalho da pagina
 definePageMeta({
 	layout: "dashboard",
-});
+})
 </script>
 <style scoped></style>

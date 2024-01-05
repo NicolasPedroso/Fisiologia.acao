@@ -55,12 +55,12 @@
 </template>
 <script setup>
 // Imports from Vue and Nuxt
-import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { useRouter } from "vue-router"
+import { ref } from "vue"
 
 // Variáveis de ambiente
-const router = useRouter();
-const drawer = ref(false);
+const router = useRouter()
+const drawer = ref(false)
 
 // Array de paginas que serão exibidas no drawer
 const dashboardPages = [
@@ -80,7 +80,7 @@ const dashboardPages = [
 		text: "Contato",
 		link: "/dashboard/contact",
 	},
-];
+]
 
 // Tema que será utilizado na dashboard
 const theme = {
@@ -91,11 +91,11 @@ const theme = {
 	backgroundColor: "#202224",
 	/* Cores de texto da dashboard  */
 	textColor: "#ffffff",
-};
+}
 
 // Métodos e funções
 function logout() {
-	router.push("/login");
+	router.push("/login")
 }
 
 // Cabeçalhos da pagina
@@ -105,7 +105,7 @@ useSeoMeta({
 
 	// Endereço da imagem que será exibida quando a página for compartilhada
 	// ogImage: "endereco-da-imagem",
-});
+})
 useHead({
 	htmlAttrs: {
 		lang: "pt-br",
@@ -117,7 +117,7 @@ useHead({
 			href: "/favicon.ico",
 		},
 	],
-});
+})
 </script>
 <style scoped>
 .drawer-color {

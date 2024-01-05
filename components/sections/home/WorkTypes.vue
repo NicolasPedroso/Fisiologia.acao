@@ -47,7 +47,7 @@ const typesLearn = [
 		text: "The awakening of the Gomu Gomu no Mi, formerly known as the Hito Hito no Mi, Model: Nika",
 		icon: "mdi-power",
 	},
-];
+]
 </script>
 <style scoped>
 .worktype-wrapper {

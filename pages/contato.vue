@@ -5,15 +5,15 @@
 	</v-container>
 </template>
 <script setup>
-import Banner from "@/components/global/Banner.vue";
-import InfoBox from "~/components/sections/contact/InfoBox.vue";
+import Banner from "@/components/global/Banner.vue"
+import InfoBox from "~/components/sections/contact/InfoBox.vue"
 
 // Cabeçalhos da pagina
 useSeoMeta({
 	title: "Contato",
 	description:
 		"Veja como entrar em contato com a Ecomp ou mande uma mensagem para nós!",
-});
+})
 useHead({
 	htmlAttrs: {
 		lang: "pt-br",
@@ -25,6 +25,6 @@ useHead({
 			href: "/favicon.ico",
 		},
 	],
-});
+})
 </script>
 <style scoped></style>

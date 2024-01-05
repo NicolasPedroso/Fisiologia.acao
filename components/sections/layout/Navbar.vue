@@ -88,11 +88,11 @@
 	</section>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref } from "vue"
 
-const drawer = ref(false);
+const drawer = ref(false)
 function openDrawer() {
-	drawer.value = !drawer.value;
+	drawer.value = !drawer.value
 }
 
 const navbarItems = [
@@ -110,7 +110,7 @@ const navbarItems = [
 		items: ["HTML5", "CSS3", "Sass", "JQuery"],
 	},
 	{ link: "/contato", label: "Contato", menu: false },
-];
+]
 </script>
 <style scoped>
 @import url("http://fonts.googleapis.com/css2?family=Raleway&display=swap");

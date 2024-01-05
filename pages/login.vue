@@ -51,41 +51,41 @@
 </template>
 <script setup>
 // Importing components and vue functions
-import TitleAuth from "~/components/auth/TitleAuth.vue";
-import { ref } from "vue";
+import TitleAuth from "~/components/auth/TitleAuth.vue"
+import { ref } from "vue"
 
 // Campos do formulário
-const email = ref("");
-const password = ref("");
-const show = ref(false);
+const email = ref("")
+const password = ref("")
+const show = ref(false)
 
 // Campos e variaveis da snackbar
 const snackbar = ref({
 	text: "",
 	color: "",
 	active: false,
-});
+})
 // Regras e validade do formulário
-const valid = ref(false);
+const valid = ref(false)
 const rules = {
 	email: [
 		(value) => {
-			if (value) return true;
-			return "O campo é obrigatório";
+			if (value) return true
+			return "O campo é obrigatório"
 		},
 		(value) => {
 			if (/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(value))
-				return true;
-			return "O e-mail deve ser válido";
+				return true
+			return "O e-mail deve ser válido"
 		},
 	],
 	password: [
 		(value) => {
-			if (value) return true;
-			return "O campo é obrigatório";
+			if (value) return true
+			return "O campo é obrigatório"
 		},
 	],
-};
+}
 
 // Funções
 function login() {
@@ -98,18 +98,18 @@ function login() {
 			text: "Não foi possível fazer o login",
 			color: "error",
 			active: true,
-		};
+		}
 	}
 }
 
 // Layout da página e cabeçalho
 definePageMeta({
 	layout: "auth",
-});
+})
 useSeoMeta({
 	title: "Login",
 	description: "Página para login para acesso a dashboard.",
-});
+})
 useHead({
 	htmlAttrs: {
 		lang: "pt-br",
@@ -121,7 +121,7 @@ useHead({
 			href: "/favicon.ico",
 		},
 	],
-});
+})
 </script>
 <style scoped>
 .auth-link {

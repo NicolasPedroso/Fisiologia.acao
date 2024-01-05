@@ -88,15 +88,15 @@
 	</v-container>
 </template>
 <script setup>
-const URLBase = "http://localhost:8000/forms";
-const valid = ref(false);
+const URLBase = "http://localhost:8000/forms"
+const valid = ref(false)
 const message = ref({
 	firstName: "",
 	lastName: "",
 	email: "",
 	subject: "",
 	content: "",
-});
+})
 
 const rules = {
 	firstName: [(v) => !!v || "Primeiro nome é obrigatório!"],
@@ -105,23 +105,23 @@ const rules = {
 		(v) => !!v || "O e-mail é obrigatório!",
 		(v) =>
 			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/.test(
-				v
+				v,
 			) || "E-mail inválido",
 	],
 	subject: [(v) => !!v || "Assunto é obrigatório!"],
 	content: [(v) => !!v || "Mensagem é obrigatória!"],
-};
+}
 
 async function sendMessage() {
-	if (!valid.value) return;
+	if (!valid.value) return
 
 	// Envia para o backend
 	await $fetch(`${URLBase}`, {
 		method: "POST",
 		body: message.value,
 	}).catch((error) => {
-		console.error(`Erro: ${error}`);
-	});
+		console.error(`Erro: ${error}`)
+	})
 }
 </script>
 <style scoped>

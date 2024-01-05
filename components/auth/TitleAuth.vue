@@ -15,7 +15,7 @@ defineProps({
 		type: String,
 		required: true,
 	},
-});
+})
 </script>
 <style scoped>
 .auth-logo {

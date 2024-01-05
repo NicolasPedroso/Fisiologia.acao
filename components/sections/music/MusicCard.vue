@@ -46,7 +46,7 @@ defineProps({
 		type: Object,
 		required: true,
 	},
-});
+})
 </script>
 <style scoped>
 .card--music {

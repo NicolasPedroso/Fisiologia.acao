@@ -67,7 +67,7 @@ const dataInfos = [
 		icon: "mdi-earth",
 		class: "data-text-green",
 	},
-];
+]
 </script>
 <style scoped>
 .data-title {

@@ -21,7 +21,7 @@ defineProps({
 		type: String,
 		required: true,
 	},
-});
+})
 </script>
 <style scoped>
 @import url("http://fonts.googleapis.com/css2?family=Raleway&display=swap");

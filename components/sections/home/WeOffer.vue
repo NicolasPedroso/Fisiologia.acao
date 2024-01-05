@@ -303,7 +303,7 @@
 	</v-container>
 </template>
 <script setup>
-const tabs = ref(null);
+const tabs = ref(null)
 const tabsIcons = [
 	{
 		name: "Web Design",
@@ -321,7 +321,7 @@ const tabsIcons = [
 		name: "Logo & Branding",
 		icon: "mdi-cube-outline",
 	},
-];
+]
 </script>
 <style scoped>
 @media (max-width: 500px) {

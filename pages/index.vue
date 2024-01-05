@@ -12,13 +12,13 @@
 	</v-container>
 </template>
 <script setup>
-import Banner from "~/components/sections/home/Banner.vue";
-import WorkTypes from "~/components/sections/home/WorkTypes.vue";
-import WeOffer from "~/components/sections/home/WeOffer.vue";
-import Testimony from "~/components/sections/home/Testimony.vue";
-import Gallery from "~/components/sections/home/Gallery.vue";
+import Banner from "~/components/sections/home/Banner.vue"
+import WorkTypes from "~/components/sections/home/WorkTypes.vue"
+import WeOffer from "~/components/sections/home/WeOffer.vue"
+import Testimony from "~/components/sections/home/Testimony.vue"
+import Gallery from "~/components/sections/home/Gallery.vue"
 
-const { public: config } = useRuntimeConfig();
+const { public: config } = useRuntimeConfig()
 
 const { data: testimonies } = await useAsyncData("get", () =>
 	$fetch(`${config.baseURL}/testimonies`)
@@ -33,10 +33,10 @@ const { data: testimonies } = await useAsyncData("get", () =>
 							text: "Testemunho",
 							image: "/banco-testes/imagem-teste-03.jpg",
 						},
-				  ];
+					]
 		})
 		.catch((err) => {
-			console.log(err);
+			console.log(err)
 			return [
 				{
 					id: 0,
@@ -45,15 +45,15 @@ const { data: testimonies } = await useAsyncData("get", () =>
 					text: "Testemunho",
 					image: "/banco-testes/imagem-teste-03.jpg",
 				},
-			];
-		})
-);
+			]
+		}),
+)
 
 // Cabeçalhos da pagina
 useSeoMeta({
 	title: "Página inicial",
 	description: "Página inicial do projeto base 2024 da Ecomp.",
-});
+})
 useHead({
 	htmlAttrs: {
 		lang: "pt-br",
@@ -65,5 +65,5 @@ useHead({
 			href: "/favicon.ico",
 		},
 	],
-});
+})
 </script>

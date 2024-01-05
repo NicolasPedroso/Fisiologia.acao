@@ -67,60 +67,60 @@
 </template>
 <script setup>
 // Importing components and vue functions
-import TitleAuth from "~/components/auth/TitleAuth.vue";
-import { ref } from "vue";
+import TitleAuth from "~/components/auth/TitleAuth.vue"
+import { ref } from "vue"
 
 // Campos do formulário
-const name = ref("");
-const email = ref("");
-const password = ref("");
-const passwordC = ref("");
+const name = ref("")
+const email = ref("")
+const password = ref("")
+const passwordC = ref("")
 
-const show = ref(false);
+const show = ref(false)
 
 // Campos e variaveis da snackbar
 const snackbar = ref({
 	text: "",
 	color: "",
 	active: false,
-});
+})
 // Regras e validade do formulário
-const valid = ref(false);
+const valid = ref(false)
 const rules = {
 	name: [
 		(value) => {
-			if (value) return true;
-			return "O campo é obrigatório";
+			if (value) return true
+			return "O campo é obrigatório"
 		},
 	],
 	email: [
 		(value) => {
-			if (value) return true;
-			return "O campo é obrigatório";
+			if (value) return true
+			return "O campo é obrigatório"
 		},
 		(value) => {
 			if (/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(value))
-				return true;
-			return "O e-mail deve ser válido";
+				return true
+			return "O e-mail deve ser válido"
 		},
 	],
 	password: [
 		(value) => {
-			if (value) return true;
-			return "O campo é obrigatório";
+			if (value) return true
+			return "O campo é obrigatório"
 		},
 	],
 	passwordC: [
 		(value) => {
-			if (value) return true;
-			return "O campo é obrigatório";
+			if (value) return true
+			return "O campo é obrigatório"
 		},
 		(value) => {
-			if (value === password.value) return true;
-			return "As senhas não se coincidem";
+			if (value === password.value) return true
+			return "As senhas não se coincidem"
 		},
 	],
-};
+}
 
 // Funções
 function signIn() {
@@ -133,18 +133,18 @@ function signIn() {
 			text: "Não foi possível fazer o registro",
 			color: "error",
 			active: true,
-		};
+		}
 	}
 }
 
 // Layout da página e cabeçalho
 definePageMeta({
 	layout: "auth",
-});
+})
 useSeoMeta({
 	title: "Registro",
 	description: "Página de registro para a dashboard.",
-});
+})
 useHead({
 	htmlAttrs: {
 		lang: "pt-br",
@@ -156,7 +156,7 @@ useHead({
 			href: "/favicon.ico",
 		},
 	],
-});
+})
 </script>
 <style scoped>
 .auth-link {

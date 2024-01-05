@@ -61,7 +61,7 @@ const galleryImgs = [
 		image: "/banco-testes/imagem-teste-05.jpg",
 		alt: "Garota de anime",
 	},
-];
+]
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;600&display=swap");
