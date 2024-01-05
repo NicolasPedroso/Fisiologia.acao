@@ -5,7 +5,7 @@
 	</v-container>
 </template>
 <script setup>
-import Banner from "@/components/sections/contact/Banner.vue";
+import Banner from "@/components/global/Banner.vue";
 import InfoBox from "~/components/sections/contact/InfoBox.vue";
 
 // Cabeçalhos da pagina
