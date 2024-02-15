@@ -2,7 +2,7 @@
 	<v-container
 		fluid
 		style="height: 100%"
-		class="d-flex flex-column justify-center align-center"
+		class="d-flex flex-column justify-center align-center text-center"
 	>
 		<h2>Bem-vindo a Dashboard</h2>
 		<h4 class="mt-2">
