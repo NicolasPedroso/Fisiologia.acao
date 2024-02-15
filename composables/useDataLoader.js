@@ -14,11 +14,11 @@
  * @param {*} opts - Opções do fetch (método, headers, etc...)
  * @returns {Object} - Retorna um objeto com as propriedades: data, error, loading proprias do $fetch
  */
-export const useDataLoader = (request, opts) => {
+export const useDataLoader = async (request, opts) => {
 	const config = useRuntimeConfig()
 	const { value: token } = useCookie("token")
 
-	return $fetch(request, {
+	return await $fetch(request, {
 		baseURL: config.public.baseURL,
 		headers: {
 			Authorization: `Bearer ${token}`,
