@@ -10,6 +10,10 @@
  *      })
  * }
  *
+ * ! Atenção: comente a linha da AUTHORIZATION caso não esteja utilizando autenticação por token
+ * ! 	Como em back-end simulado, ao exemplo do json-server que tem problemas com o header Authorization
+ *
+ *
  * @param {*} request - Endpoint da API (rotas: /api/...)
  * @param {*} opts - Opções do fetch (método, headers, etc...)
  * @returns {Object} - Retorna um objeto com as propriedades: data, error, loading proprias do $fetch
@@ -21,7 +25,7 @@ export const useDataLoader = async (request, opts) => {
 	return await $fetch(request, {
 		baseURL: config.public.baseURL,
 		headers: {
-			Authorization: `Bearer ${token}`,
+			// Authorization: `Bearer ${token}`,
 			...opts?.headers,
 		},
 		...opts,
