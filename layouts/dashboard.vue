@@ -1,45 +1,69 @@
 <template>
 	<v-app theme="dark">
 		<!-- Drawer que contém os links para as páginas -->
-		<ClientOnly>
-			<v-navigation-drawer v-model="drawer">
-				<template #image>
-					<div class="drawer-color" />
-				</template>
-				<!-- 
+
+		<v-navigation-drawer v-model="drawer">
+			<template #image>
+				<div class="drawer-color" />
+			</template>
+			<!-- 
 					TODO: Colocar a logo da empresa e colocar subheaders
 					https://madewithvuejs.com/berry-vuetify-admin-dashboard
 					TODO: error nuxt3
 				-->
-				<v-list>
-					<v-list-item
-						v-for="(item, i) in dashboardPages"
-						:key="i"
-						:to="item.link"
-						:base-color="theme.drawerTextColor"
-						:prepend-icon="item.icon"
-						:title="item.text"
-						class="mt-1 drawer-text"
-					/>
-				</v-list>
-			</v-navigation-drawer>
-		</ClientOnly>
+			<!-- Logo e nome do Projeto -->
+			<v-list lines="3" class="my-2">
+				<v-list-item
+					class="drawer-logo"
+					title="Ecomp"
+					subtitle="Empresa júnior de computação da UFPR"
+				>
+					<template #prepend>
+						<v-img
+							width="40"
+							height="56"
+							contain
+							class="mr-4"
+							src="/imagens/logo.png"
+							alt="Logo da Ecomp"
+						/>
+					</template>
+				</v-list-item>
+			</v-list>
+			<!-- Logo e nome do Projeto -->
+			<!-- Itens do drawer -->
+			<v-list nav>
+				<v-list-item
+					v-for="(item, i) in drawerItems"
+					:key="i"
+					:to="item.link"
+					:base-color="theme.drawerTextColor"
+					:prepend-icon="item.icon"
+					:title="item.title"
+					:subtitle="item.subtitle"
+					lines="3"
+					class="my-1 py-1 drawer-text"
+				/>
+			</v-list>
+			<!-- Itens do drawer -->
+		</v-navigation-drawer>
+
 		<!-- Drawer que contém os links para as páginas -->
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
-		<ClientOnly>
-			<v-app-bar app class="primary-color">
-				<v-app-bar-nav-icon
-					class="text-color"
-					@click.stop="drawer = !drawer"
-				/>
-				<v-toolbar-title class="text-color">
-					Painel do Administrador
-				</v-toolbar-title>
-				<template #append>
-					<v-btn class="text-color" @click="logout()"> Sair </v-btn>
-				</template>
-			</v-app-bar>
-		</ClientOnly>
+
+		<v-app-bar app class="primary-color">
+			<v-app-bar-nav-icon
+				class="text-color"
+				@click.stop="drawer = !drawer"
+			/>
+			<v-toolbar-title class="text-color">
+				Painel do Administrador
+			</v-toolbar-title>
+			<template #append>
+				<v-btn class="text-color" @click="logout()"> Sair </v-btn>
+			</template>
+		</v-app-bar>
+
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
 		<!-- Conteúdo -->
 		<v-main>
@@ -47,11 +71,11 @@
 		</v-main>
 		<!-- Conteúdo -->
 		<!-- Footer -->
-		<ClientOnly>
-			<v-footer inset app class="primary-color">
-				<span class="text-color"> &copy; Ecomp 2024 </span>
-			</v-footer>
-		</ClientOnly>
+
+		<v-footer inset app class="primary-color">
+			<span class="text-color"> &copy; Ecomp 2024 </span>
+		</v-footer>
+
 		<!-- Footer -->
 	</v-app>
 </template>
@@ -69,31 +93,28 @@ const drawer = ref(false)
 const { logUserOut } = useAuthStore()
 
 // Array de paginas que serão exibidas no drawer
-const dashboardPages = [
+const drawerItems = [
 	{
 		icon: "mdi-monitor-dashboard",
-		text: "Dashboard",
-		link: "/dashboard/1",
-	},
-	{
-		icon: "mdi-monitor-dashboard",
-		text: "Dashboard",
-		link: "/dashboard/2",
-	},
-	{
-		icon: "mdi-monitor-dashboard",
-		text: "Dashboard",
+		title: "Dashboard",
+		subtitle: "Controle geral do sistema",
 		link: "/dashboard/",
+	},
+	{
+		icon: "mdi-account-badge",
+		title: "Testemunhos",
+		subtitle: "Altere os testemunhos exibidos na página inicial",
+		link: "/dashboard/testimony",
 	},
 ]
 
 // Tema que será utilizado na dashboard
 const theme = {
 	/* Fundo do Drawer da dashboard */
-	drawerBackground: "url(/banco-testes/imagem-teste-06.jpg)",
+	drawerBackground: "url(/imagens/drawer/background.jpg)",
 	drawerTextColor: "#ffffff",
 	/* Cores de fundo da dashboard  */
-	backgroundColor: "#202224",
+	backgroundColor: "#041E33",
 	/* Cores de texto da dashboard  */
 	textColor: "#ffffff",
 }
@@ -126,6 +147,11 @@ useHead({
 })
 </script>
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+.drawer-logo {
+	/* Imagens e alterações do fundo do Drawer */
+	font-family: "Poppins", sans-serif;
+}
 .drawer-color {
 	height: 100%;
 	width: 100%;
