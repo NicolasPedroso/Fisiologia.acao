@@ -4,21 +4,23 @@
 		<ClientOnly>
 			<v-navigation-drawer v-model="drawer">
 				<template #image>
-					<div class="drawer-color"></div>
+					<div class="drawer-color" />
 				</template>
+				<!-- 
+					TODO: Colocar a logo da empresa e colocar subheaders
+					https://madewithvuejs.com/berry-vuetify-admin-dashboard
+					TODO: error nuxt3
+				-->
 				<v-list>
 					<v-list-item
 						v-for="(item, i) in dashboardPages"
 						:key="i"
 						:to="item.link"
-					>
-						<v-list-item-title class="drawer-text">
-							{{ item.text }}
-						</v-list-item-title>
-						<template #prepend>
-							<v-icon class="drawer-text">{{ item.icon }}</v-icon>
-						</template>
-					</v-list-item>
+						:base-color="theme.drawerTextColor"
+						:prepend-icon="item.icon"
+						:title="item.text"
+						class="mt-1 drawer-text"
+					/>
 				</v-list>
 			</v-navigation-drawer>
 		</ClientOnly>
@@ -29,7 +31,7 @@
 				<v-app-bar-nav-icon
 					class="text-color"
 					@click.stop="drawer = !drawer"
-				></v-app-bar-nav-icon>
+				/>
 				<v-toolbar-title class="text-color">
 					Painel do Administrador
 				</v-toolbar-title>
@@ -57,28 +59,31 @@
 // Imports from Vue and Nuxt
 import { useRouter } from "vue-router"
 import { ref } from "vue"
+import { useAuthStore } from "~/store/auth"
 
 // Variáveis de ambiente
 const router = useRouter()
 const drawer = ref(false)
+
+// Variáveis e funções da STORE
+const { logUserOut } = useAuthStore()
 
 // Array de paginas que serão exibidas no drawer
 const dashboardPages = [
 	{
 		icon: "mdi-monitor-dashboard",
 		text: "Dashboard",
-		link: "/",
+		link: "/dashboard/1",
 	},
 	{
-		icon: "mdi-account",
-		text: "Testemunhos",
-		link: "/dashboard/testimony",
+		icon: "mdi-monitor-dashboard",
+		text: "Dashboard",
+		link: "/dashboard/2",
 	},
-
 	{
-		icon: "mdi-email",
-		text: "Contato",
-		link: "/dashboard/contact",
+		icon: "mdi-monitor-dashboard",
+		text: "Dashboard",
+		link: "/dashboard/",
 	},
 ]
 
@@ -95,6 +100,7 @@ const theme = {
 
 // Métodos e funções
 function logout() {
+	logUserOut()
 	router.push("/login")
 }
 
@@ -133,7 +139,6 @@ useHead({
 .drawer-text {
 	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-	color: v-bind("theme.drawerTextColor") !important;
 }
 .primary-color {
 	background-color: v-bind("theme.backgroundColor") !important;
