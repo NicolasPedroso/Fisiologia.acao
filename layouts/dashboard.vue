@@ -174,4 +174,9 @@ useHead({
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 	color: v-bind("theme.textColor") !important;
 }
+
+.drawer-logo :deep(.v-list-item-subtitle),
+.drawer-text :deep(.v-list-item-subtitle) {
+	word-break: normal !important;
+}
 </style>
