@@ -30,7 +30,7 @@
 		</div>
 	</v-snackbar>
 	<!-- SnackBar -->
-	<div class="ma-12">
+	<div class="ma-6 ma-md-12">
 		<!-- Primeira seção: Title, ADD, Search -->
 		<v-row class="ml-1">
 			<h1>Dashboard de Testemunhos</h1>
@@ -194,7 +194,13 @@ const rules = {
 // Variaveis da DATA TABLE
 const search = ref("")
 const headers = [
-	{ title: "ID", value: "id", sortable: true },
+	{
+		title: "ID",
+		value: "id",
+		sortable: true,
+		align: "center",
+		width: "50px",
+	},
 	{ title: "Nome", value: "name", sortable: true },
 	{ title: "Fonte", value: "from", sortable: true },
 	{ title: "Imagem", value: "image", sortable: false },
@@ -228,6 +234,15 @@ const {
 	data: testimonyItems,
 } = await useAsyncData("testemunhos", () =>
 	useDataLoader("/testimonies")
+		.then((response) => {
+			snackbar.value = {
+				title: "Sucesso ao acessar os testemunhos",
+				text: `${response.length} testemunhos encontrados`,
+				color: "success",
+				active: true,
+			}
+			return response
+		})
 		.catch((err) => {
 			console.error(err)
 			snackbar.value = {
@@ -238,15 +253,6 @@ const {
 				active: true,
 			}
 			return []
-		})
-		.then((response) => {
-			snackbar.value = {
-				title: "Sucesso ao acessar os testemunhos",
-				text: `Dashboard com ${response.length} testemunhos`,
-				color: "success",
-				active: true,
-			}
-			return response
 		}),
 )
 
