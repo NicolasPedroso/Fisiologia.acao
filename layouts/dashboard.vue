@@ -1,7 +1,41 @@
 <template>
 	<v-app theme="dark">
+		<!-- 
+			Dialog de alerta para celulares 
+			Possivel de remoção por atrapalhar a visualização
+		-->
+		<v-dialog
+			v-model="warningMobile"
+			class="d-flex d-md-none"
+			style="z-index: 9999"
+			theme="light"
+		>
+			<v-card class="text-center" theme="dark">
+				<v-card-title class="mt-3"> Atenção! </v-card-title>
+				<v-card-text>
+					<p>
+						Esta painel de Controle foi feito e é recomendado para
+						ser utilizada em dispositivos maiores que 768px de
+						largura, como computadores e tablets.
+					</p>
+					<br />
+					<p>
+						Para uma melhor experiência, utilize um dispositivo com
+						tela maior.
+					</p>
+				</v-card-text>
+				<v-card-actions class="justify-center">
+					<v-btn color="primary" @click.stop="warningMobile = false">
+						Fechar alerta
+					</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+		<!-- 
+			Dialog de alerta para celulares 
+			Possivel de remoção por atrapalhar a visualização
+		-->
 		<!-- Drawer que contém os links para as páginas -->
-
 		<v-navigation-drawer v-model="drawer">
 			<template #image>
 				<div class="drawer-color" />
@@ -47,10 +81,8 @@
 			</v-list>
 			<!-- Itens do drawer -->
 		</v-navigation-drawer>
-
 		<!-- Drawer que contém os links para as páginas -->
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
-
 		<v-app-bar app class="primary-color">
 			<v-app-bar-nav-icon
 				class="text-color"
@@ -63,7 +95,6 @@
 				<v-btn class="text-color" @click="logout()"> Sair </v-btn>
 			</template>
 		</v-app-bar>
-
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
 		<!-- Conteúdo -->
 		<v-main>
@@ -71,11 +102,9 @@
 		</v-main>
 		<!-- Conteúdo -->
 		<!-- Footer -->
-
 		<v-footer inset app class="primary-color">
 			<span class="text-color"> &copy; Ecomp 2024 </span>
 		</v-footer>
-
 		<!-- Footer -->
 	</v-app>
 </template>
@@ -88,6 +117,7 @@ import { useAuthStore } from "~/store/auth"
 // Variáveis de ambiente
 const router = useRouter()
 const drawer = ref(false)
+const warningMobile = ref(true)
 
 // Variáveis e funções da STORE
 const { logUserOut } = useAuthStore()
