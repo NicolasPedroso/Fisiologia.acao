@@ -46,7 +46,56 @@ Todos os comandos estão feitos para o Linux [Ubuntu]
     npm run dev;
     ```
 
-Esse "**manual**" de projeto deverá ser atualizado para contemplar mais o projeto e guias rápidos de setup
+## 🐝 Rodando o Back-end
+
+Todos os comandos estão feitos para o Linux [Ubuntu]
+
+### Método local 
+
+Necessário: php 7.4, docker & composer
+
+1. Verificar a **versão atual do php** [7.4]
+    ```bash
+    php -v;
+    ```
+    
+2. Iniciar o docker do mariaDB - importante trocar as informações deste script, como DB, user e password
+    ```bash
+    sudo docker run --name back \
+     -e MARIADB_RANDOM_ROOT_PASSWORD=yes \
+     -e MARIADB_USER=gfrehse \
+     -e MARIADB_DATABASE=laravel \
+     -e MARIADB_PASSWORD=12345 \
+     -p 3306:3306 \
+     -d mariadb:10.10;
+    ```
+
+3. Iniciar o docker do back
+    ```bash
+    sudo docker container start back;
+    ```
+
+4. Na pasta do back-end: instalar depedencias:
+    ```bash
+    composer install;
+    ```
+    
+5. Na pasta do back-end: fazer migrates e links necessários:
+    ```bash
+    php artisan migrate:fresh --seed;
+    php artisan key:generate;
+    php artisan passport:install --force;
+    php artisan passport:client --personal;
+    php artisan storage:link;
+    ```
+6. Com tudo isso feito, você pode inciar o back-end na porta 8000 por este comando:
+    ```bash
+    php artisan serve;
+    ```
+
+### Método de containers
+
+Veja este repositório: https://github.com/AllanSilva29/docker-laravel7-example
 
 Mas se precisarem de ajuda, não hesitem de contatar **Projetos** ou **Qualita** :)
 
