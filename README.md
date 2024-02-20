@@ -63,9 +63,9 @@ Necessário: php 7.4, docker & composer
     ```bash
     sudo docker run --name back \
      -e MARIADB_RANDOM_ROOT_PASSWORD=yes \
-     -e MARIADB_USER=gfrehse \
+     -e MARIADB_USER=seu_username \
      -e MARIADB_DATABASE=laravel \
-     -e MARIADB_PASSWORD=12345 \
+     -e MARIADB_PASSWORD=sua_password \
      -p 3306:3306 \
      -d mariadb:10.10;
     ```
@@ -75,6 +75,14 @@ Necessário: php 7.4, docker & composer
     sudo docker container start back;
     ```
 
+4. Dentro da pasta do back-end: você precisa copiar o .env.example para um .env e configurar ele para ficar igual ao comando do MARIADB acima
+    ```bash
+    # Copiar o .env
+    cp .env.example .env;
+    # editar o .env
+    vim .env;
+    ```
+    
 4. Na pasta do back-end: instalar depedencias:
     ```bash
     composer install;
