@@ -22,12 +22,15 @@ export const useDataLoader = async (request, opts) => {
 	const config = useRuntimeConfig()
 	const { value: token } = useCookie("token")
 
+	// Objeto com os cabeçalhos
+	let headersOpts = {}
+	if (opts?.headers) headersOpts = opts.headers
+	if (token) headersOpts.Authorization = `Bearer ${token}`
+
+	// Retorna o objeto com as propriedades: data, error, loading, ...
 	return await $fetch(request, {
 		baseURL: config.public.baseURL,
-		headers: {
-			Authorization: `Bearer ${token}`,
-			...opts?.headers,
-		},
+		headers: headersOpts,
 		...opts,
 	})
 }
