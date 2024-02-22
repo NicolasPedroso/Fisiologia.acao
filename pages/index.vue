@@ -1,6 +1,6 @@
 <template>
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<Banner />
+		<Banner :title="'Bem-vindo'" />
 		<WorkTypes />
 		<!-- Bem vindo ao projeto base de 2024 :) -->
 		<Gallery />
@@ -10,7 +10,7 @@
 	</v-container>
 </template>
 <script setup>
-import Banner from "~/components/sections/home/Banner.vue"
+import Banner from "@/components/global/Banner.vue"
 import WorkTypes from "~/components/sections/home/WorkTypes.vue"
 import WeOffer from "~/components/sections/home/WeOffer.vue"
 import Testimony from "~/components/sections/home/Testimony.vue"
