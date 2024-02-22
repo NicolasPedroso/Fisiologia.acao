@@ -33,8 +33,9 @@ Todos os comandos estão feitos para o Linux [Ubuntu]
 1.  Trocando a **versão do NODE** - se necessário
 
     ```bash
-    nvm install 20;
-    nvm use 20;
+    # Utilizando o 21, ou stable
+    nvm install 21;
+    nvm use 21;
     ```
 
 2.  **Instalando** os pacotes do projeto. **Certifique** de estar na pasta do FRONT-END
