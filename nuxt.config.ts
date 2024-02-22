@@ -14,18 +14,36 @@ export default defineNuxtConfig({
 	// Define o cabeçalho do Nuxt [meta tags]
 	app: {
 		head: {
+			// Define os metadados do projeto gerais
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
+			htmlAttrs: {
+				lang: "pt-br",
+			},
+			/**
+			 * * Define o titulo do projeto
+			 * Se não houver um titulo, ele pega o nome do projeto do package.json
+			 * Se houver um titulo, ele pega o nome do projeto do package.json e concatena com o titulo
+			 * 		Exemplo: "Titulo - Nome do Projeto do package.json"
+			 */
+			titleTemplate: `%s - ${process.env.npm_package_name}`,
+			title: process.env.npm_package_name || "",
+			// Define o icone padrão do projeto
 			link: [
 				{
 					rel: "icon",
-					type: "image/ico",
-					href: "/favicon.ico",
+					type: "image/png",
+					href: "/favicon.png",
 				},
 			],
 		},
 	},
 
+	/**
+	 *  Aqui se define variáveis globais do projeto
+	 * 		const config = useRuntimeConfig()
+	 * 		config.public.baseURL,
+	 */
 	runtimeConfig: {
 		public: {
 			baseURL: "http://localhost:8000",
@@ -46,13 +64,14 @@ export default defineNuxtConfig({
 		transpile: ["vuetify"],
 	},
 	modules: [
-		["@nuxtjs/eslint-module", { lintOnStart: false }],
 		(_options, nuxt) => {
 			nuxt.hooks.hook("vite:extendConfig", (config) => {
 				// @ts-expect-error
 				config.plugins.push(vuetify({ autoImport: true }))
 			})
 		},
+		["@nuxtjs/eslint-module", {}],
+		"@pinia/nuxt",
 	],
 	vite: {
 		vue: {

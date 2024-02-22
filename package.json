@@ -19,7 +19,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.2",
 		"eslint-plugin-vue": "^9.19.2",
-		"nuxt": "^3.9.0",
+		"nuxt": "^3.10.2",
 		"prettier": "^3.1.1",
 		"vite-plugin-eslint": "^1.8.1",
 		"vite-plugin-vuetify": "^2.0.1",
@@ -28,6 +28,11 @@
 		"vuetify": "^3.4.8"
 	},
 	"dependencies": {
-		"@mdi/font": "^7.3.67"
+		"@mdi/font": "^7.3.67",
+		"@pinia/nuxt": "^0.5.1",
+		"chart.js": "^4.4.1",
+		"npm": "^10.4.0",
+		"pinia": "^2.1.7",
+		"vue-chartjs": "^5.3.0"
 	}
 }

@@ -19,7 +19,7 @@
 				label="E-mail"
 				prepend-icon="mdi-email"
 				:rules="rules.email"
-			></v-text-field>
+			/>
 			<v-text-field
 				v-model="password"
 				class="mt-3"
@@ -29,7 +29,7 @@
 				:type="show ? 'text' : 'password'"
 				:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
 				@click:append="show = !show"
-			></v-text-field>
+			/>
 			<v-btn
 				type="submit"
 				class="mb-6 mt-4"
@@ -51,8 +51,10 @@
 </template>
 <script setup>
 // Importing components and vue functions
+import { storeToRefs } from "pinia" // import storeToRefs helper hook from pinia
+import { useAuthStore } from "~/store/auth" // import the auth store we just created
+import { ref } from "vue" // import ref from vue
 import TitleAuth from "~/components/auth/TitleAuth.vue"
-import { ref } from "vue"
 
 // Campos do formulário
 const email = ref("")
@@ -87,29 +89,53 @@ const rules = {
 	],
 }
 
+// Função de autenticação da STORE
+const { authenticateUser } = useAuthStore()
+const { authenticated } = storeToRefs(useAuthStore())
+const router = useRouter()
+
 // Funções
-function login() {
+async function login() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
 		// Envia os dados para o backend
-
-		// Snackbar alert
-		snackbar.value = {
-			text: "Não foi possível fazer o login",
-			color: "error",
-			active: true,
+		await authenticateUser({
+			email: email.value,
+			password: password.value,
+		})
+		if (authenticated.value) {
+			// Redireciona para a dashboard
+			router.push("/dashboard")
+		} else {
+			// Snackbar alert
+			snackbar.value = {
+				text: "Não foi possível fazer o login",
+				color: "error",
+				active: true,
+			}
 		}
 	}
 }
 
-// Layout da página e cabeçalho
+// Layout da página e middlewares
 definePageMeta({
 	layout: "auth",
 	middleware: ["auth"],
 })
+
+// Cabe;alho da página
 useSeoMeta({
-	title: "Login",
 	description: "Página para login para acesso a dashboard.",
+	keywords: "login, dashboard, acesso",
+	title: "Login",
+	// ogTitle: '[og:title]',
+	// ogDescription: '[og:description]',
+	// ogImage: '[og:image]',
+	// ogUrl: '[og:url]',
+	// twitterTitle: '[twitter:title]',
+	// twitterDescription: '[twitter:description]',
+	// twitterImage: '[twitter:image]',
+	// twitterCard: 'summary'
 })
 useHead({
 	htmlAttrs: {
@@ -118,8 +144,8 @@ useHead({
 	link: [
 		{
 			rel: "icon",
-			type: "image/ico",
-			href: "/favicon.ico",
+			type: "image/png",
+			href: "/favicon.png",
 		},
 	],
 })

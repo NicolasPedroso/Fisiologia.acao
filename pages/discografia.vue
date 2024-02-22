@@ -173,20 +173,6 @@ useHead({
 })
 </script>
 <style scoped>
-/* @media (max-width: 959px) {
-	.disco-data-iterator {
-		height: 3200px !important;
-	}
-}
-
-@media (max-width: 1279px) and (min-width: 960px) {
-	.disco-data-iterator {
-		height: 1700px !important;
-	}
-}
-.disco-data-iterator {
-	height: 1200px;
-} */
 .disco-wrapper {
 	background:
 		radial-gradient(

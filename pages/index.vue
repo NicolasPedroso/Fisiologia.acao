@@ -1,14 +1,12 @@
 <template>
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<ClientOnly>
-			<Banner />
-			<WorkTypes />
-			<!-- Bem vindo ao projeto base de 2024 :) -->
-			<Gallery />
-			<WeOffer />
-			<v-divider />
-			<Testimony :testimonies="testimonies" />
-		</ClientOnly>
+		<Banner />
+		<WorkTypes />
+		<!-- Bem vindo ao projeto base de 2024 :) -->
+		<Gallery />
+		<WeOffer />
+		<v-divider />
+		<Testimony :testimonies="testimonies" />
 	</v-container>
 </template>
 <script setup>
@@ -18,10 +16,8 @@ import WeOffer from "~/components/sections/home/WeOffer.vue"
 import Testimony from "~/components/sections/home/Testimony.vue"
 import Gallery from "~/components/sections/home/Gallery.vue"
 
-const { public: config } = useRuntimeConfig()
-
-const { data: testimonies } = await useAsyncData("get", () =>
-	$fetch(`${config.baseURL}/testimonies`)
+const { data: testimonies } = await useAsyncData("testemunhos", () =>
+	useDataLoader("/api/testimonies")
 		.then((res) => {
 			return res.length > 0
 				? res
@@ -36,7 +32,7 @@ const { data: testimonies } = await useAsyncData("get", () =>
 					]
 		})
 		.catch((err) => {
-			console.log(err)
+			console.error(`Um erro aconteceu ao buscar os dados: ${err}`)
 			return [
 				{
 					id: 0,

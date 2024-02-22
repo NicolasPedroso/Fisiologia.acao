@@ -3,22 +3,43 @@
 	<v-snackbar
 		v-model="snackbar.active"
 		:color="snackbar.color"
+		:timeout="4000"
+		elevation="24"
+		theme="light"
 		position="fixed"
 		location="top right"
 	>
-		{{ snackbar.text }}
+		<div class="d-flex">
+			<v-col cols="auto" class="d-flex align-center">
+				<v-icon size="30">
+					{{
+						snackbar.color === "success" ? "mdi-check" : "mdi-alert"
+					}}
+				</v-icon>
+			</v-col>
+			<v-col cols="auto">
+				<h3>
+					{{ snackbar.title }}
+					<span v-if="snackbar.status">- {{ snackbar.status }}</span>
+				</h3>
+				<v-divider class="my-1" />
+				<p>
+					{{ snackbar.text }}
+				</p>
+			</v-col>
+		</div>
 	</v-snackbar>
 	<!-- SnackBar -->
-	<div class="ma-12">
+	<div class="ma-6 ma-md-12">
 		<!-- Primeira seção: Title, ADD, Search -->
 		<v-row class="ml-1">
-			<h1>Dashboard de testemunhos</h1>
+			<h1>Dashboard de Testemunhos</h1>
 		</v-row>
 		<v-row class="my-6 mx-1 d-flex align-center">
-			<v-btn color="#00B0FF" variant="outlined" @click="openCreate">
+			<v-btn color="primary" variant="tonal" @click="openCreate">
 				Adicionar testemunho
 			</v-btn>
-			<v-spacer></v-spacer>
+			<v-spacer />
 			<v-text-field
 				v-model="search"
 				label="Pesquisar"
@@ -26,7 +47,7 @@
 				hide-details
 				prepend-icon="mdi-magnify"
 				clearable
-			></v-text-field>
+			/>
 		</v-row>
 		<!-- Primeira seção: Title, ADD, Search -->
 		<!-- Data Table -->
@@ -35,31 +56,40 @@
 			:loading="pending"
 			:search="search"
 			:items="testimonyItems"
-			items-per-page="10"
+			items-per-page="5"
 		>
+			<template #no-data> Não foi encontrado nenhum testemunho </template>
+			<template #[`item.id`]="{ value }">
+				<v-chip color="white"> {{ value }} </v-chip>
+			</template>
 			<template #[`item.image`]="{ value }">
-				<v-avatar size="150">
+				<v-avatar size="150" class="my-4">
 					<v-img :src="value" cover />
 				</v-avatar>
 			</template>
 			<template #[`item.actions`]="{ item }">
-				<div class="d-flex" style="gap: 5px">
+				<div class="d-flex flex-column" style="gap: 5px">
 					<!-- EDIT button -->
-					<v-btn icon size="35" color="blue" @click="openEdit(item)">
-						<v-icon>mdi-pencil</v-icon>
+					<v-btn
+						variant="text"
+						color="green-accent-3"
+						prepend-icon="mdi-pencil"
+						@click.stop="openEdit(item)"
+					>
+						Editar
 					</v-btn>
 					<!-- EDIT button -->
 					<!-- DELETE button -->
 					<v-btn
-						icon
-						size="35"
-						color="red"
+						variant="text"
+						color="red-accent-3"
+						prepend-icon="mdi-delete"
 						@click.stop="deleteTestimony(item.id)"
 					>
-						<v-icon>mdi-delete</v-icon>
+						Deletar
 					</v-btn>
+					<!-- DELETE button -->
 				</div>
-				<!-- DELETE button -->
 			</template>
 		</v-data-table>
 		<!-- Data Table -->
@@ -85,21 +115,21 @@
 									v-model="testimonyForm.name"
 									label="Nome"
 									:rules="[rules.required]"
-								></v-text-field>
+								/>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-text-field
 									v-model="testimonyForm.from"
 									label="Fonte"
 									:rules="[rules.required]"
-								></v-text-field>
+								/>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-text-field
 									v-model="testimonyForm.image"
 									label="Imagem [URL]"
 									:rules="[rules.required]"
-								></v-text-field>
+								/>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-textarea
@@ -108,7 +138,7 @@
 									no-resize
 									rows="7"
 									:rules="[rules.required]"
-								></v-textarea>
+								/>
 							</v-col>
 						</v-row>
 					</v-card-text>
@@ -147,7 +177,6 @@ const snackbar = ref({
 	active: false,
 })
 // Variaveis do formulario de CRUD do testemunho
-const URLBase = "http://localhost:8000/testimonies"
 const valid = ref(false)
 const dialog = ref(false)
 const editing = ref(false)
@@ -165,7 +194,13 @@ const rules = {
 // Variaveis da DATA TABLE
 const search = ref("")
 const headers = [
-	{ title: "ID", value: "id", sortable: true },
+	{
+		title: "ID",
+		value: "id",
+		sortable: true,
+		align: "center",
+		width: "50px",
+	},
 	{ title: "Nome", value: "name", sortable: true },
 	{ title: "Fonte", value: "from", sortable: true },
 	{ title: "Imagem", value: "image", sortable: false },
@@ -173,25 +208,48 @@ const headers = [
 	{ title: "", value: "actions", sortable: false },
 ]
 
-/*
-	Requisição para pegar os dados da tabela
-	testimonyItems -> é o objeto retornado da requisição
-	pending -> é um booleano que indica se a requisição está ocorrendo ou não
-*/
-const {
-	refresh,
-	pending,
-	data: testimonyItems,
-} = await useAsyncData("get", () =>
-	$fetch(`${URLBase}`).catch((err) => {
-		console.error(err)
-		snackbar.value = {
-			text: `Erro ao acessar os testemunhos: ${err.message}`,
-			color: "error",
-			active: true,
-		}
-		return []
-	}),
+/**
+ * * Requisição para pegar os dados da tabela
+ * 		testimonyItems -> é o array retornado da requisição
+ *  	pending -> é um booleano que indica se a requisição está ocorrendo ou não
+ *  	refresh -> é uma função que atualiza os dados da tabela
+ *
+ * * useAsyncData -> é um hook que retorna os dados da requisição e o estado dela
+ * @param {string} key -> é a chave para identificar a requisição para evitar conflitos
+ * @param {function} loader -> é uma função que faz a requisição para o backend -> useDataLoader
+ *
+ * * useDataLoader -> é uma função que faz a requisição para o backend com o método e a URL especificados
+ * @param {string} url -> é a URL para onde a requisição será feita (/api/testimonies)
+ * @param {object} options -> é um objeto que contém o método da requisição (GET, POST, PUT, DELETE) e outros parametros
+ *
+ * * .catch -> é um método que captura o erro da requisição
+ * @param {object} error -> é o objeto que contém o erro da requisição
+ *
+ * * .then -> é um método que captura o sucesso da requisição
+ * @param {object} response -> é o objeto que contém a resposta da requisição
+ */
+const { refresh, pending } = await useAsyncData("testemunhos", () =>
+	useDataLoader("/api/materials")
+		.then((response) => {
+			snackbar.value = {
+				title: "Sucesso ao acessar os testemunhos",
+				text: `${response.length} testemunhos encontrados`,
+				color: "success",
+				active: true,
+			}
+			return response
+		})
+		.catch((err) => {
+			console.error(err)
+			snackbar.value = {
+				title: "Erro ao acessar os testemunhos",
+				text: `${err.message}`,
+				status: 401,
+				color: "error",
+				active: true,
+			}
+			return []
+		}),
 )
 
 // Function para abrir o formulario de criação

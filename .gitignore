@@ -25,3 +25,5 @@ logs
 
 # Others
 .directory
+/public/sw.js
+```
