@@ -228,12 +228,8 @@ const headers = [
  * * .then -> é um método que captura o sucesso da requisição
  * @param {object} response -> é o objeto que contém a resposta da requisição
  */
-const {
-	refresh,
-	pending,
-	data: testimonyItems,
-} = await useAsyncData("testemunhos", () =>
-	useDataLoader("/testimonies")
+const { refresh, pending } = await useAsyncData("testemunhos", () =>
+	useDataLoader("/api/materials")
 		.then((response) => {
 			snackbar.value = {
 				title: "Sucesso ao acessar os testemunhos",

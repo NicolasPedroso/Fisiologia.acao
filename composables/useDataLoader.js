@@ -25,7 +25,7 @@ export const useDataLoader = async (request, opts) => {
 	return await $fetch(request, {
 		baseURL: config.public.baseURL,
 		headers: {
-			// Authorization: `Bearer ${token}`,
+			Authorization: `Bearer ${token}`,
 			...opts?.headers,
 		},
 		...opts,
