@@ -33,11 +33,11 @@
 	<div class="ma-6 ma-md-12">
 		<!-- Primeira seção: Title, ADD, Search -->
 		<v-row class="ml-1">
-			<h1>Dashboard de Testemunhos</h1>
+			<h1>Dashboard de Materiais Gratuitos</h1>
 		</v-row>
 		<v-row class="my-6 mx-1 d-flex align-center">
 			<v-btn color="primary" variant="tonal" @click="openCreate">
-				Adicionar testemunho
+				Adicionar material
 			</v-btn>
 			<v-spacer />
 			<v-text-field
@@ -55,7 +55,7 @@
 			:headers="headers"
 			:loading="pending"
 			:search="search"
-			:items="testimonyItems"
+			:items="materials"
 			items-per-page="5"
 		>
 			<template #no-data> Não foi encontrado nenhum testemunho </template>
@@ -64,7 +64,7 @@
 			</template>
 			<template #[`item.image`]="{ value }">
 				<v-avatar size="150" class="my-4">
-					<v-img :src="value" cover />
+					<v-img :src="formatImagePath(value)" cover />
 				</v-avatar>
 			</template>
 			<template #[`item.actions`]="{ item }">
@@ -84,7 +84,7 @@
 						variant="text"
 						color="red-accent-3"
 						prepend-icon="mdi-delete"
-						@click.stop="deleteTestimony(item.id)"
+						@click.stop="deleteMaterial(item.id)"
 					>
 						Deletar
 					</v-btn>
@@ -104,7 +104,7 @@
 			<v-card class="pa-3">
 				<v-card-title>
 					<span>
-						{{ editing ? "Editar" : "Adicionar" }} testemunho
+						{{ editing ? "Editar" : "Adicionar" }} material
 					</span>
 				</v-card-title>
 				<v-form v-model="valid" @submit.prevent>
@@ -112,28 +112,31 @@
 						<v-row>
 							<v-col cols="12" md="6">
 								<v-text-field
-									v-model="testimonyForm.name"
-									label="Nome"
+									v-model="materialForm.title"
+									label="Título"
 									:rules="[rules.required]"
 								/>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-text-field
-									v-model="testimonyForm.from"
-									label="Fonte"
+									v-model="materialForm.summary"
+									label="Summary"
 									:rules="[rules.required]"
 								/>
 							</v-col>
 							<v-col cols="12" md="6">
-								<v-text-field
-									v-model="testimonyForm.image"
-									label="Imagem [URL]"
-									:rules="[rules.required]"
+								<v-file-input
+									v-model="materialForm.image"
+									label="Imagem"
+									clearable
+									accept="image/*"
+									show-size
+									:rules="[rules.required, rules.imageLimit]"
 								/>
 							</v-col>
 							<v-col cols="12" md="6">
 								<v-textarea
-									v-model="testimonyForm.text"
+									v-model="materialForm.description"
 									label="Texto"
 									no-resize
 									rows="7"
@@ -147,7 +150,7 @@
 							v-if="!editing"
 							color="success"
 							type="submit"
-							@click="sendTestimony"
+							@click="sendMaterial"
 						>
 							Salvar
 						</v-btn>
@@ -155,7 +158,7 @@
 							v-else
 							color="success"
 							type="submit"
-							@click="updateTestimony(testimonyForm.id)"
+							@click="updateMaterial(materialForm.id)"
 						>
 							Atualizar
 						</v-btn>
@@ -180,15 +183,19 @@ const snackbar = ref({
 const valid = ref(false)
 const dialog = ref(false)
 const editing = ref(false)
-const testimonyForm = ref({
+const materialForm = ref({
 	id: 0,
-	name: "",
-	from: "",
-	image: "",
-	text: "",
+	title: "",
+	summary: "",
+	description: "",
+	image: null,
 })
 const rules = {
 	required: (value) => !!value || "Campo obrigatório",
+	imageLimit: (value) =>
+		!value ||
+		!value.some((file) => file.size > 2e6) ||
+		"A imagem deve ter menos de 2MB",
 }
 
 // Variaveis da DATA TABLE
@@ -201,10 +208,10 @@ const headers = [
 		align: "center",
 		width: "50px",
 	},
-	{ title: "Nome", value: "name", sortable: true },
-	{ title: "Fonte", value: "from", sortable: true },
+	{ title: "Titulo", value: "title", sortable: true },
+	{ title: "Resumo", value: "summary", sortable: true },
+	{ title: "Descrição", value: "description", sortable: true },
 	{ title: "Imagem", value: "image", sortable: false },
-	{ title: "Texto", value: "text", sortable: true },
 	{ title: "", value: "actions", sortable: false },
 ]
 
@@ -228,16 +235,14 @@ const headers = [
  * * .then -> é um método que captura o sucesso da requisição
  * @param {object} response -> é o objeto que contém a resposta da requisição
  */
-const { refresh, pending } = await useAsyncData("testemunhos", () =>
-	useDataLoader("testimonies")
+const {
+	refresh,
+	pending,
+	data: materials,
+} = await useAsyncData("materiais-gratuitos", () =>
+	useDataLoader("/api/materials")
 		.then((response) => {
-			snackbar.value = {
-				title: "Sucesso ao acessar os testemunhos",
-				text: `${response.Data.length} testemunhos encontrados`,
-				color: "success",
-				active: true,
-			}
-			return response
+			return response.Data
 		})
 		.catch((err) => {
 			console.error(err)
@@ -256,39 +261,49 @@ const { refresh, pending } = await useAsyncData("testemunhos", () =>
 function openCreate() {
 	editing.value = false
 	dialog.value = true
-	testimonyForm.value = {
-		name: "",
-		from: "",
-		image: "",
-		text: "",
+	materialForm.value = {
+		id: 0,
+		title: "",
+		summary: "",
+		description: "",
+		image: null,
 	}
 }
 
 function openEdit(item) {
 	editing.value = true
 	dialog.value = true
-	testimonyForm.value = {
+	const images = []
+	images.push(item.image)
+	materialForm.value = {
 		id: item.id,
-		name: item.name,
-		from: item.from,
-		image: item.image,
-		text: item.text,
+		title: item.title,
+		summary: item.summary,
+		image: images,
+		description: item.description,
 	}
 }
 
 // Criar o testemunho
-async function sendTestimony() {
+async function sendMaterial() {
 	// Verifica se o formulario é valido
 	if (!valid.value) return
 
+	// Cria um FormData para enviar a imagem
+	const advertise = new FormData()
+	advertise.append("image", materialForm.value.image[0])
+	advertise.append("title", materialForm.value.title)
+	advertise.append("summary", materialForm.value.summary)
+	advertise.append("description", materialForm.value.description)
+
 	// Envia para o backend
-	await $fetch(`${URLBase}`, {
+	await useDataLoader("/api/materials", {
 		method: "POST",
-		body: testimonyForm.value,
+		body: advertise,
 	})
 		.then(() => {
 			snackbar.value = {
-				text: "Testemunho criado com sucesso",
+				text: "Material criado com sucesso",
 				color: "success",
 				active: true,
 			}
@@ -298,21 +313,23 @@ async function sendTestimony() {
 		.catch((error) => {
 			console.error(`Erro: ${error}`)
 			snackbar.value = {
-				text: `Erro ao criar testemunho: ${error.message}`,
+				title: "Erro ao criar material",
+				status: error.status,
+				text: `${error.message}`,
 				color: "error",
 				active: true,
 			}
 		})
 }
 
-async function updateTestimony(id) {
+async function updateMaterial(id) {
 	// Verifica se o formulario é valido
 	if (!valid.value) return
 
 	// Envia para o backend
 	await $fetch(`${URLBase}/${id}`, {
 		method: "PUT",
-		body: testimonyForm.value,
+		body: materialForm.value,
 	})
 		.then(() => {
 			snackbar.value = {
@@ -334,7 +351,7 @@ async function updateTestimony(id) {
 }
 
 // Deletar o testemunho
-async function deleteTestimony(id) {
+async function deleteMaterial(id) {
 	const ok = window.confirm("Você quer mesmo deletar este testemunho?")
 	if (ok) {
 		await $fetch(`${URLBase}/${id}`, {

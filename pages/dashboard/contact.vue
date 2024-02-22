@@ -3,10 +3,32 @@
 	<v-snackbar
 		v-model="snackbar.active"
 		:color="snackbar.color"
+		:timeout="4000"
+		max-width="90vw"
+		theme="light"
 		position="fixed"
+		close-on-content-click
 		location="top right"
 	>
-		{{ snackbar.text }}
+		<div class="d-flex">
+			<v-col cols="auto" class="d-flex align-center pa-2">
+				<v-icon size="30">
+					{{
+						snackbar.color === "success" ? "mdi-check" : "mdi-alert"
+					}}
+				</v-icon>
+			</v-col>
+			<v-col cols="auto" class="pa-2">
+				<h3>
+					{{ snackbar.title }}
+					<span v-if="snackbar.status">- {{ snackbar.status }}</span>
+				</h3>
+				<v-divider class="my-2" />
+				<p>
+					{{ snackbar.text }}
+				</p>
+			</v-col>
+		</div>
 	</v-snackbar>
 	<!-- SnackBar -->
 	<div class="ma-12">
@@ -23,7 +45,7 @@
 				hide-details
 				prepend-icon="mdi-magnify"
 				clearable
-			></v-text-field>
+			/>
 		</v-row>
 		<!-- Primeira seção: Title, ADD, Search -->
 		<!-- Data Table -->
@@ -37,18 +59,17 @@
 			<template #[`item.name`]="{ item }">
 				{{ item.firstName + " " + item.lastName }}
 			</template>
-			<template #actions="{ item }">
-				<div>
-					<!-- DELETE button -->
-					<v-btn
-						icon
-						size="35"
-						color="red"
-						@click.stop="deleteContact(item.id)"
-					>
-						<v-icon>mdi-delete</v-icon>
-					</v-btn>
-				</div>
+			<template #[`item.actions`]="{ item }">
+				<!-- DELETE button -->
+				<v-btn
+					icon
+					size="35"
+					color="red"
+					class="my-5"
+					@click.stop="deleteContact(item.id)"
+				>
+					<v-icon>mdi-delete</v-icon>
+				</v-btn>
 				<!-- DELETE button -->
 			</template>
 		</v-data-table>
@@ -62,8 +83,6 @@ const snackbar = ref({
 	color: "",
 	active: false,
 })
-// Variaveis do formulario de CRUD do testemunho
-const URLBase = "http://localhost:8000/forms"
 
 // Variaveis da DATA TABLE
 const search = ref("")
@@ -85,11 +104,13 @@ const {
 	refresh,
 	pending,
 	data: formItems,
-} = await useAsyncData("get", () =>
-	$fetch(`${URLBase}`).catch((err) => {
+} = await useAsyncData("contatos", () =>
+	useDataLoader("/forms").catch((err) => {
 		console.error(err)
 		snackbar.value = {
-			text: `Erro ao acessar os contatos: ${err.message}`,
+			title: "Erro ao acessar os contatos",
+			text: `${err.message}`,
+			// status: 401,
 			color: "error",
 			active: true,
 		}
@@ -101,11 +122,12 @@ const {
 async function deleteContact(id) {
 	const ok = window.confirm("Você quer mesmo deletar este contato?")
 	if (ok) {
-		await $fetch(`${URLBase}/${id}`, {
+		await useDataLoader(`/forms/${id}`, {
 			method: "DELETE",
 		})
 			.then(() => {
 				snackbar.value = {
+					title: "Sucesso",
 					text: "Contato deletado com sucesso",
 					color: "success",
 					active: true,
@@ -129,4 +151,3 @@ definePageMeta({
 	middleware: ["guest"],
 })
 </script>
-<style scoped></style>
