@@ -117,14 +117,25 @@ async function login() {
 	}
 }
 
-// Layout da página e cabeçalho
+// Layout da página e middlewares
 definePageMeta({
 	layout: "auth",
 	middleware: ["auth"],
 })
+
+// Cabe;alho da página
 useSeoMeta({
-	title: "Login",
 	description: "Página para login para acesso a dashboard.",
+	keywords: "login, dashboard, acesso",
+	title: "Login",
+	// ogTitle: '[og:title]',
+	// ogDescription: '[og:description]',
+	// ogImage: '[og:image]',
+	// ogUrl: '[og:url]',
+	// twitterTitle: '[twitter:title]',
+	// twitterDescription: '[twitter:description]',
+	// twitterImage: '[twitter:image]',
+	// twitterCard: 'summary'
 })
 useHead({
 	htmlAttrs: {
@@ -133,8 +144,8 @@ useHead({
 	link: [
 		{
 			rel: "icon",
-			type: "image/ico",
-			href: "/favicon.ico",
+			type: "image/png",
+			href: "/favicon.png",
 		},
 	],
 })
