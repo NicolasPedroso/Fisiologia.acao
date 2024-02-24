@@ -1,0 +1,41 @@
+# Processo de Auto-Deploy utilizando pipelines do GitLab
+image: php:7.3
+
+# Deploy da aplicação
+deploy to heroku:
+  stage: deploy
+  script:
+  - apt update -qq
+  - apt install -y -qq git
+  - git config --global user.email "infra.ecomp@gmail.com"
+  - git config --global user.name "Qualidade"
+
+  # Deploy backend
+  - cp -r back-end/* .
+  - cp -r back-end/.env.example .
+  - cp -r back-end/.gitignore .
+  - cp -r back-end/.editorconfig .
+  - cp -r back-end/.gitattributes .
+  - cp -r back-end/.styleci.yml .
+  - git add .
+  - git commit -m "Add arquivos back"
+  - apt update -qq
+  - apt install -y ruby
+  - gem install dpl
+  - dpl --provider=heroku --app=PROJETO_BACK_AQUI --api-key=CHAVE_API_HEROKU_AQUI
+
+  # Deploy frontend
+  - cp -r front-end/* .
+  - cp -r front-end/.gitignore .
+  - cp -r front-end/.eslintrc.js .
+  - cp -r front-end/.prettierrc .
+  - rm -rf front-end
+  - rm -rf back-end
+  - rm Procfile
+  - git add .
+  - git commit -m "Add arquivos front"
+  - dpl --provider=heroku --app=PROJETO_FRONT_AQUI --api-key=CHAVE_API_HEROKU_AQUI
+  
+  # Define quais branchs o pipeline(job) será executado
+  only:
+    - develop
