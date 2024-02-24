@@ -1,0 +1,277 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Projeto Base",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/signup": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Cria um usuário",
+                "description": "Cria um usuário do banco de dados.",
+                "parameters": [
+                    {
+                        "parameter": "body",
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Ecomp"
+                    },
+                    {
+                        "parameter": "body",
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "admin@ecomp.co"
+                    },
+                    {
+                        "parameter": "body",
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "secret"
+                    },
+                    {
+                        "parameter": "body",
+                        "name": "password_confirmation",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "secret"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    "Usuário criado com sucesso!"
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Faz login",
+                "description": "Faz login do usuário retornando um token de acesso.",
+                "parameters": [
+                    {
+                        "parameter": "body",
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "admin@ecomp.co"
+                    },
+                    {
+                        "parameter": "body",
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "secret"
+                    },
+                    {
+                        "parameter": "body",
+                        "name": "remember_me",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "bool"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "access_token": "eyJ0eXAiOiJKV1QiLCJhbG...",
+                                    "expires_at": "2020-10-28 13:11:36"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Desloga um usuário",
+                "description": "Desloga um usuário logado.",
+                "operationId": "App\\Http\\Controllers\\API\\AuthController::logout",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Retorna usuário logado",
+                "description": "Retorna os dados de um usuário logado.",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "title": "User",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "integer",
+                        "example": "1"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "string",
+                        "example": "admin@ecomp.co"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "string",
+                        "example": "secret"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Faça login com email e senha para obter seu token.",
+                "name": "Token",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
