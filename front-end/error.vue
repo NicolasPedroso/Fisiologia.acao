@@ -4,7 +4,7 @@
 		<h1>{{ error.statusCode }}</h1>
 		<p v-if="error.statusCode === 404">Esta página não existe!</p>
 		<p v-else-if="error.statusCode === 401">Sem autorização necessária!</p>
-		<p v-else-if="error.statusMessage">{{ error.statusMessage }}</p>
+		<p v-else-if="error.message">{{ error.message }}</p>
 		<p v-else>Um erro aconteceu!</p>
 		<v-btn class="mt-8" @click.stop="handleError">
 			Voltar para a Home
