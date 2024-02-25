@@ -1,14 +1,4 @@
 <template>
-	<!-- SnackBar -->
-	<v-snackbar
-		v-model="snackbar.active"
-		:color="snackbar.color"
-		position="fixed"
-		location="top right"
-	>
-		{{ snackbar.text }}
-	</v-snackbar>
-	<!-- SnackBar -->
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<TitleAuth :title="'Login'" />
@@ -24,11 +14,9 @@
 				v-model="password"
 				class="mt-3"
 				label="Senha"
+				type="password"
 				prepend-icon="mdi-lock"
 				:rules="rules.password"
-				:type="show ? 'text' : 'password'"
-				:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-				@click:append="show = !show"
 			/>
 			<v-btn
 				type="submit"
@@ -59,14 +47,10 @@ import TitleAuth from "~/components/auth/TitleAuth.vue"
 // Campos do formulário
 const email = ref("")
 const password = ref("")
-const show = ref(false)
 
-// Campos e variaveis da snackbar
-const snackbar = ref({
-	text: "",
-	color: "",
-	active: false,
-})
+// Usar o snackbar
+const snackbar = useSnackbar()
+
 // Regras e validade do formulário
 const valid = ref(false)
 const rules = {
@@ -108,11 +92,10 @@ async function login() {
 			router.push("/dashboard")
 		} else {
 			// Snackbar alert
-			snackbar.value = {
-				text: "Não foi possível fazer o login",
-				color: "error",
-				active: true,
-			}
+			snackbar.add({
+				type: "error",
+				text: "Não foi possível fazer login",
+			})
 		}
 	}
 }
