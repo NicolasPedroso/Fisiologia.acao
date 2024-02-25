@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  * * Função para formatar a URL da imagem para o formato correto
  *		- Troca o public/ por storage/ na URL da imagem
@@ -8,7 +7,7 @@
  * @param {String} url - URL da imagem a ser formatado
  * @returns {String} - URL da imagem formatada (BaseURL + URL da imagem formatado)
  */
-export const formatImagePath = (url) => {
+export const useFormatImage = (url) => {
 	const config = useRuntimeConfig()
 	const configURL = config.public.baseURL
 
