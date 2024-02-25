@@ -1,51 +1,37 @@
 <template>
-	<!-- SnackBar -->
-	<v-snackbar
-		v-model="snackbar.active"
-		:color="snackbar.color"
-		position="fixed"
-		location="top right"
-	>
-		{{ snackbar.text }}
-	</v-snackbar>
-	<!-- SnackBar -->
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<TitleAuth :title="'Registro'" />
 		<v-form v-model="valid" @submit.prevent>
 			<v-text-field
 				v-model="name"
-				class="mt-3 mr-10"
+				class="mt-3"
 				label="Nome"
 				prepend-icon="mdi-account"
 				:rules="rules.name"
 			/>
 			<v-text-field
 				v-model="email"
-				class="mt-3 mr-10"
+				class="mt-3"
 				label="E-mail"
 				prepend-icon="mdi-email"
 				:rules="rules.email"
 			/>
 			<v-text-field
-				v-model="password"
+				v-model="newPassword"
 				class="mt-3"
 				label="Senha"
 				prepend-icon="mdi-lock"
 				:rules="rules.password"
-				:type="show ? 'text' : 'password'"
-				:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-				@click:append="show = !show"
+				type="password"
 			/>
 			<v-text-field
-				v-model="passwordC"
+				v-model="newPasswordC"
 				class="mt-3"
 				label="Confirmar senha"
 				prepend-icon="mdi-lock"
 				:rules="rules.passwordC"
-				:type="show ? 'text' : 'password'"
-				:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-				@click:append="show = !show"
+				type="password"
 			/>
 			<v-btn
 				type="submit"
@@ -73,17 +59,12 @@ import { ref } from "vue"
 // Campos do formulário
 const name = ref("")
 const email = ref("")
-const password = ref("")
-const passwordC = ref("")
-
-const show = ref(false)
+const newPassword = ref("")
+const newPasswordC = ref("")
 
 // Campos e variaveis da snackbar
-const snackbar = ref({
-	text: "",
-	color: "",
-	active: false,
-})
+const snackbar = useSnackbar()
+
 // Regras e validade do formulário
 const valid = ref(false)
 const rules = {
@@ -115,26 +96,72 @@ const rules = {
 			if (value) return true
 			return "O campo é obrigatório"
 		},
-		(value) => {
-			if (value === password.value) return true
-			return "As senhas não se coincidem"
-		},
 	],
 }
 
 // Funções
-function signIn() {
+async function signIn() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
 		// Envia os dados para o backend
+		const formSignup = new FormData()
+		formSignup.append("namr", name.value)
+		formSignup.append("email", email.value)
+		formSignup.append("password", newPassword.value)
+		formSignup.append("password_confirmation", newPasswordC.value)
 
-		// Snackbar alert
-		snackbar.value = {
-			text: "Não foi possível fazer o registro",
-			color: "error",
-			active: true,
+		useDataLoader("/api/signup", {
+			method: "POST",
+			body: formSignup,
+		})
+			.then(() => {
+				// Feedback do erro por meio da snackbar
+				snackbar.add({
+					type: "success",
+					text: "Usuário criado com sucesso!",
+				})
+			})
+			.catch(({ response: error }) => {
+				// Snackbar alert
+				const status = error.status
+
+				// Formata os erros em uma string para
+				const errors = arrayToString(extrairStrings(error._data))
+
+				// Feedback do erro
+				console.error(error)
+				snackbar.add({
+					type: "error",
+					title: `Não foi possível registrar - ${status}`,
+					text: `${errors}`,
+				})
+			})
+	}
+}
+
+// Retorna todas as strings de um objeto de proprieades nao definidas
+function extrairStrings(objeto) {
+	const strings = []
+	// Itera sobre todas as propriedades do objeto
+	for (const chave in objeto) {
+		// Verifica se a propriedade é um array
+		if (Array.isArray(objeto[chave])) {
+			// Itera sobre os elementos do array
+			objeto[chave].forEach((item) => {
+				// Verifica se o elemento é uma string
+				if (typeof item === "string") {
+					// Adiciona a string ao array de strings
+					strings.push(item)
+				}
+			})
 		}
 	}
+	return strings
+}
+
+// Pega um array e transforma numa string do tipo 'pos1 & pos2 & pos3'
+function arrayToString(arr) {
+	return arr.join(" & ")
 }
 
 // Layout da página e cabeçalho
