@@ -1,6 +1,5 @@
 <template>
 	<v-app style="overflow-x: hidden !important">
-		<NuxtSnackbar />
 		<Navbar />
 		<NuxtPage />
 		<!-- <Subscribe /> -->
