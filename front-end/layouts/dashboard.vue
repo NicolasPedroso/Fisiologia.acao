@@ -5,11 +5,6 @@
 			<template #image>
 				<div class="drawer-color" />
 			</template>
-			<!-- 
-					TODO: Colocar a logo da empresa e colocar subheaders
-					https://madewithvuejs.com/berry-vuetify-admin-dashboard
-					TODO: error nuxt3
-				-->
 			<!-- Logo e nome do Projeto -->
 			<v-list lines="3" class="my-2">
 				<v-list-item
@@ -48,7 +43,7 @@
 		</v-navigation-drawer>
 		<!-- Drawer que contém os links para as páginas -->
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
-		<v-app-bar app class="primary-color">
+		<v-app-bar class="primary-color">
 			<v-app-bar-nav-icon
 				class="text-color"
 				@click.stop="drawer = !drawer"
