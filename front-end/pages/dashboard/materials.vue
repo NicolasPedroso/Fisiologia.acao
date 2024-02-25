@@ -64,7 +64,7 @@
 			</template>
 			<template #[`item.image`]="{ value }">
 				<v-avatar size="150" class="my-4">
-					<v-img :src="formatImagePath(value)" cover />
+					<v-img :src="useFormatImage(value)" cover />
 				</v-avatar>
 			</template>
 			<template #[`item.actions`]="{ item }">
