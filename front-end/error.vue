@@ -1,12 +1,18 @@
 <template>
-	<v-container fluid class="background">
-		<h2>oops!</h2>
-		<h1>{{ error.statusCode }}</h1>
-		<p v-if="error.statusCode === 404">Esta página não existe!</p>
-		<p v-else-if="error.statusCode === 401">Sem autorização necessária!</p>
-		<p v-else-if="error.message">{{ error.message }}</p>
-		<p v-else>Um erro aconteceu!</p>
-		<v-btn class="mt-8" @click.stop="handleError">
+	<v-container fluid class="background text-center">
+		<h4 class="mb-2">{{ error.statusCode }}</h4>
+		<h2 v-if="error.statusCode === 404">Esta página não existe!</h2>
+		<h2 v-else-if="error.statusCode === 401">
+			Sem autorização necessária!
+		</h2>
+		<h2 v-else-if="error.message">{{ error.message }}</h2>
+		<h2 v-else>Um erro aconteceu!</h2>
+		<v-btn
+			class="mt-4"
+			variant="tonal"
+			color="#00dc80"
+			@click.stop="handleError"
+		>
 			Voltar para a Home
 		</v-btn>
 	</v-container>
@@ -20,8 +26,7 @@ const handleError = () => clearError({ redirect: "/" })
 
 // Cabeçalhos da pagina
 useSeoMeta({
-	title: "Página inicial",
-	description: "Página inicial do projeto base 2024 da Ecomp.",
+	title: `Erro`,
 })
 useHead({
 	htmlAttrs: {
@@ -38,7 +43,7 @@ useHead({
 </script>
 <style scoped>
 .background {
-	background-color: rgb(29, 29, 29);
+	background-color: #151515;
 	height: 100vh;
 	width: 100vw;
 
@@ -55,17 +60,16 @@ useHead({
 	line-height: 3vw;
 }
 
-.background p {
-	font-size: 1vw;
-	line-height: 1vw;
-	font-weight: 200;
-	text-transform: uppercase;
+.background h2 {
+	font-size: min(45px, 20vw);
+	line-height: min(47px, 20.5vw);
+	font-weight: 600;
 }
 
-.background h1 {
-	font-size: 20vw;
-	line-height: 18vw;
-	color: #c76dff;
+.background h4 {
+	font-size: min(35px, 15vw);
+	line-height: min(37px, 15.5vw);
+	color: #00dc80;
 	font-weight: 900;
 }
 </style>
