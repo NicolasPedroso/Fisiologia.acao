@@ -31,7 +31,9 @@
 		"@mdi/font": "^7.3.67",
 		"@pinia/nuxt": "^0.5.1",
 		"chart.js": "^4.4.1",
+		"json-server": "^1.0.0-alpha.23",
 		"npm": "^10.4.0",
+		"nuxt-snackbar": "^1.0.4",
 		"pinia": "^2.1.7",
 		"vue-chartjs": "^5.3.0"
 	}
