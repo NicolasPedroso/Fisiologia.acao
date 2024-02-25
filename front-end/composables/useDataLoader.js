@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  * * Função que SETA alguns padrões para o fetch utilizado
  * ?    TOKEN - Bearer token recebido do back-end, armazenado no cookie
