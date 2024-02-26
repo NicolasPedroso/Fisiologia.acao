@@ -1,4 +1,5 @@
 <template>
+	<NuxtSnackbar />
 	<v-app theme="dark">
 		<!-- Drawer que contém os links para as páginas -->
 		<v-navigation-drawer v-model="drawer">
