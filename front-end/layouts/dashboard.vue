@@ -86,33 +86,15 @@ const { logUserOut } = useAuthStore()
 const drawerItems = [
 	{
 		icon: "mdi-monitor-dashboard",
-		title: "Dashboard",
+		title: "Dashboard 1",
 		subtitle: "Controle geral do sistema",
-		link: "/dashboard/",
+		link: "/dashboard/dashboard1",
 	},
 	{
-		icon: "mdi-account-badge",
-		title: "Testemunhos",
-		subtitle: "Altere os testemunhos exibidos na página inicial",
-		link: "/dashboard/testimony",
-	},
-	{
-		icon: "mdi-image-album",
-		title: "Materiais",
-		subtitle: "Usando /api/ do back-end real",
-		link: "/dashboard/materials",
-	},
-	{
-		icon: "mdi-card-account-mail",
-		title: "Contatos",
-		subtitle: "Veja os contatos feitos pelos usuários",
-		link: "/dashboard/contact",
-	},
-	{
-		icon: "mdi-alert-circle-outline",
-		title: "error",
-		subtitle: "Teste de um erro que pode ser chamado",
-		link: "/dashboard/error-teste",
+		icon: "mdi-monitor-dashboard",
+		title: "Dashboard 2",
+		subtitle: "Controle geral do sistema",
+		link: "/dashboard/dashboard2",
 	},
 ]
 
@@ -122,7 +104,7 @@ const theme = {
 	drawerBackground: "url(/imagens/drawer/background.jpg)",
 	drawerTextColor: "#ffffff",
 	/* Cores de fundo da dashboard  */
-	backgroundColor: "#041E33",
+	backgroundColor: "#1f1f1f",
 	/* Cores de texto da dashboard  */
 	textColor: "#ffffff",
 }
