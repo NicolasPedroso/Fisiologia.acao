@@ -1,35 +1,4 @@
 <template>
-	<!-- SnackBar -->
-	<v-snackbar
-		v-model="snackbar.active"
-		:color="snackbar.color"
-		:timeout="4000"
-		elevation="24"
-		theme="light"
-		position="fixed"
-		location="top right"
-	>
-		<div class="d-flex">
-			<v-col cols="auto" class="d-flex align-center">
-				<v-icon size="30">
-					{{
-						snackbar.color === "success" ? "mdi-check" : "mdi-alert"
-					}}
-				</v-icon>
-			</v-col>
-			<v-col cols="auto">
-				<h3>
-					{{ snackbar.title }}
-					<span v-if="snackbar.status">- {{ snackbar.status }}</span>
-				</h3>
-				<v-divider class="my-1" />
-				<p>
-					{{ snackbar.text }}
-				</p>
-			</v-col>
-		</div>
-	</v-snackbar>
-	<!-- SnackBar -->
 	<div class="ma-6 ma-md-12">
 		<!-- Primeira seção: Title, ADD, Search -->
 		<v-row class="ml-1">
@@ -174,11 +143,8 @@
 </template>
 <script setup>
 // Campos e variaveis da snackbar
-const snackbar = ref({
-	text: "",
-	color: "",
-	active: false,
-})
+const snackbar = useSnackbar()
+
 // Variaveis do formulario de CRUD do testemunho
 const valid = ref(false)
 const dialog = ref(false)
@@ -205,14 +171,13 @@ const headers = [
 		title: "ID",
 		value: "id",
 		sortable: true,
-		align: "center",
 		width: "50px",
 	},
 	{ title: "Titulo", value: "title", sortable: true },
 	{ title: "Resumo", value: "summary", sortable: true },
 	{ title: "Descrição", value: "description", sortable: true },
-	{ title: "Imagem", value: "image", sortable: false },
-	{ title: "", value: "actions", sortable: false },
+	{ title: "Imagem", value: "image" },
+	{ title: "", value: "actions" },
 ]
 
 /**
@@ -246,13 +211,10 @@ const {
 		})
 		.catch((err) => {
 			console.error(err)
-			snackbar.value = {
-				title: "Erro ao acessar os testemunhos",
-				text: `${err.message}`,
-				status: 401,
-				color: "error",
-				active: true,
-			}
+			snackbar.add({
+				text: `Erro ao carregar materiais: ${err.message}`,
+				type: "error",
+			})
 			return []
 		}),
 )
@@ -302,23 +264,21 @@ async function sendMaterial() {
 		body: advertise,
 	})
 		.then(() => {
-			snackbar.value = {
+			snackbar.add({
 				text: "Material criado com sucesso",
-				color: "success",
-				active: true,
-			}
+				type: "success",
+			})
 			dialog.value = false
 			refresh()
 		})
 		.catch((error) => {
 			console.error(`Erro: ${error}`)
-			snackbar.value = {
-				title: "Erro ao criar material",
-				status: error.status,
-				text: `${error.message}`,
-				color: "error",
-				active: true,
-			}
+			console.error(error.response)
+			snackbar.add({
+				type: "error",
+				title: `Erro ao criar material`,
+				text: `${formatError(error)}`,
+			})
 		})
 }
 
@@ -326,27 +286,34 @@ async function updateMaterial(id) {
 	// Verifica se o formulario é valido
 	if (!valid.value) return
 
+	// Criação do formDATA
+	const advertise = new FormData()
+	advertise.append("image", materialForm.value.image[0])
+	advertise.append("title", materialForm.value.title)
+	advertise.append("summary", materialForm.value.summary)
+	advertise.append("description", materialForm.value.description)
+	advertise.append("_method", "PUT")
+
 	// Envia para o backend
-	await $fetch(`${URLBase}/${id}`, {
-		method: "PUT",
-		body: materialForm.value,
+	await useDataLoader(`/api/materials/${id}`, {
+		method: "POST",
+		body: advertise,
 	})
 		.then(() => {
-			snackbar.value = {
-				text: "Testemunho atualizado com sucesso",
-				color: "success",
-				active: true,
-			}
+			snackbar.add({
+				type: "success",
+				text: `Material atualizado com sucesso`,
+			})
 			dialog.value = false
 			refresh()
 		})
 		.catch((error) => {
 			console.error(`Erro: ${error}`)
-			snackbar.value = {
-				text: `Erro ao atualizar testemunho: ${error.message}`,
-				color: "error",
-				active: true,
-			}
+			snackbar.add({
+				type: "error",
+				title: `Erro ao atualizar material`,
+				text: `${formatError(error)}`,
+			})
 		})
 }
 
@@ -354,24 +321,23 @@ async function updateMaterial(id) {
 async function deleteMaterial(id) {
 	const ok = window.confirm("Você quer mesmo deletar este testemunho?")
 	if (ok) {
-		await $fetch(`${URLBase}/${id}`, {
+		await useDataLoader(`/api/materials/${id}`, {
 			method: "DELETE",
 		})
 			.then(() => {
-				snackbar.value = {
+				snackbar.add({
 					text: "Testemunho deletado com sucesso",
-					color: "success",
-					active: true,
-				}
+					type: "success",
+				})
 				refresh()
 			})
 			.catch((error) => {
 				console.log(`Erro: ${error}`)
-				snackbar.value = {
-					text: `Erro ao deletar testemunho: ${error}`,
-					color: "error",
-					active: true,
-				}
+				snackbar.add({
+					type: "error",
+					title: `Erro ao deletar material`,
+					text: `${formatError(error)}`,
+				})
 			})
 	}
 }
@@ -382,4 +348,3 @@ definePageMeta({
 	middleware: ["guest"],
 })
 </script>
-<style scoped></style>

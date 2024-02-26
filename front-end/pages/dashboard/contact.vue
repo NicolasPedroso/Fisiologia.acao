@@ -1,41 +1,10 @@
 <template>
-	<!-- SnackBar -->
-	<v-snackbar
-		v-model="snackbar.active"
-		:color="snackbar.color"
-		:timeout="4000"
-		max-width="90vw"
-		theme="light"
-		position="fixed"
-		close-on-content-click
-		location="top right"
-	>
-		<div class="d-flex">
-			<v-col cols="auto" class="d-flex align-center pa-2">
-				<v-icon size="30">
-					{{
-						snackbar.color === "success" ? "mdi-check" : "mdi-alert"
-					}}
-				</v-icon>
-			</v-col>
-			<v-col cols="auto" class="pa-2">
-				<h3>
-					{{ snackbar.title }}
-					<span v-if="snackbar.status">- {{ snackbar.status }}</span>
-				</h3>
-				<v-divider class="my-2" />
-				<p>
-					{{ snackbar.text }}
-				</p>
-			</v-col>
-		</div>
-	</v-snackbar>
-	<!-- SnackBar -->
 	<div class="ma-12">
 		<!-- Primeira seção: Title, ADD, Search -->
 		<v-row class="ml-1">
 			<h1>Dashboard de Contato [FORMS]</h1>
 		</v-row>
+		<p class="ml-1">Essa dash foi feita com json-server. Cuidado!</p>
 		<v-row class="my-6 mx-1 d-flex align-center">
 			<v-spacer></v-spacer>
 			<v-text-field
@@ -78,11 +47,7 @@
 </template>
 <script setup>
 // Campos e variaveis da snackbar
-const snackbar = ref({
-	text: "",
-	color: "",
-	active: false,
-})
+const snackbar = useSnackbar()
 
 // Variaveis da DATA TABLE
 const search = ref("")
@@ -105,15 +70,13 @@ const {
 	pending,
 	data: formItems,
 } = await useAsyncData("contatos", () =>
-	useDataLoader("/forms").catch((err) => {
+	useDataLoader("/api/forms").catch((err) => {
 		console.error(err)
-		snackbar.value = {
-			title: "Erro ao acessar os contatos",
-			text: `${err.message}`,
-			// status: 401,
-			color: "error",
-			active: true,
-		}
+		snackbar.add({
+			type: "error",
+			title: "Erro ao carregar os contatos",
+			text: err.message,
+		})
 		return []
 	}),
 )

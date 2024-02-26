@@ -91,10 +91,10 @@ async function login() {
 			// Redireciona para a dashboard
 			router.push("/dashboard")
 		} else {
-			// Snackbar alert
+			// Feedback de erro
 			snackbar.add({
 				type: "error",
-				text: "Não foi possível fazer login",
+				text: "E-mail ou senha incorretos!",
 			})
 		}
 	}

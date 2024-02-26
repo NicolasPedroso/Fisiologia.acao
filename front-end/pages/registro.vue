@@ -121,47 +121,16 @@ async function signIn() {
 					text: "Usuário criado com sucesso!",
 				})
 			})
-			.catch(({ response: error }) => {
-				// Snackbar alert
-				const status = error.status
-
-				// Formata os erros em uma string para
-				const errors = arrayToString(extrairStrings(error._data))
-
-				// Feedback do erro
-				console.error(error)
+			.catch((error) => {
+				const errors = formatError(error)
+				console.error(error.response ? error.response : error)
 				snackbar.add({
 					type: "error",
-					title: `Não foi possível registrar - ${status}`,
+					title: `Não foi possível registrar`,
 					text: `${errors}`,
 				})
 			})
 	}
-}
-
-// Retorna todas as strings de um objeto de proprieades nao definidas
-function extrairStrings(objeto) {
-	const strings = []
-	// Itera sobre todas as propriedades do objeto
-	for (const chave in objeto) {
-		// Verifica se a propriedade é um array
-		if (Array.isArray(objeto[chave])) {
-			// Itera sobre os elementos do array
-			objeto[chave].forEach((item) => {
-				// Verifica se o elemento é uma string
-				if (typeof item === "string") {
-					// Adiciona a string ao array de strings
-					strings.push(item)
-				}
-			})
-		}
-	}
-	return strings
-}
-
-// Pega um array e transforma numa string do tipo 'pos1 & pos2 & pos3'
-function arrayToString(arr) {
-	return arr.join(" & ")
 }
 
 // Layout da página e cabeçalho

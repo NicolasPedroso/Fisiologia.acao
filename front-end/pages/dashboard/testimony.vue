@@ -35,6 +35,7 @@
 		<v-row class="ml-1">
 			<h1>Dashboard de Testemunhos</h1>
 		</v-row>
+		<p class="ml-1">Essa dash foi feita com json-server. Cuidado!</p>
 		<v-row class="my-6 mx-1 d-flex align-center">
 			<v-btn color="primary" variant="tonal" @click="openCreate">
 				Adicionar testemunho
