@@ -82,6 +82,11 @@ const router = useRouter()
 async function login() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
+		// Feedback que está carregando a requisição
+		snackbar.add({
+			type: "info",
+			text: "Carregando!",
+		})
 		// Envia os dados para o backend
 		await authenticateUser({
 			email: email.value,
@@ -97,6 +102,11 @@ async function login() {
 				text: "E-mail ou senha incorretos!",
 			})
 		}
+	} else {
+		snackbar.add({
+			type: "info",
+			text: "Os campos não estão preenchidos corretamente",
+		})
 	}
 }
 

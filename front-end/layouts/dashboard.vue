@@ -110,8 +110,8 @@ const theme = {
 }
 
 // Métodos e funções
-function logout() {
-	logUserOut()
+async function logout() {
+	await logUserOut()
 	router.push("/login")
 }
 

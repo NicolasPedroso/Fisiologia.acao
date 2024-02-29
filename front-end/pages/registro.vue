@@ -55,7 +55,6 @@
 // Importing components and vue functions
 import TitleAuth from "~/components/auth/TitleAuth.vue"
 import { ref } from "vue"
-
 // Campos do formulário
 const name = ref("")
 const email = ref("")
@@ -103,9 +102,14 @@ const rules = {
 async function signIn() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
+		// Feedback de Loading
+		snackbar.add({
+			type: "info",
+			text: "Carregando!",
+		})
 		// Envia os dados para o backend
 		const formSignup = new FormData()
-		formSignup.append("namr", name.value)
+		formSignup.append("name", name.value)
 		formSignup.append("email", email.value)
 		formSignup.append("password", newPassword.value)
 		formSignup.append("password_confirmation", newPasswordC.value)
@@ -120,6 +124,8 @@ async function signIn() {
 					type: "success",
 					text: "Usuário criado com sucesso!",
 				})
+				const router = useRouter()
+				router.push("/login")
 			})
 			.catch((error) => {
 				const errors = formatError(error)
@@ -130,6 +136,11 @@ async function signIn() {
 					text: `${errors}`,
 				})
 			})
+	} else {
+		snackbar.add({
+			type: "info",
+			text: "Os campos não estão preenchidos corretamente",
+		})
 	}
 }
 
