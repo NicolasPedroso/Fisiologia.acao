@@ -1,7 +1,7 @@
 <template>
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<TitleAuth :title="'Registro'" />
+		<auth-title :title="'Registro'" />
 		<v-form v-model="valid" @submit.prevent>
 			<v-text-field
 				v-model="name"
@@ -53,7 +53,6 @@
 </template>
 <script setup>
 // Importing components and vue functions
-import TitleAuth from "~/components/auth/TitleAuth.vue"
 import { ref } from "vue"
 // Campos do formulário
 const name = ref("")

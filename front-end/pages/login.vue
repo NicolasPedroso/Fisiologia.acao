@@ -1,7 +1,7 @@
 <template>
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<TitleAuth :title="'Login'" />
+		<auth-title :title="'Login'" />
 		<v-form v-model="valid" @submit.prevent>
 			<v-text-field
 				v-model="email"
@@ -42,7 +42,6 @@
 import { storeToRefs } from "pinia" // import storeToRefs helper hook from pinia
 import { useAuthStore } from "~/store/auth" // import the auth store we just created
 import { ref } from "vue" // import ref from vue
-import TitleAuth from "~/components/auth/TitleAuth.vue"
 
 // Campos do formulário
 const email = ref("")
