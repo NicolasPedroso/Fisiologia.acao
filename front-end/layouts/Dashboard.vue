@@ -70,9 +70,8 @@
 	</v-app>
 </template>
 <script setup>
-// Imports from Vue and Nuxt
+// Import do roteamento e dos arquivos de STORE
 import { useRouter } from "vue-router"
-import { ref } from "vue"
 import { useAuthStore } from "~/store/auth"
 
 // Variáveis de ambiente
