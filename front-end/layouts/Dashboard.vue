@@ -19,7 +19,7 @@
 							height="56"
 							contain
 							class="mr-4"
-							src="/imagens/logo.png"
+							src="/images/logo.png"
 							alt="Logo da Ecomp"
 						/>
 					</template>

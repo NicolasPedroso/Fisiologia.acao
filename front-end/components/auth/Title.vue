@@ -7,7 +7,7 @@
 <template>
 	<div class="d-flex flex-column align-center">
 		<v-img
-			src="/imagens/logo.png"
+			src="/images/logo.png"
 			alt="Logo da Ecomp"
 			contain
 			class="auth-logo mb-3"

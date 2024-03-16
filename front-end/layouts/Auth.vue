@@ -17,7 +17,7 @@
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 .auth-wrapper {
-	background: url("/imagens/auth/background.jpeg") no-repeat center center
+	background: url("/images/auth/background.jpeg") no-repeat center center
 		fixed;
 }
 </style>
