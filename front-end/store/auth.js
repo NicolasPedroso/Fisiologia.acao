@@ -5,12 +5,14 @@ export const useAuthStore = defineStore("auth", {
 		authenticated: false,
 	}),
 	actions: {
+		// Função de autenticação
 		async authenticateUser({ email, password }) {
-			// useFetch from nuxt 3
+			// Utilizar o useCookies do Nuxt3 para armazenar dados locais
 			const authenticated = useCookie("authenticated")
 			const token = useCookie("token")
 
 			try {
+				// Tentar fazer o LOGIN usando os campos de email & password
 				const response = await $fetch(`/api/login`, {
 					baseURL: useRuntimeConfig().public.baseURL,
 					method: "post",
@@ -21,23 +23,39 @@ export const useAuthStore = defineStore("auth", {
 					},
 				})
 
-				// Se não der erro, vai ser feito as seguintes ações
+				/**
+				 * Se não der algum erro, vai ser feito as seguintes ações:
+				 * 		- Definir o token de acesso
+				 * 		- Definir o estado com autenticado
+				 **/
 				token.value = response.access_token
 				authenticated.value = true
 				this.authenticated = true
 			} catch (err) {
+				/**
+				 * Caso de algum erro durante o LOGIN
+				 * 		- Remove o token de acesso
+				 * 		- Remove o estado de autenticado
+				 * 		- Coloca o ERRO no console
+				 **/
+
 				console.error(err)
 				this.authenticated = false // set authenticated  state value to false
 				token.value = null // clear the token cookie
 				authenticated.value = false
 			}
 		},
+
+		// Função de deslogar
 		logUserOut() {
-			const token = useCookie("token") // useCookie new hook in nuxt 3
-			const authenticated = useCookie("authenticated") // useCookie new hook in nuxt 3
-			this.authenticated = false // set authenticated  state value to false
+			// Utilizar o useCookies do Nuxt3 para armazenar dados locais
+			const token = useCookie("token")
+			const authenticated = useCookie("authenticated")
+
+			// Remove token de acesso e estado de autorizado
+			this.authenticated = false
 			authenticated.value = false
-			token.value = null // clear the token cookie
+			token.value = null
 		},
 	},
 })
