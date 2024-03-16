@@ -1,6 +1,6 @@
 <template>
 	<v-container fluid class="ma-0 pa-0">
-		<!-- Quando for começar deletar tudo aqui dentro -->
+		<!-- Ao iniciar o projeto, deletar todo o conteúdo dentro do v-container -->
 		<div
 			style="
 				background-color: #0b0b0b;
@@ -46,7 +46,7 @@
 				</strong>
 			</p>
 		</div>
-		<!-- Quando for começar deletar tudo aqui dentro -->
+		<!-- Ao iniciar o projeto, deletar todo o conteúdo dentro do v-container -->
 	</v-container>
 </template>
 <script setup>
