@@ -52,8 +52,6 @@
 	<!-- Conteudo da pagina -->
 </template>
 <script setup>
-// Importing components and vue functions
-import { ref } from "vue"
 // Campos do formulário
 const name = ref("")
 const email = ref("")
