@@ -119,14 +119,6 @@ useSeoMeta({
 	description: "Página para login para acesso a dashboard.",
 	keywords: "login, dashboard, acesso",
 	title: "Login",
-	// ogTitle: '[og:title]',
-	// ogDescription: '[og:description]',
-	// ogImage: '[og:image]',
-	// ogUrl: '[og:url]',
-	// twitterTitle: '[twitter:title]',
-	// twitterDescription: '[twitter:description]',
-	// twitterImage: '[twitter:image]',
-	// twitterCard: 'summary'
 })
 useHead({
 	htmlAttrs: {
