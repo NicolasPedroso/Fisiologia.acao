@@ -38,10 +38,9 @@
 	<!-- Conteudo da pagina -->
 </template>
 <script setup>
-// Importing components and vue functions
-import { storeToRefs } from "pinia" // import storeToRefs helper hook from pinia
-import { useAuthStore } from "~/store/auth" // import the auth store we just created
-import { ref } from "vue" // import ref from vue
+// Import das funções e gerenciamento de STORE
+import { storeToRefs } from "pinia"
+import { useAuthStore } from "~/store/auth"
 
 // Campos do formulário
 const email = ref("")
@@ -115,7 +114,7 @@ definePageMeta({
 	middleware: ["auth"],
 })
 
-// Cabe;alho da página
+// Cabeçalho da página
 useSeoMeta({
 	description: "Página para login para acesso a dashboard.",
 	keywords: "login, dashboard, acesso",
