@@ -7,7 +7,7 @@
  * @param {String} url - URL da imagem a ser formatado
  * @returns {String} - URL da imagem formatada (BaseURL + URL da imagem formatado)
  */
-export const useFormatImage = (url) => {
+export default (url) => {
 	const config = useRuntimeConfig()
 	const configURL = config.public.baseURL
 
