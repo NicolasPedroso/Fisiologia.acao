@@ -4,14 +4,14 @@
 
 -   Componentes .vue
 
-### Padrão
+### ♻️ Padrão de nomenclatura
 
 -   Nomes em inglês
 -   Pascal Case
 
 Exemplo: "**TitleAuth.vue**"
 
-### Imports
+### 🌐 Imports
 
 1. **Import automático** pelo Nuxt (usando o nome das pastas)
 

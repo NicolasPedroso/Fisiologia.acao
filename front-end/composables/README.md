@@ -4,7 +4,7 @@
 
 -   Códigos .vue, .js, .ts
 
-### Padrão
+### ♻️ Padrão de nomenclatura
 
 -   Nome em inglês
 -   CamelCase
@@ -12,7 +12,7 @@
 
 Exemplo: "**useDataLoader.js**"
 
-### Imports
+### 🌐 Imports
 
 1. Autoimport pelo Nuxt
 
