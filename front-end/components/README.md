@@ -8,7 +8,6 @@
 
 -   Nomes em inglês
 -   Pascal Case
--   Imports manuais
 
 Exemplo: "**TitleAuth.vue**"
 
@@ -23,11 +22,12 @@ Por exemplo, se o seu componente estiver localizado assim:
 ```html
 <template>
 	<BaseFooButton />
+	<base-foo-button />
 </template>
 ```
 
-2. **Import manual** (recomendado)
+2. **Import manual**
 
 ```javascript
-import TitleAuth from "@/components/auth/TitleAuth.vue"
+import TitleAuth from "@/components/auth/Title.vue"
 ```
