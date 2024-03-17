@@ -14,8 +14,8 @@ Todas elas devem estar obrigatóriamente na branch MAIN deste projeto
 
 ## Pastas
 
-1. Raiz -> contém as pastas abaixo e arquivos fora destes contextos, como arquivos para deploy
-2. Back-end -> pasta que contém todos os arquivos e funcionamento do back-end
-3. Front-end -> pasta que contém todos os arquivos e funcionamento do front-end
+1. **Raiz** -> contém as pastas abaixo e arquivos fora destes contextos, como arquivos para deploy
+2. **Back-end** -> pasta que contém todos os arquivos e funcionamento do back-end
+3. **Front-end** -> pasta que contém todos os arquivos e funcionamento do front-end
 
 ![Logo da Ecomp na frente de plantas](https://github.com/ecomp-co/.github/blob/main/assets/banner.png)
