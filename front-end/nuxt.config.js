@@ -63,13 +63,6 @@ export default defineNuxtConfig({
 	build: {
 		transpile: ["vuetify"],
 	},
-	snackbar: {
-		// Localização da snackbar
-		top: true,
-		right: true,
-		// Duração fixa
-		duration: 4000,
-	},
 	modules: [
 		(_options, nuxt) => {
 			nuxt.hooks.hook("vite:extendConfig", (config) => {
@@ -78,7 +71,7 @@ export default defineNuxtConfig({
 			})
 		},
 		["@nuxtjs/eslint-module", {}],
-		"nuxt-snackbar",
+		"nuxt3-notifications",
 		"@pinia/nuxt",
 	],
 	vite: {

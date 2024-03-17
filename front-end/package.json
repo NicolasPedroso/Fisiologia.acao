@@ -14,8 +14,8 @@
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.23.3",
 		"@nuxt/devtools": "latest",
-		"@nuxtjs/eslint-module": "^4.1.0",
 		"@nuxt/eslint-config": "0.2.0",
+		"@nuxtjs/eslint-module": "^4.1.0",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.2",
@@ -32,7 +32,7 @@
 		"@mdi/font": "^7.3.67",
 		"@pinia/nuxt": "^0.5.1",
 		"npm": "^10.4.0",
-		"nuxt-snackbar": "^1.0.4",
+		"nuxt3-notifications": "^1.2.0",
 		"pinia": "^2.1.7"
 	}
 }
