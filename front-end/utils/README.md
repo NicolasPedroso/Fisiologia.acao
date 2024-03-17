@@ -14,8 +14,8 @@ Exemplo: "**/formatError.js**"
 ### 📎 Estrutura
 
 ```javascript
-    // Usar o utilName igual ao nome do arquivo
-    export const utilName = (params) => {
-        // seu codigo
-    }
+// Parâmetros que você desejar, ou até mesmo não ter
+export default (params) => {
+	// seu codigo
+}
 ```
