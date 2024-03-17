@@ -1,4 +1,5 @@
 <template>
+	<NuxtNotifications />
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<auth-title :title="'Login'" />
@@ -47,7 +48,7 @@ const email = ref("")
 const password = ref("")
 
 // Usar o snackbar
-const snackbar = useSnackbar()
+const { notify } = useNotification()
 
 // Regras e validade do formulário
 const valid = ref(false)
@@ -81,10 +82,12 @@ async function login() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
 		// Feedback que está carregando a requisição
-		snackbar.add({
+		notify({
+			id: "loading",
+			text: "Carregando...",
 			type: "info",
-			text: "Carregando!",
 		})
+
 		// Envia os dados para o backend
 		await authenticateUser({
 			email: email.value,
@@ -95,15 +98,18 @@ async function login() {
 			router.push("/dashboard")
 		} else {
 			// Feedback de erro
-			snackbar.add({
+			notify.close("loading")
+			notify({
+				title: "Erro de autenticação",
+				text: "Não foi possível autenticar o usuário. Verifique os dados e tente novamente.",
 				type: "error",
-				text: "E-mail ou senha incorretos!",
 			})
 		}
 	} else {
-		snackbar.add({
+		// feedback de erro
+		notify({
+			text: "Preencha os campos corretamente para continuar",
 			type: "info",
-			text: "Os campos não estão preenchidos corretamente",
 		})
 	}
 }

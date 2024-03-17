@@ -1,4 +1,5 @@
 <template>
+	<NuxtNotifications />
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<auth-title :title="'Registro'" />
@@ -58,8 +59,8 @@ const email = ref("")
 const newPassword = ref("")
 const newPasswordC = ref("")
 
-// Campos e variaveis da snackbar
-const snackbar = useSnackbar()
+// Utilizar o snackbar
+const { notify } = useNotification()
 
 // Regras e validade do formulário
 const valid = ref(false)
@@ -100,9 +101,10 @@ async function signIn() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
 		// Feedback de Loading
-		snackbar.add({
+		notify({
+			id: "loading",
+			text: "Carregando...",
 			type: "info",
-			text: "Carregando!",
 		})
 		// Envia os dados para o backend
 		const formSignup = new FormData()
@@ -117,26 +119,32 @@ async function signIn() {
 		})
 			.then(() => {
 				// Feedback do erro por meio da snackbar
-				snackbar.add({
-					type: "success",
+				notify.close("loading")
+				notify({
+					title: "Sucesso",
 					text: "Usuário criado com sucesso!",
+					type: "success",
 				})
+
 				const router = useRouter()
 				router.push("/login")
 			})
 			.catch((error) => {
 				const errors = formatError(error)
-				console.error(error.response ? error.response : error)
-				snackbar.add({
-					type: "error",
-					title: `Não foi possível registrar`,
+				console.error(error)
+
+				// Feedback do erro por meio da snackbar
+				notify.close("loading")
+				notify({
+					title: "Não foi possível registrar",
 					text: `${errors}`,
+					type: "error",
 				})
 			})
 	} else {
-		snackbar.add({
+		notify({
+			text: "Preencha os campos corretamente para continuar",
 			type: "info",
-			text: "Os campos não estão preenchidos corretamente",
 		})
 	}
 }

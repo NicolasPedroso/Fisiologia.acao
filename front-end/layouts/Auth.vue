@@ -1,5 +1,4 @@
 <template>
-	<NuxtSnackbar />
 	<v-app full-height>
 		<v-main fluid class="auth-wrapper d-flex justify-center align-center">
 			<v-card
