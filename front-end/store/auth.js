@@ -8,8 +8,12 @@ export const useAuthStore = defineStore("auth", {
 		// Função de autenticação
 		async authenticateUser({ email, password }) {
 			// Utilizar o useCookies do Nuxt3 para armazenar dados locais
-			const authenticated = useCookie("authenticated")
-			const token = useCookie("token")
+			const authenticated = useCookie("authenticated", {
+				sameSite: true,
+			})
+			const token = useCookie("token", {
+				sameSite: true,
+			})
 
 			try {
 				// Tentar fazer o LOGIN usando os campos de email & password
@@ -49,8 +53,12 @@ export const useAuthStore = defineStore("auth", {
 		// Função de deslogar
 		logUserOut() {
 			// Utilizar o useCookies do Nuxt3 para armazenar dados locais
-			const token = useCookie("token")
-			const authenticated = useCookie("authenticated")
+			const token = useCookie("token", {
+				sameSite: true,
+			})
+			const authenticated = useCookie("authenticated", {
+				sameSite: true,
+			})
 
 			// Remove token de acesso e estado de autorizado
 			this.authenticated = false

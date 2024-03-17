@@ -20,8 +20,12 @@
  * @param {Object} from - Pagina que o usuario esta vindo
  */
 export default defineNuxtRouteMiddleware((to, from) => {
-	const cookieAuth = useCookie("authenticated")
-	const cookieToken = useCookie("token")
+	const cookieAuth = useCookie("authenticated", {
+		sameSite: true,
+	})
+	const cookieToken = useCookie("token", {
+		sameSite: true,
+	})
 
 	if (cookieAuth.value === true && cookieToken.value !== null) {
 		return navigateTo("/dashboard", { redirectCode: 200 })
