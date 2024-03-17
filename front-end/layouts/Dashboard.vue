@@ -1,47 +1,49 @@
 <template>
-	<NuxtSnackbar />
-	<v-app theme="dark">
+	<v-app full-height theme="dark">
+		<NuxtSnackbar />
 		<!-- Drawer que contém os links para as páginas -->
-		<v-navigation-drawer v-model="drawer">
-			<template #image>
-				<div class="drawer-color" />
-			</template>
-			<!-- Logo e nome do Projeto -->
-			<v-list lines="3" class="my-2">
-				<v-list-item
-					class="drawer-logo"
-					title="Ecomp"
-					subtitle="Empresa júnior de computação da UFPR"
-				>
-					<template #prepend>
-						<v-img
-							width="40"
-							height="56"
-							contain
-							class="mr-4"
-							src="/images/logo.png"
-							alt="Logo da Ecomp"
-						/>
-					</template>
-				</v-list-item>
-			</v-list>
-			<!-- Logo e nome do Projeto -->
-			<!-- Itens do drawer -->
-			<v-list nav>
-				<v-list-item
-					v-for="(item, i) in drawerItems"
-					:key="i"
-					:to="item.link"
-					:base-color="theme.drawerTextColor"
-					:prepend-icon="item.icon"
-					:title="item.title"
-					:subtitle="item.subtitle"
-					lines="3"
-					class="my-1 py-1 drawer-text"
-				/>
-			</v-list>
-			<!-- Itens do drawer -->
-		</v-navigation-drawer>
+		<v-no-ssr>
+			<v-navigation-drawer v-model="drawer">
+				<template #image>
+					<div class="drawer-color" />
+				</template>
+				<!-- Logo e nome do Projeto -->
+				<v-list lines="3" class="my-2">
+					<v-list-item
+						class="drawer-logo"
+						title="Ecomp"
+						subtitle="Empresa júnior de computação da UFPR"
+					>
+						<template #prepend>
+							<v-img
+								width="40"
+								height="56"
+								contain
+								class="mr-4"
+								src="/images/logo.png"
+								alt="Logo da Ecomp"
+							/>
+						</template>
+					</v-list-item>
+				</v-list>
+				<!-- Logo e nome do Projeto -->
+				<!-- Itens do drawer -->
+				<v-list nav>
+					<v-list-item
+						v-for="(item, i) in drawerItems"
+						:key="i"
+						:to="item.link"
+						:base-color="theme.drawerTextColor"
+						:prepend-icon="item.icon"
+						:title="item.title"
+						:subtitle="item.subtitle"
+						lines="3"
+						class="my-1 py-1 drawer-text"
+					/>
+				</v-list>
+				<!-- Itens do drawer -->
+			</v-navigation-drawer>
+		</v-no-ssr>
 		<!-- Drawer que contém os links para as páginas -->
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
 		<v-app-bar class="primary-color">
@@ -63,9 +65,11 @@
 		</v-main>
 		<!-- Conteúdo -->
 		<!-- Footer -->
-		<v-footer app inset class="primary-color">
-			<span class="text-color"> &copy; Ecomp 2024 </span>
-		</v-footer>
+		<v-no-ssr>
+			<v-footer app inset class="primary-color">
+				<span class="text-color"> &copy; Ecomp 2024 </span>
+			</v-footer>
+		</v-no-ssr>
 		<!-- Footer -->
 	</v-app>
 </template>
@@ -100,7 +104,7 @@ const drawerItems = [
 // Tema que será utilizado na dashboard
 const theme = {
 	/* Fundo do Drawer da dashboard */
-	drawerBackground: "url(/imagens/drawer/background.jpg)",
+	drawerBackground: "url(/images/drawer/background.jpg)",
 	drawerTextColor: "#ffffff",
 	/* Cores de fundo da dashboard  */
 	backgroundColor: "#1f1f1f",
