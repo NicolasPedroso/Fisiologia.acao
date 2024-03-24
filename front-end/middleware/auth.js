@@ -1,14 +1,4 @@
 /* eslint-disable */
-
-/**
- * * Precisa ser feito ao longo do projeto:
- * TODO: Colocar testes com JEST para verificar se o middleware foi chamado e se funcionou
- * 		? Logou - funcionou - true authtincated & token existe (!== null)
- * 		? Logout - auth false, token === null
- * 		? Fazer requisicao sem token
- * 		? Trocar de pagina e perder o token
- */
-
 /**
  * * Middleware de autenticação (acontece antes da pagina carregar)
  * ? Verifica se o usuario esta autenticado
