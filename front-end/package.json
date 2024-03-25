@@ -9,7 +9,6 @@
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
 		"lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix .",
-		"format": "prettier .  --write",
 		"lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
 	},
 	"devDependencies": {
