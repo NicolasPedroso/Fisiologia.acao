@@ -18,7 +18,7 @@
  */
 export const useDataLoader = async (request, opts) => {
 	const config = useRuntimeConfig()
-	const { value: token } = useCookie("token")
+	const { value: token } = useCookie("token", { sameSite: true })
 
 	// Objeto com os cabeçalhos
 	let headersOpts = {}
