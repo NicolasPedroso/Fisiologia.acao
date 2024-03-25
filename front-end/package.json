@@ -9,7 +9,8 @@
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
 		"lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix .",
-		"format": "prettier .  --write"
+		"format": "prettier .  --write",
+		"lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.23.3",
