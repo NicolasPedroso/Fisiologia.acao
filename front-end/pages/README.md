@@ -7,7 +7,7 @@
 ### ♻️ Padrão de nomenclatura
 
 -   Nome na linguagem oficial do site
--   Snake Case
+-   Kebab Case
 
 Exemplo: "**contato-rede.vue**"
 
