@@ -6,7 +6,7 @@
 
 ### ♻️ Padrão de nomenclatura
 
--   Pastas & arquivos em Snack Case
+-   Pastas & arquivos em Kebab Case
 -   Nomes se possível em inglês
 
 Exemplo: "**/images/auth/background.jpeg**"
