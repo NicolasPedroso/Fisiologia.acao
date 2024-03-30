@@ -42,14 +42,6 @@ module.exports = {
 		"no-undef": "off",
 		"vue/singleline-html-element-content-newline": "off",
 		"vue/html-closing-bracket-newline": "off",
-		"no-mixed-spaces-and-tabs": "off",
-		"vue/max-attributes-per-line": [
-			"error",
-			{
-				singleline: {
-					max: 4,
-				},
-			},
-		],
+		"no-mixed-spaces-and-tabs": "off"
 	},
 }
