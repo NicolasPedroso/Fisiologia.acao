@@ -27,13 +27,16 @@
 		"vite-plugin-vuetify": "^2.0.1"
 	},
 	"dependencies": {
-		"nuxt": "^3.11.1",
-		"@mdi/font": "^7.3.67",
+		"nuxt": "^3.11.2",
+		"@mdi/font": "^7.4.47",
 		"@pinia/nuxt": "^0.5.1",
 		"nuxt3-notifications": "^1.2.0",
 		"pinia": "^2.1.7",
-		"vue": "^3.4.19",
-		"vue-router": "^4.3.0",
-		"vuetify": "^3.4.8"
-	}
+		"vue": "^3.4.27",
+		"vue-router": "^4.3.2",
+		"vuetify": "^3.6.7"
+	},
+	"engines" : { 
+		"node" : ">=21.0.0 <22.0.0"
+	  }
 }
