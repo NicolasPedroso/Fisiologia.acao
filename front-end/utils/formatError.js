@@ -19,6 +19,12 @@ export default (error) => {
 		? error.response._data.errors
 		: error.response._data
 
+	// Verifica se o objeto de erros é um array
+	if (!Array.isArray(objetoErros)) {
+		// Retorna os elementos do objeto concatenados por &
+		return Object.values(objetoErros).join(" & ")
+	}
+
 	for (const i in objetoErros) {
 		// Itera sobre os elementos do array
 		objetoErros[i].forEach((item) => {
