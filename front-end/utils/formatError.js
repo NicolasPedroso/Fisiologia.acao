@@ -19,11 +19,11 @@ export default (error) => {
 		? error.response._data.errors
 		: error.response._data
 
-	// Verifica se o objeto de erros é um array
-	if (!Array.isArray(objetoErros)) {
-		// Retorna os elementos do objeto concatenados por &
-		return Object.values(objetoErros).join(" & ")
-	}
+	// Caso de erro unico, como nao autorizado
+	if (objetoErros.message) return objetoErros.message
+
+	// Caso de rota errada
+	if (objetoErros.erro) return "Rota não encontrada"
 
 	for (const i in objetoErros) {
 		// Itera sobre os elementos do array
