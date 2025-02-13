@@ -1,7 +1,7 @@
 {
-	"name": "projeto-base-2024",
-	"description": "Projeto base para o ano de 2024",
-	"version": "1.0.0",
+	"name": "endo-games",
+	"description": "Project Endo Games",
+	"version": "0.0.1",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -37,6 +37,6 @@
 		"vuetify": "^3.6.7"
 	},
 	"engines" : { 
-		"node" : ">=21.0.0 <22.0.0"
+		"node" : ">=23.0.0"
 	  }
 }
