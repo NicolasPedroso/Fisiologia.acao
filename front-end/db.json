@@ -1,0 +1,32 @@
+{
+  "perguntas": [
+    {
+      "id": 1,
+      "nome": "Qual é a capital da França?",
+      "fase": 1,
+      "imagem": "https://hackmd.io/_uploads/BkmJNX9Vyl.png",
+      "dificuldade": "Fácil",
+      "link": "https://www.instagram.com/endo.games/",
+      "alternativas": [
+        { "texto": "Paris", "correta": true },
+        { "texto": "Londres", "correta": false },
+        { "texto": "Madri", "correta": false },
+        { "texto": "Berlim", "correta": false }
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Quem escreveu 'Dom Quixote'?",
+      "fase": 2,
+      "imagem": "https://hackmd.io/_uploads/BkmJNX9Vyl.png",
+      "dificuldade": "Médio",
+      "link": "https://www.instagram.com/endo.games/",
+      "alternativas": [
+        { "texto": "Miguel de Cervantes", "correta": true },
+        { "texto": "William Shakespeare", "correta": false },
+        { "texto": "Machado de Assis", "correta": false },
+        { "texto": "Fernando Pessoa", "correta": false }
+      ]
+    }
+  ]
+}

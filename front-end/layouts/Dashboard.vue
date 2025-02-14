@@ -8,37 +8,20 @@
 				</template>
 				<!-- Logo e nome do Projeto -->
 				<v-list lines="3" class="my-2">
-					<v-list-item
-						class="drawer-logo"
-						title="Ecomp"
-						subtitle="Empresa júnior de computação da UFPR"
-					>
+					<v-list-item class="drawer-logo" title="Endo Games"
+						subtitle="O projeto de extensão FISIOLOGIA EM AÇÃO">
 						<template #prepend>
-							<v-img
-								width="40"
-								height="56"
-								contain
-								class="mr-4"
-								src="/images/logo.png"
-								alt="Logo da Ecomp"
-							/>
+							<v-img width="40" height="56" contain class="mr-4" src="/images/logo.png"
+								alt="Logo Endo Games" />
 						</template>
 					</v-list-item>
 				</v-list>
 				<!-- Logo e nome do Projeto -->
 				<!-- Itens do drawer -->
 				<v-list nav>
-					<v-list-item
-						v-for="(item, i) in drawerItems"
-						:key="i"
-						:to="item.link"
-						:base-color="theme.drawerTextColor"
-						:prepend-icon="item.icon"
-						:title="item.title"
-						:subtitle="item.subtitle"
-						lines="3"
-						class="my-1 py-1 drawer-text"
-					/>
+					<v-list-item v-for="(item, i) in drawerItems" :key="i" :to="item.link"
+						:base-color="theme.drawerTextColor" :prepend-icon="item.icon" :title="item.title"
+						:subtitle="item.subtitle" lines="3" class="my-1 py-1 drawer-text" />
 				</v-list>
 				<!-- Itens do drawer -->
 			</v-navigation-drawer>
@@ -46,10 +29,7 @@
 		<!-- Drawer que contém os links para as páginas -->
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
 		<v-app-bar class="primary-color">
-			<v-app-bar-nav-icon
-				class="text-color"
-				@click.stop="drawer = !drawer"
-			/>
+			<v-app-bar-nav-icon class="text-color" @click.stop="drawer = !drawer" />
 			<v-toolbar-title class="text-color">
 				Painel do Administrador
 			</v-toolbar-title>
@@ -66,7 +46,7 @@
 		<!-- Footer -->
 		<v-no-ssr>
 			<v-footer app inset class="primary-color">
-				<span class="text-color"> &copy; Ecomp 2024 </span>
+				<span class="text-color"> &copy; Endo Games 2025 </span>
 			</v-footer>
 		</v-no-ssr>
 		<!-- Footer -->
@@ -88,9 +68,9 @@ const { logUserOut } = useAuthStore()
 const drawerItems = [
 	{
 		icon: "mdi-monitor-dashboard",
-		title: "Dashboard 1",
-		subtitle: "Controle geral do sistema",
-		link: "/dashboard/dashboard1",
+		title: "Edição Material",
+		subtitle: "Edição do material dos quizes",
+		link: "/dashboard/edicao-material",
 	},
 	{
 		icon: "mdi-monitor-dashboard",
