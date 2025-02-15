@@ -1,31 +1,110 @@
 {
   "perguntas": [
     {
-      "id": 1,
-      "nome": "Qual é a capital da França?",
-      "fase": 1,
-      "imagem": "https://hackmd.io/_uploads/BkmJNX9Vyl.png",
-      "dificuldade": "Fácil",
-      "link": "https://www.instagram.com/endo.games/",
+      "id": "5",
+      "if": "",
+      "fase": "43",
+      "nome": "qual o melhor feriado da historia da humanidade?",
+      "dificuldade": "Médio",
+      "link": "https://youtu.be/PAMdKQu7aPg?si=Z4v7R5fX9fq_05v6",
+      "imagem": "https://hackmd.io/_uploads/B1t0VYp46.png",
       "alternativas": [
-        { "texto": "Paris", "correta": true },
-        { "texto": "Londres", "correta": false },
-        { "texto": "Madri", "correta": false },
-        { "texto": "Berlim", "correta": false }
+        {
+          "texto": "meu aniversario",
+          "correta": false
+        },
+        {
+          "texto": "natal",
+          "correta": false
+        },
+        {
+          "texto": "dia das bruxas",
+          "correta": false
+        },
+        {
+          "texto": "qualquer pooourra",
+          "correta": true
+        }
       ]
     },
     {
-      "id": 2,
-      "nome": "Quem escreveu 'Dom Quixote'?",
-      "fase": 2,
-      "imagem": "https://hackmd.io/_uploads/BkmJNX9Vyl.png",
-      "dificuldade": "Médio",
-      "link": "https://www.instagram.com/endo.games/",
+      "id": "1",
+      "if": "",
+      "fase": "2",
+      "nome": "Qual dos seguintes algoritmos é usado para balanceamento em Árvores AVL?",
+      "dificuldade": "Fácil",
+      "link": "https://youtu.be/PAMdKQu7aPg?si=Z4v7R5fX9fq_05v6",
+      "imagem": "https://hackmd.io/_uploads/rybJrFaE6.jpg",
       "alternativas": [
-        { "texto": "Miguel de Cervantes", "correta": true },
-        { "texto": "William Shakespeare", "correta": false },
-        { "texto": "Machado de Assis", "correta": false },
-        { "texto": "Fernando Pessoa", "correta": false }
+        {
+          "texto": "Algoritmo de Dijkstra",
+          "correta": false
+        },
+        {
+          "texto": "Algoritmo de Huffman",
+          "correta": false
+        },
+        {
+          "texto": "Rotações simples e duplas",
+          "correta": true
+        },
+        {
+          "texto": "Pilha de recursão",
+          "correta": false
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "if": "",
+      "fase": "3",
+      "nome": "Em um sistema de navegação GPS, qual é o principal método utilizado para determinar a posição de um dispositivo com base nos sinais recebidos de múltiplos satélites?",
+      "dificuldade": "Médio",
+      "link": "https://youtu.be/PAMdKQu7aPg?si=Z4v7R5fX9fq_05v6",
+      "imagem": "https://hackmd.io/_uploads/rJBkHK6VT.png",
+      "alternativas": [
+        {
+          "texto": "Interferometria, que mede a diferença de fase entre ondas recebidas para calcular a posição com precisão milimétrica",
+          "correta": false
+        },
+        {
+          "texto": "Trilateração, que calcula a posição do dispositivo com base na distância medida em relação a pelo menos três satélites",
+          "correta": true
+        },
+        {
+          "texto": "Triangulação, que usa a relação angular entre diferentes satélites para calcular a posição exata do receptor",
+          "correta": false
+        },
+        {
+          "texto": "Medição Doppler, que utiliza a variação da frequência dos sinais recebidos para estimar a posição em tempo real",
+          "correta": false
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "fase": "12",
+      "nome": "Na teoria dos grafos, o algoritmo de Dijkstra é amplamente utilizado para encontrar o caminho mais curto entre dois vértices em um grafo ponderado. Como esse algoritmo funciona em termos de estrutura de dados e complexidade?",
+      "dificuldade": "Difícil",
+      "link": "https://hackmd.io/_uploads/SypvcDat1e.jpg",
+      "imagem": "https://hackmd.io/_uploads/SypvcDat1e.jpg",
+      "alternativas": [
+        {
+          "texto": "O algoritmo de Dijkstra utiliza uma fila de prioridade (geralmente implementada com uma heap) para escolher o próximo vértice a ser processado, garantindo que sempre expanda o caminho de menor custo até todos os vértices alcançáveis. Sua complexidade pode variar dependendo da implementação, sendo O(V²) na versão ingênua e O((V + E) log V) quando usa uma heap de Fibonacci. ",
+          "correta": true
+        },
+        {
+          "texto": "O algoritmo de Dijkstra encontra o caminho mais curto explorando todas as possíveis combinações de caminhos entre os vértices e, ao final, selecionando o caminho de menor custo, resultando em uma complexidade exponencial O(2^V).",
+          "correta": false
+        },
+        {
+          "texto": "O algoritmo de Dijkstra funciona de maneira semelhante à busca em largura (BFS), visitando todos os vértices a partir da origem sem considerar os pesos das arestas, o que resulta em uma complexidade O(V + E).",
+          "correta": false
+        },
+        {
+          "texto": "O algoritmo de Dijkstra utiliza programação dinâmica para armazenar soluções parciais, verificando todas as combinações possíveis de caminhos e recalculando os valores conforme novos vértices são visitados, tendo complexidade O(V³).",
+          "correta": false
+        }
       ]
     }
   ]

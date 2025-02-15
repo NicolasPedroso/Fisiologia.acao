@@ -45,14 +45,14 @@
             </div>
             <v-divider color="white" style="border-width: 1.5px;" />
             <div class="pa-4">
-                <v-btn color="success font-weight-black">Adicionar nova pergunta</v-btn>
+                <v-btn color="success font-weight-black" @click="dialog = true">Adicionar nova pergunta</v-btn>
             </div>
             <div>
                 <v-container fluid>
                     <v-data-table disable-pagination class="elevation-1" :items="perguntas" item-value="id">
                         <template v-slot:headers>
                             <tr>
-                                <th class="text-center">Ações</th>
+                                <th class="text-left">Ações</th>
                                 <th class="text-left">ID</th>
                                 <th class="text-left">Fase</th>
                                 <th class="text-left">Pergunta</th>
@@ -67,15 +67,14 @@
                             <tr style="padding: 20px;">
                                 <!-- Botões de ação -->
                                 <td style="padding: 20px;">
-                                    <v-btn icon class="mx-2" @click="methodUpdate(item)">
-                                        <v-icon color="secondary">mdi-pencil</v-icon>
-                                    </v-btn>
-                                    <v-btn icon class="mx-2" @click="deleteMethod(item)">
-                                        <v-icon color="error">mdi-delete</v-icon>
-                                    </v-btn>
-                                    <v-btn icon class="mx-2" @click="viewDetails(item)">
-                                        <v-icon color="white">mdi-eye-outline</v-icon>
-                                    </v-btn>
+                                    <div class="d-flex flex-row">
+                                        <v-btn icon class="mx-2" @click="methodUpdate(item)">
+                                            <v-icon color="secondary">mdi-pencil</v-icon>
+                                        </v-btn>
+                                        <v-btn icon class="mx-2" @click="verDetalhes(item)">
+                                            <v-icon color="white">mdi-eye-outline</v-icon>
+                                        </v-btn>
+                                    </div>
                                 </td>
 
                                 <!-- Dados da pergunta -->
@@ -83,15 +82,20 @@
                                 <td style="padding: 20px;">{{ item.fase }}</td>
                                 <td style="padding: 20px;">{{ item.nome }}</td>
                                 <td style="padding: 20px;">
-                                    {{ item.alternativas.find(alt => alt.correta)?.texto || "Nenhuma alternativa correta encontrada" }}
+                                    {{ item.alternativas.find(alt => alt.correta)?.texto || "sem correta" }}
                                 </td>
 
                                 <td style="padding: 20px;">{{ item.dificuldade }}</td>
                                 <td style="padding: 20px;">
-                                    <a :href="item.link" target="_blank">Ver Vídeo</a>
+                                    <a :href="item.link" target="_blank">Link</a>
                                 </td>
                                 <td style="padding: 20px;">
                                     <img :src="item.imagem" width="80" height="80" style="border-radius: 5px;" />
+                                </td>
+                                <td style="padding: 20px;">
+                                    <v-btn icon class="mx-2" @click="deletaPergunta(item)">
+                                        <v-icon color="error">mdi-delete</v-icon>
+                                    </v-btn>
                                 </td>
                             </tr>
                         </template>
@@ -101,6 +105,141 @@
 
             </div>
             <NuxtPage />
+
+            <!-- DIALOG PARA ADICIONAR PERGUNTA -->
+            <v-dialog v-model="dialog" max-width="600px">
+                <v-card>
+                    <v-card-title class="headline">Adicionar Pergunta</v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field v-model="novaPergunta.id" label="id (dps tirar)" outlined dense
+                                        type="number"></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="novaPergunta.fase" label="Fase" outlined dense
+                                        type="number"></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="novaPergunta.nome" label="Pergunta" outlined
+                                        dense></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-select v-model="novaPergunta.dificuldade" :items="['Fácil', 'Médio', 'Difícil']"
+                                        label="Dificuldade" outlined dense></v-select>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="novaPergunta.link" label="Link do Vídeo" outlined
+                                        dense></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="novaPergunta.imagem" label="imagem(link por enquanto)"
+                                        outlined dense></v-text-field>
+                                </v-col>
+
+                                <!-- ALTERNATIVAS -->
+                                <v-col cols="12">
+                                    <span class="font-weight-bold">Alternativas:</span>
+                                    <v-row v-for="(alt, index) in novaPergunta.alternativas" :key="index"
+                                        align="center">
+                                        <v-col cols="8">
+                                            <v-text-field v-model="alt.texto" label="Alternativa" outlined
+                                                dense></v-text-field>
+                                        </v-col>
+                                        <v-col cols="4">
+                                            <v-checkbox v-model="alt.correta" @change="marcarCorreta(index)"
+                                                label="Correta"></v-checkbox>
+                                        </v-col>
+                                    </v-row>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="red" text @click="dialog = false">Cancelar</v-btn>
+                        <v-btn color="green" text @click="adicionarPergunta()">Salvar</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <!-- Dialog para exibir detalhes da pergunta -->
+            <v-dialog v-model="dialogView" max-width="600px">
+                <v-card>
+                    <v-card-title class="headline text-h4 font-weight-bold d-flex justify-center">Detalhes da
+                        Pergunta</v-card-title>
+                    <v-card-text>
+                        <v-divider></v-divider>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="4">
+                                    <strong class="pa-4 text-h6 font-weight-bold d-flex justify-center">ID</strong>
+                                    <span class="pa-4 text-subtitle-1 d-flex justify-center">
+                                        {{ perguntaSelecionada.id }}
+                                    </span>
+                                </v-col>
+                                <v-col cols="4">
+                                    <strong class="pa-4 text-h6 font-weight-bold d-flex justify-center">Fase</strong>
+                                    <span class="pa-4 text-subtitle-1 d-flex justify-center">
+                                        {{ perguntaSelecionada.fase }}
+                                    </span>
+                                </v-col>
+                                <v-col cols="4">
+                                    <strong
+                                        class="pa-4 text-h6 font-weight-bold d-flex justify-center">Dificuldade</strong>
+                                    <span class="pa-4 text-subtitle-1 d-flex justify-center">
+                                        {{ perguntaSelecionada.dificuldade }}
+                                    </span>
+                                </v-col>
+                                <v-divider></v-divider>
+                                <v-col cols="12">
+                                    <strong
+                                        class="pa-4 text-h6 font-weight-bold d-flex justify-center">Pergunta</strong>
+                                    <span class="pa-4 text-subtitle-1 d-flex justify-center">
+                                        {{ perguntaSelecionada.nome }}
+                                    </span>
+                                </v-col>
+                                <v-divider></v-divider>
+                                <v-col cols="12">
+                                    <span
+                                        class="pa-4 text-h6 font-weight-bold d-flex justify-center">Alternativas</span>
+                                    <v-card class="pa-5">
+                                        <v-row class=" d-flex justify-center">
+                                            <v-col v-for="(alt, index) in perguntaSelecionada.alternativas" :key="index"
+                                                cols="auto">
+                                                <span v-if="index == 0"> a) </span>
+                                                <span v-if="index == 1"> b) </span>
+                                                <span v-if="index == 2"> c) </span>
+                                                <span v-if="index == 3"> d) </span>
+                                                <span :class="alt.correta ? 'text-green font-weight-bold' : 'text-red'">
+                                                    {{ alt.texto }}
+                                                </span>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card>
+                                </v-col>
+                                <v-col cols="12">
+                                    <strong class="pa-4 text-h6 font-weight-bold d-flex justify-center">Link:</strong>
+                                    <span class="pa-4 text-subtitle-1 d-flex justify-center">
+                                        {{ perguntaSelecionada.link }}
+                                    </span>
+                                </v-col>
+                                <v-divider></v-divider>
+                                <v-col cols="12">
+                                    <strong
+                                        class="pa-4 text-h6 font-weight-bold d-flex justify-center">Imagem:</strong><br>
+                                    <img v-if="perguntaSelecionada.imagem" :src="perguntaSelecionada.imagem"
+                                        width="100%" style="border-radius: 5px;" />
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer />
+                        <v-btn color="red" text @click="dialogView = false">Fechar</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-main>
         <!-- Conteúdo -->
         <!-- Footer -->
@@ -121,6 +260,25 @@ import axios from "axios";
 
 // Variável reativa para armazenar as perguntas
 const perguntas = ref([]);
+const dialog = ref(false); // Estado do diálogo
+const dialogView = ref(false); // Estado do diálogo
+const perguntaSelecionada = ref({});
+const novaPergunta = ref({
+    if: "",
+    fase: "",
+    nome: "",
+    dificuldade: "",
+    link: "",
+    imagem: "",
+    alternativas: [
+        { texto: "", correta: false },
+        { texto: "", correta: false },
+        { texto: "", correta: false },
+        { texto: "", correta: false }
+    ],
+});
+
+
 
 // Função para buscar os dados da API
 const fetchPerguntas = async () => {
@@ -131,6 +289,60 @@ const fetchPerguntas = async () => {
     } catch (error) {
         console.error("Erro ao buscar perguntas:", error);
     }
+};
+
+const marcarCorreta = (index) => {
+    novaPergunta.value.alternativas.forEach((alt, i) => {
+        alt.correta = i === index;
+    });
+};
+
+// Função para adicionar uma nova pergunta
+const adicionarPergunta = async () => {
+    try {
+        await axios.post("http://localhost:8000/perguntas", novaPergunta.value);
+        perguntas.value.push({ ...novaPergunta.value });
+        // Limpa os campos do formulário
+        novaPergunta.value = {
+            id: "",
+            fase: "",
+            nome: "",
+            dificuldade: "",
+            link: "",
+            imagem: "",
+            alternativas: [
+                { texto: "", correta: false },
+                { texto: "", correta: false },
+                { texto: "", correta: false },
+                { texto: "", correta: false }
+            ],
+        };
+
+        dialog.value = false; 
+    } catch (error) {
+        console.error("Erro ao adicionar pergunta:", error);
+    }
+};
+
+const deletaPergunta = async (item) => {
+    if (!confirm(`Tem certeza que deseja excluir a pergunta ID ${item.id}?`)) {
+        return;
+    }
+
+    try {
+        await axios.delete(`http://localhost:8000/perguntas/${item.id}`);
+        perguntas.value = perguntas.value.filter(p => p.id !== item.id);
+    } catch (error) {
+        console.error("Erro ao excluir pergunta:", error);
+    }
+};
+
+
+
+// Função para abrir o dialog e preencher os detalhes
+const verDetalhes = (item) => {
+    perguntaSelecionada.value = item;
+    dialogView.value = true;
 };
 
 // Chama a função quando o componente é montado
