@@ -23,14 +23,13 @@
 				</div>
 			</v-row>
 			<v-data-table
+				:loading="status === 'idle' || status === 'pending'"
 				:headers="headers"
-				:items="data"
-				:loading="loading"
+				:items="!data ? [] : data"
 				:group-by="groupBy"
 				density="compact"
 				:hover="true"
 				mobile-breakpoint="md"
-				item-value="name"
 			>
 				<template
 					#group-header="{ item, columns, toggleGroup, isGroupOpen }"
@@ -53,10 +52,10 @@
 					<v-chip>{{ value }}</v-chip>
 				</template>
 				<template #[`item.actions`]="{ item }">
-					<div class="table__actions">
+					<div class="table__actions py-2">
 						<v-btn
 							class="table__actions__button"
-							color="warning"
+							color="primary"
 							prepend-icon="mdi-pencil"
 							@click="openEdit(item)"
 						>
@@ -64,7 +63,8 @@
 						</v-btn>
 						<v-btn
 							class="table__actions__button"
-							color="error"
+							color="primary"
+							variant="outlined"
 							prepend-icon="mdi-trash-can"
 							@click="openDelete(item)"
 						>
@@ -82,13 +82,13 @@
 			persistent
 		>
 			<v-card
-				class="pa-4"
+				class="dialog pa-4"
 				:loading="loadingRes"
 				:title="title"
 				:subtitle="subtitle"
 			>
-				<v-card-text class="pt-4">
-					<v-form rel="form">
+				<v-form v-model="validForm" fast-fail @submit.prevent>
+					<v-card-text class="pt-4">
 						<div class="dialog__content__gap">
 							<v-text-field
 								v-model="formData.link"
@@ -110,42 +110,51 @@
 								required
 							/>
 						</div>
-					</v-form>
-				</v-card-text>
-				<v-card-actions>
-					<v-btn
-						v-if="typeDialog === 0"
-						:loading="loadingRes"
-						text="Salvar"
-						color="primary"
-						variant="flat"
-					/>
-					<v-btn
-						v-else-if="typeDialog === 1"
-						:loading="loadingRes"
-						text="Atualizar"
-						color="primary"
-						variant="flat"
-					/>
-					<v-btn
-						v-else
-						:loading="loadingRes"
-						text="Deletar"
-						color="primary"
-						variant="flat"
-					/>
-					<v-btn
-						text="Cancelar"
-						color="error"
-						variant="text"
-						@click="closeDialog"
-					/>
-				</v-card-actions>
+					</v-card-text>
+					<v-card-actions>
+						<v-btn
+							v-if="typeDialog === 0"
+							:loading="loadingRes"
+							text="Salvar"
+							color="primary"
+							variant="flat"
+							type="submit"
+							@click.stop="createItem"
+						/>
+						<v-btn
+							v-else-if="typeDialog === 1"
+							:loading="loadingRes"
+							text="Atualizar"
+							color="primary"
+							variant="flat"
+							type="submit"
+							@click.stop="editItem"
+						/>
+						<v-btn
+							v-else
+							:loading="loadingRes"
+							text="Deletar"
+							color="primary"
+							variant="flat"
+							type="submit"
+							@click.stop="deleteItem"
+						/>
+						<v-btn
+							text="Cancelar"
+							color="primary"
+							variant="outlined"
+							@click="closeDialog"
+						/>
+					</v-card-actions>
+				</v-form>
 			</v-card>
 		</v-dialog>
 	</v-container>
 </template>
 <script setup>
+// ENV (PAGE VARIABLES)
+const urlRequistion = "/video"
+
 // DataTable variables
 const search = ref("")
 const groupBy = ref([
@@ -155,18 +164,16 @@ const groupBy = ref([
 	},
 ])
 const headers = [
-	{ title: "ID", key: "id", align: "start", width: 20 },
-	{ title: "Video", key: "link", align: "center", sortable: false },
+	{ title: "ID", key: "id" },
+	{ title: "Video", key: "link", sortable: false },
 	{
 		title: "Ações",
 		key: "actions",
-		align: "end",
 		width: 50,
 		sortable: false,
 	},
 ]
-const data = ref([{ id: 0, link: "/", theme: "a" }])
-const loading = ref(false)
+const data = ref([])
 
 // Dialog variables
 const dialog = ref(false)
@@ -181,9 +188,22 @@ const formData = reactive({
 	theme: "",
 })
 const loadingRes = ref(false)
+const validForm = ref(false)
 const title = ref("")
 const subtitle = ref("")
 const themes = ["Endócrino", "Renal", "Cardiovascular"]
+
+// Requisicao inicial
+const { status, refresh } = useAsyncData("inicial-requistion", () =>
+	useDataLoader(urlRequistion)
+		.then((response) => {
+			return (data.value = response)
+		})
+		.catch((error) => {
+			console.error(error)
+			return []
+		}),
+)
 
 // Functions (open and close)
 function closeDialog() {
@@ -221,13 +241,90 @@ function openDelete({ id, link, theme }) {
 	formData.theme = theme
 
 	title.value = `Deletando o elemento (ID ${id})`
-	subtitle.value = "Confirme se quer realmente deletar e clique em 'DELETAR'"
+	subtitle.value =
+		"Você tem certeza que deletar o elemento? Essa ação é permamente e não tem volta! Se sim, clique em 'DELETAR'"
 }
 
 // Functions (requisition)
-// async function createItem() {}
-// async function deleteItem() {}
-// async function editItem() {}
+async function createItem() {
+	// Validacoes
+	if (!validForm.value) return
+
+	// const __formData = new FormData()
+	// for (var key in formData) {
+	// 	if (key == "id") continue
+	// 	__formData.append(key, formData[key])
+	// }
+
+	// Para testes (JSON-SERVER)
+	let newFormData = formData
+	delete newFormData.id
+
+	const __formData = JSON.stringify(newFormData)
+
+	loadingRes.value = true
+
+	await useDataLoader(urlRequistion, {
+		method: "POST",
+		body: __formData,
+		"Content-Type": "application/json",
+	})
+		.then(() => {
+			refresh()
+			dialog.value = false
+			loadingRes.value = false
+		})
+		.catch((error) => {
+			console.error(error)
+			loadingRes.value = false
+		})
+}
+
+async function editItem() {
+	// Validacoes
+	if (!validForm.value) return
+
+	// const __formData = new FormData()
+	// for (var key in formData) {
+	// 	if (key == "id") continue
+	// 	__formData.append(key, formData[key])
+	// }
+
+	const __formData = JSON.stringify(formData)
+
+	loadingRes.value = true
+
+	await useDataLoader(`${urlRequistion}/${formData.id}`, {
+		method: "PUT",
+		body: __formData,
+		"Content-Type": "application/json",
+	})
+		.then(() => {
+			refresh()
+			dialog.value = false
+			loadingRes.value = false
+		})
+		.catch((error) => {
+			console.error(error)
+			loadingRes.value = false
+		})
+}
+
+async function deleteItem() {
+	loadingRes.value = true
+	await useDataLoader(`${urlRequistion}/${formData.id}`, {
+		method: "DELETE",
+	})
+		.then(() => {
+			refresh()
+			dialog.value = false
+			loadingRes.value = false
+		})
+		.catch((error) => {
+			console.error(error)
+			loadingRes.value = false
+		})
+}
 
 definePageMeta({
 	layout: "dashboard",
@@ -276,9 +373,21 @@ useSeoMeta({
 	font-size: 12px !important;
 }
 
+.v-card-title {
+	font-weight: 800 !important;
+}
+
+.v-card-subtitle {
+	text-wrap: auto !important;
+}
+
 .dialog__content__gap {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+}
+
+.v-field--disabled {
+	opacity: 0.8 !important;
 }
 </style>
