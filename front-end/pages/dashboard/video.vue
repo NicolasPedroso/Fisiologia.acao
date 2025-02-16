@@ -1,5 +1,6 @@
 <template>
 	<v-container fluid style="height: 100%" class="editor__wrapper">
+		<nuxt-notifications />
 		<div class="editor__content">
 			<v-row class="editor__firstLine">
 				<v-btn
@@ -156,6 +157,7 @@
 const urlRequistion = "/video"
 
 // DataTable variables
+const { notify } = useNotification()
 const search = ref("")
 const groupBy = ref([
 	{
@@ -201,6 +203,11 @@ const { status, refresh } = useAsyncData("inicial-requistion", () =>
 		})
 		.catch((error) => {
 			console.error(error)
+			notify({
+				title: "Erro!",
+				type: "error",
+				text: formatError(error),
+			})
 			return []
 		}),
 )
@@ -273,10 +280,19 @@ async function createItem() {
 			refresh()
 			dialog.value = false
 			loadingRes.value = false
+			notify({
+				title: "Elemento criado",
+				type: "success",
+			})
 		})
 		.catch((error) => {
 			console.error(error)
 			loadingRes.value = false
+			notify({
+				title: "Erro ao criar item!",
+				type: "error",
+				text: formatError(error),
+			})
 		})
 }
 
@@ -303,10 +319,19 @@ async function editItem() {
 			refresh()
 			dialog.value = false
 			loadingRes.value = false
+			notify({
+				title: "Elemento atualizado",
+				type: "success",
+			})
 		})
 		.catch((error) => {
 			console.error(error)
 			loadingRes.value = false
+			notify({
+				title: "Erro ao atualizar item!",
+				type: "error",
+				text: formatError(error),
+			})
 		})
 }
 
@@ -319,10 +344,19 @@ async function deleteItem() {
 			refresh()
 			dialog.value = false
 			loadingRes.value = false
+			notify({
+				title: "Elemento criado",
+				type: "success",
+			})
 		})
 		.catch((error) => {
 			console.error(error)
 			loadingRes.value = false
+			notify({
+				title: "Erro ao deletar item!",
+				type: "error",
+				text: formatError(error),
+			})
 		})
 }
 
