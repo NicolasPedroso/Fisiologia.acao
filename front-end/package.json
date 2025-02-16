@@ -22,21 +22,24 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.2",
 		"eslint-plugin-vue": "^9.19.2",
+		"lodash": "^4.17.21",
 		"prettier": "^3.1.1",
 		"vite-plugin-eslint": "^1.8.1",
 		"vite-plugin-vuetify": "^2.0.1"
 	},
 	"dependencies": {
-		"nuxt": "^3.11.2",
 		"@mdi/font": "^7.4.47",
 		"@pinia/nuxt": "^0.5.1",
+		"axios": "^1.7.9",
+		"espree": "^10.3.0",
+		"nuxt": "^3.11.2",
 		"nuxt3-notifications": "^1.2.0",
 		"pinia": "^2.1.7",
 		"vue": "^3.4.27",
 		"vue-router": "^4.3.2",
 		"vuetify": "^3.6.7"
 	},
-	"engines" : { 
-		"node" : ">=23.0.0"
-	  }
+	"engines": {
+		"node": ">=23.0.0"
+	}
 }

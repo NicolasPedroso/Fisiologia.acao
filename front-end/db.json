@@ -3,7 +3,7 @@
     {
       "id": "5",
       "if": "",
-      "fase": "43",
+      "fase": "1",
       "nome": "qual o melhor feriado da historia da humanidade?",
       "dificuldade": "Médio",
       "link": "https://youtu.be/PAMdKQu7aPg?si=Z4v7R5fX9fq_05v6",
@@ -103,6 +103,33 @@
         },
         {
           "texto": "O algoritmo de Dijkstra utiliza programação dinâmica para armazenar soluções parciais, verificando todas as combinações possíveis de caminhos e recalculando os valores conforme novos vértices são visitados, tendo complexidade O(V³).",
+          "correta": false
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "if": "",
+      "fase": "1",
+      "nome": "eqweqwe",
+      "dificuldade": "Médio",
+      "link": "fsdf",
+      "imagem": "sdfsd",
+      "alternativas": [
+        {
+          "texto": "gfgdfg",
+          "correta": false
+        },
+        {
+          "texto": "gfdgd",
+          "correta": true
+        },
+        {
+          "texto": "gfdg",
+          "correta": false
+        },
+        {
+          "texto": "gfdg",
           "correta": false
         }
       ]

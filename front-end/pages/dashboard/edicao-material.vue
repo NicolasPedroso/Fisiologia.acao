@@ -68,7 +68,7 @@
                                 <!-- Botões de ação -->
                                 <td style="padding: 20px;">
                                     <div class="d-flex flex-row">
-                                        <v-btn icon class="mx-2" @click="methodUpdate(item)">
+                                        <v-btn icon class="mx-2" @click="editarPergunta(item)">
                                             <v-icon color="secondary">mdi-pencil</v-icon>
                                         </v-btn>
                                         <v-btn icon class="mx-2" @click="verDetalhes(item)">
@@ -240,6 +240,60 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
+
+            <v-dialog v-model="dialogEdit" max-width="600px">
+                <v-card>
+                    <v-card-title class="headline">Editar Pergunta</v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field v-model="perguntaEdit.id" label="ID" outlined dense type="number"
+                                        disabled></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="perguntaEdit.fase" label="Fase" outlined dense
+                                        type="number"></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="perguntaEdit.nome" label="Pergunta" outlined
+                                        dense></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-select v-model="perguntaEdit.dificuldade" :items="['Fácil', 'Médio', 'Difícil']"
+                                        label="Dificuldade" outlined dense></v-select>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="perguntaEdit.link" label="Link do Vídeo" outlined
+                                        dense></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="perguntaEdit.imagem" label="Imagem (Link)" outlined
+                                        dense></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <span class="font-weight-bold">Alternativas:</span>
+                                    <v-row v-for="(alt, index) in perguntaEdit.alternativas" :key="index"
+                                        align="center">
+                                        <v-col cols="8">
+                                            <v-text-field v-model="alt.texto" label="Alternativa" outlined
+                                                dense></v-text-field>
+                                        </v-col>
+                                        <v-col cols="4">
+                                            <v-checkbox v-model="alt.correta" @change="marcarCorretaEdit(index)"
+                                                label="Correta"></v-checkbox>
+                                        </v-col>
+                                    </v-row>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="red" text @click="dialogEdit = false">Cancelar</v-btn>
+                        <v-btn color="green" text @click="atualizarPergunta()">Salvar</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-main>
         <!-- Conteúdo -->
         <!-- Footer -->
@@ -263,6 +317,7 @@ const perguntas = ref([]);
 const dialog = ref(false); // Estado do diálogo
 const dialogView = ref(false); // Estado do diálogo
 const perguntaSelecionada = ref({});
+const dialogEdit = ref(false);
 const novaPergunta = ref({
     if: "",
     fase: "",
@@ -276,6 +331,21 @@ const novaPergunta = ref({
         { texto: "", correta: false },
         { texto: "", correta: false }
     ],
+});
+
+const perguntaEdit = ref({
+  id: "",
+  fase: "",
+  nome: "",
+  dificuldade: "",
+  link: "",
+  imagem: "",
+  alternativas: [
+    { texto: "", correta: false },
+    { texto: "", correta: false },
+    { texto: "", correta: false },
+    { texto: "", correta: false }
+  ]
 });
 
 
@@ -299,29 +369,118 @@ const marcarCorreta = (index) => {
 
 // Função para adicionar uma nova pergunta
 const adicionarPergunta = async () => {
-    try {
-        await axios.post("http://localhost:8000/perguntas", novaPergunta.value);
-        perguntas.value.push({ ...novaPergunta.value });
-        // Limpa os campos do formulário
-        novaPergunta.value = {
-            id: "",
-            fase: "",
-            nome: "",
-            dificuldade: "",
-            link: "",
-            imagem: "",
-            alternativas: [
-                { texto: "", correta: false },
-                { texto: "", correta: false },
-                { texto: "", correta: false },
-                { texto: "", correta: false }
-            ],
-        };
+     if (validarFormularioAdd()) {
+        try {
+            await axios.post("http://localhost:8000/perguntas", novaPergunta.value);
+            perguntas.value.push({ ...novaPergunta.value });
+            // Limpa os campos do formulário
+            novaPergunta.value = {
+                id: "",
+                fase: "",
+                nome: "",
+                dificuldade: "",
+                link: "",
+                imagem: "",
+                alternativas: [
+                    { texto: "", correta: false },
+                    { texto: "", correta: false },
+                    { texto: "", correta: false },
+                    { texto: "", correta: false }
+                ],
+            };
 
-        dialog.value = false; 
-    } catch (error) {
-        console.error("Erro ao adicionar pergunta:", error);
+            dialog.value = false; 
+        } catch (error) {
+            console.error("Erro ao adicionar pergunta:", error);
+        }
     }
+};
+
+const validarFormularioAdd = () => {
+
+    const idValido = novaPergunta.value.id && !isNaN(novaPergunta.value.id);
+    const faseValida = novaPergunta.value.fase && !isNaN(novaPergunta.value.fase);
+    const nomePreenchido = novaPergunta.value.nome.trim() !== "";
+    const dificuldadeValida = ["Fácil", "Médio", "Difícil"].includes(novaPergunta.value.dificuldade);
+    const linkPreenchido = novaPergunta.value.link.trim() !== "";
+    const imagemPreenchida = novaPergunta.value.imagem.trim() !== "";
+    const alternativasValidas = novaPergunta.value.alternativas.every(alt => alt.texto.trim() !== "");
+    const umaCorreta = novaPergunta.value.alternativas.filter(alt => alt.correta).length === 1;
+
+    if (!idValido) {
+        alert("O ID deve ser um número válido.");
+        return false;
+    }
+    if (!faseValida) {
+        alert("A fase deve ser um número válido.");
+        return false;
+    }
+    if (!nomePreenchido) {
+        alert("O campo Pergunta deve ser preenchido.");
+        return false;
+    }
+    if (!dificuldadeValida) {
+        alert("Selecione uma dificuldade válida.");
+        return false;
+    }
+    if (!linkPreenchido) {
+        alert("O campo Link deve ser preenchido.");
+        return false;
+    }
+    if (!imagemPreenchida) {
+        alert("O campo Imagem deve ser preenchido.");
+        return false;
+    }
+    if (!alternativasValidas) {
+        alert("Todas as alternativas devem ser preenchidas.");
+        return false;
+    }
+    if (!umaCorreta) {
+        alert("Apenas uma alternativa deve ser marcada como correta.");
+        return false;
+    }
+    return true;
+};
+
+const validarFormularioEdit = () => {
+
+    const faseValida = perguntaEdit.value.fase && !isNaN(perguntaEdit.value.fase);
+    const nomePreenchido = perguntaEdit.value.nome.trim() !== "";
+    const dificuldadeValida = ["Fácil", "Médio", "Difícil"].includes(perguntaEdit.value.dificuldade);
+    const linkPreenchido = perguntaEdit.value.link.trim() !== "";
+    const imagemPreenchida = perguntaEdit.value.imagem.trim() !== "";
+    const alternativasValidas = perguntaEdit.value.alternativas.every(alt => alt.texto.trim() !== "");
+    const umaCorreta = perguntaEdit.value.alternativas.filter(alt => alt.correta).length === 1;
+
+    if (!faseValida) {
+        alert("A fase deve ser um número válido.");
+        return false;
+    }
+    if (!nomePreenchido) {
+        alert("O campo Pergunta deve ser preenchido.");
+        return false;
+    }
+    if (!dificuldadeValida) {
+        alert("Selecione uma dificuldade válida.");
+        return false;
+    }
+    if (!linkPreenchido) {
+        alert("O campo Link deve ser preenchido.");
+        return false;
+    }
+    if (!imagemPreenchida) {
+        alert("O campo Imagem deve ser preenchido.");
+        return false;
+    }
+    if (!alternativasValidas) {
+        alert("Todas as alternativas devem ser preenchidas.");
+        return false;
+    }
+    if (!umaCorreta) {
+        alert("Apenas uma alternativa deve ser marcada como correta.");
+        return false;
+    }
+    return true;
 };
 
 const deletaPergunta = async (item) => {
@@ -334,6 +493,25 @@ const deletaPergunta = async (item) => {
         perguntas.value = perguntas.value.filter(p => p.id !== item.id);
     } catch (error) {
         console.error("Erro ao excluir pergunta:", error);
+    }
+};
+
+const editarPergunta = (item) => {
+    perguntaEdit.value = { ...item, alternativas: [...item.alternativas] };
+    dialogEdit.value = true;
+};
+
+
+const atualizarPergunta = async () => {
+    if (validarFormularioEdit()) {
+        try {
+            await axios.put(`http://localhost:8000/perguntas/${perguntaEdit.value.id}`, perguntaEdit.value);
+            const index = perguntas.value.findIndex(p => p.id === perguntaEdit.value.id);
+            if (index !== -1) perguntas.value[index] = { ...perguntaEdit.value };
+            dialogEdit.value = false;
+        } catch (error) {
+            console.error("Erro ao atualizar pergunta:", error);
+        }
     }
 };
 

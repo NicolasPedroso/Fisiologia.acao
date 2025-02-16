@@ -1,0 +1,33 @@
+{"pergunta": [
+    {
+    "id": "1",
+    "respostas": [
+        {
+            "alternativa1": [
+                {
+                    "texto1": "texto alternativa",
+                    "é_correta": "true"
+                    
+                }
+            ],
+            "alterantiva2": [
+                {
+                    "texto1": "texto alternativa",
+                    "é_correta": "false"
+                    
+                }
+            ],
+            "alternativa3": [
+                {
+                    "texto1": "texto alternativa",
+                    "é_correta": "false"
+                    
+                }
+            ]
+        }
+
+    ]
+
+    }
+]
+}
