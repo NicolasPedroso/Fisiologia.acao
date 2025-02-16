@@ -8,20 +8,37 @@
 				</template>
 				<!-- Logo e nome do Projeto -->
 				<v-list lines="3" class="my-2">
-					<v-list-item class="drawer-logo" title="Endo Games"
-						subtitle="O projeto de extensão FISIOLOGIA EM AÇÃO">
+					<v-list-item
+						class="drawer-logo"
+						title="Endo Games"
+						subtitle="O projeto de extensão FISIOLOGIA EM AÇÃO"
+					>
 						<template #prepend>
-							<v-img width="40" height="56" contain class="mr-4" src="/images/logo.png"
-								alt="Logo Endo Games" />
+							<v-img
+								width="40"
+								height="56"
+								contain
+								class="mr-4"
+								src="/images/logo.png"
+								alt="Logo Endo Games"
+							/>
 						</template>
 					</v-list-item>
 				</v-list>
 				<!-- Logo e nome do Projeto -->
 				<!-- Itens do drawer -->
 				<v-list nav>
-					<v-list-item v-for="(item, i) in drawerItems" :key="i" :to="item.link"
-						:base-color="theme.drawerTextColor" :prepend-icon="item.icon" :title="item.title"
-						:subtitle="item.subtitle" lines="3" class="my-1 py-1 drawer-text" />
+					<v-list-item
+						v-for="(item, i) in drawerItems"
+						:key="i"
+						:to="item.link"
+						:base-color="theme.drawerTextColor"
+						:prepend-icon="item.icon"
+						:title="item.title"
+						:subtitle="item.subtitle"
+						lines="3"
+						class="my-1 py-1 drawer-text"
+					/>
 				</v-list>
 				<!-- Itens do drawer -->
 			</v-navigation-drawer>
@@ -29,7 +46,10 @@
 		<!-- Drawer que contém os links para as páginas -->
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
 		<v-app-bar class="primary-color">
-			<v-app-bar-nav-icon class="text-color" @click.stop="drawer = !drawer" />
+			<v-app-bar-nav-icon
+				class="text-color"
+				@click.stop="drawer = !drawer"
+			/>
 			<v-toolbar-title class="text-color">
 				Painel do Administrador
 			</v-toolbar-title>
@@ -135,14 +155,16 @@ useHead({
 }
 
 .drawer-text {
-	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+	font-family:
+		"Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 .primary-color {
 	background-color: v-bind("theme.backgroundColor") !important;
 }
 .text-color {
-	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+	font-family:
+		"Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 	color: v-bind("theme.textColor") !important;
 }
