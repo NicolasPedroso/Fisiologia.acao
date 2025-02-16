@@ -26,7 +26,7 @@
 					<v-text-field
 						v-model="email"
 						variant="outlined"
-						label="E-mail atualizado"
+						label="Novo E-mail"
 						type="email"
 						required
 						:rules="rules.email"
@@ -35,9 +35,10 @@
 				<v-card-actions class="justify-start ml-5">
 					<v-btn
 						variant="flat"
+						:loading="loadingRes"
 						text="Atualizar"
 						color="primary"
-						@click="validateEmail"
+						@click="updateEmail"
 					></v-btn>
 					<v-btn
 						variant="outlined"
@@ -55,6 +56,7 @@
 const { notify } = useNotification()
 
 const email = ref("")
+const loadingRes = ref(false)
 
 const rules = {
 	email: [
@@ -63,29 +65,61 @@ const rules = {
 	],
 }
 
-const validateEmail = () => {
+async function updateEmail() {
+	loadingRes.value = true
+
 	if (!rules.email.every((rule) => rule(email.value) === true)) {
 		notify({
 			title: "Erro",
-			text: "Por favor, insira um e-mail válido.",
+			text: "Insira um e-mail válido.",
 			type: "error",
 		})
-	} else {
-		notify({
-			title: "Sucesso",
-			text: "E-mail atualizado com sucesso!",
-			type: "success",
-		})
-		dialog.value = false
+		loadingRes.value = false
+		return
 	}
+
+	const data = {
+		id: 1,
+		email: email.value,
+	}
+
+	await useDataLoader("http://localhost:4000/e-mail/1", {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+	})
+		.then(() => {
+			dialog.value = false
+			loadingRes.value = false
+			notify({
+				title: "Sucesso",
+				text: "E-mail atualizado",
+				type: "success",
+			})
+		})
+		.catch((error) => {
+			loadingRes.value = false
+			notify({
+				title: "Erro durante a requisição",
+				type: "error",
+				text: error.message || "Falha durante o processamento",
+			})
+		})
 }
 
 const dialog = ref(false)
+
+watch(email, (newValue) => {
+	console.log("E-mail digitado:", newValue)
+})
 
 definePageMeta({
 	layout: "dashboard",
 	middleware: ["guest", "admin"],
 })
+
 </script>
 
 <style scoped>
