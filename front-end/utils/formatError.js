@@ -19,6 +19,8 @@ export default (error) => {
 		? error.response._data.errors
 		: error.response._data
 
+	if (typeof objetoErros !== "object") return objetoErros
+
 	// Caso de erro unico, como nao autorizado
 	if (objetoErros.message) return objetoErros.message
 
