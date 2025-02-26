@@ -87,6 +87,12 @@ const drawerItems = [
 		subtitle: "Edite os vídeos/temas",
 		link: "/dashboard/video",
 	},
+	{
+		icon: "mdi-email-edit",
+		title: "Edição de e-mail",
+		subtitle: "Atualize seu e-mail",
+		link: "/dashboard/email",
+	},
 ]
 
 // Tema que será utilizado na dashboard
