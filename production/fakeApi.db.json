@@ -1,3 +1,11 @@
 {
-  "video": []
+  "video": [],
+  "user": {
+    "image": "https://sm.ign.com/ign_br/screenshot/default/carole-tuesday-together_tds6.jpg",
+    "name": "Fulano555",
+    "level": 2,
+    "address": null,
+    "email": "g@ufpr.br",
+    "telephone": null
+  }
 }
