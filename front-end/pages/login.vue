@@ -97,6 +97,7 @@ async function login() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
 		console.log("ENTROU")
+		console.log("email e senha =", email.value, password.value)
 		// Feedback que está carregando a requisição
 		notify({
 			id: "loading",
@@ -134,7 +135,7 @@ async function login() {
 
 // Layout da página e middlewares
 definePageMeta({
-	layout: "auth",
+	layout: "login",
 	middleware: ["auth"],
 })
 
