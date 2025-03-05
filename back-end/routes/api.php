@@ -20,13 +20,17 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'API\AuthController@login');
 Route::post('signup', 'API\AuthController@signup');
 
+Route::apiResource('profileIcon', 'API\ProfileIconController')->only(['index','show']);
 
 /* 
     Rotas de autenticação.
 */
 Route::middleware(['auth:api'])->group(function () {
-
+    
     Route::get('logout', 'API\AuthController@logout');
     Route::get('user', 'API\AuthController@user');
 
+    Route::middleware(['admin'])->group(function(){
+        Route::apiResource('profileIcon','API\ProfileIconController')->only(['store','update','show']);
+    });
 });
