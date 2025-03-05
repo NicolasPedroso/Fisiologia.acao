@@ -20,6 +20,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;700&display=swap");
 
+.auth-card {
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+}
+
 .title-container {
 	background-color: #1356d3;
 	display: flex;

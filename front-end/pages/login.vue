@@ -168,6 +168,12 @@ h1 {
 	height: 5rem;
 	background-color: #0d45ae;
 	color: #ffffff;
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+	transition: box-shadow 0.3s ease;
+}
+
+.login-btn:hover {
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .register-link {
