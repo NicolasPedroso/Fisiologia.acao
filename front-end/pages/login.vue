@@ -23,7 +23,7 @@
 				@click:append-inner="togglePassword"
 			/>
 			<div class="my-4">
-				<nuxt-link class="auth-link" to="/registro">
+				<nuxt-link class="auth-link" to="/password-recovery">
 					<span class="register-link">Esqueceu a senha?</span>
 				</nuxt-link>
 			</div>
@@ -38,7 +38,7 @@
 		</v-form>
 		<!-- <nuxt-link class="auth-link" to="/"> Esqueceu a senha? </nuxt-link> -->
 		<div>
-			<nuxt-link class="auth-link mb-4" to="/registro">
+			<nuxt-link class="auth-link mb-4" to="/register">
 				<span class="register-link"
 					>Não tem uma conta ainda? Clique aqui</span
 				>
