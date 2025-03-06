@@ -9,19 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-
-     /*Criação da tabela de cadastro de usuário*/
     public function up(): void
     {
-        Schema::create('register', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name');
+        Schema::create('login', function (Blueprint $table){
             $table->string('email');
             $table->string('password');
-            $table->string('address');
-            $table->string('phone');
-
+            $table->boolean('admin');
         });
     }
 
@@ -30,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('register');
+        Schema::dropIfExists('login');
     }
 };

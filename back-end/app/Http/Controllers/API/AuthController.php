@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -94,7 +95,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string'
         ]);
 
         if ($validator->fails())
@@ -188,31 +189,32 @@ class AuthController extends Controller
             'password' => 'required',
             'remember_me' => 'boolean'
         ]);
-
+    
         if ($validator->fails())
             return response()->json($validator->errors(), 400);
-
-
-        $credentials = request(['email', 'password']);
-        if(!Auth::attempt($credentials))
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
-
-        $tokenResult = $request->user()->createToken('Personal Access Token');
+    
+        $credentials = $request->only('email', 'password');
+    
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+    
+        // Agora, depois de Auth::attempt, o usuário está autenticado:
+        $user = Auth::user();
+    
+        $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
-
+    
         return response()->json([
             'access_token' => $tokenResult->accessToken,
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
+            'expires_at'   => Carbon::parse($token->expires_at)->toDateTimeString(),
+            'is_admin'     => $user->admin
         ]);
     }
-
+    
     /**
      * @OA\Get(
      *      path="/api/logout",

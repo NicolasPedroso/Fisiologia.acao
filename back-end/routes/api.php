@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\CadastroController;
+use App\Http\Controllers\API\RegisterController;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ Route::post('signup', 'API\AuthController@signup');
     Rota de cadastro:
     Realiza GET, POST, PUT, DELETE
 */
-Route::apiResource ('cadastro', 'API\CadastroController');
+Route::apiResource ('register', 'API\RegisterController');
 
 
 /* 
