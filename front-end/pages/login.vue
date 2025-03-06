@@ -166,7 +166,7 @@ h1 {
 	font-size: 28px;
 }
 
-::v-deep .v-field__outline {
+:deep(.v-field__outline) {
 	--v-field-border-width: 3px !important;
 	--v-field-border-opacity: 1 !important;
 }
@@ -195,7 +195,7 @@ h1 {
 	font-weight: 600;
 }
 
-::v-deep .v-text-field input {
+:deep(.v-text-field input) {
 	font-size: 1.5rem;
 }
 
