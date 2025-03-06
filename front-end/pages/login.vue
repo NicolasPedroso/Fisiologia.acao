@@ -10,6 +10,8 @@
 				variant="outlined"
 				:rules="rules.email"
 				class="field-content mt-3"
+				tile
+				hint
 			/>
 			<h1 class="my-4">Senha</h1>
 			<v-text-field
@@ -162,6 +164,11 @@ h1 {
 	align-self: flex-start;
 	text-align: left;
 	font-size: 28px;
+}
+
+::v-deep .v-field__outline {
+	--v-field-border-width: 3px !important;
+	--v-field-border-opacity: 1 !important;
 }
 
 .login-btn {
