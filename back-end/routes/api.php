@@ -27,6 +27,8 @@ Route::post('signup', 'API\AuthController@signup');
 */
 Route::apiResource ('cadastro', 'API\CadastroController');
 
+Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
+
 
 /* 
     Rotas de autenticação.
@@ -35,5 +37,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('logout', 'API\AuthController@logout');
     Route::get('user', 'API\AuthController@user');
+
+    Route::apiResource('contato', 'API\ContactController')->only(['store','update','destroy']);
 
 });
