@@ -21,6 +21,9 @@ use App\Http\Controllers\RespostaController;
 // CRUD Fases
 Route::apiResource('fases', FaseController::class);
 
+
+Route::apiResource ('cadastro', 'API\CadastroController');
+
 // CRUD Perguntas
 Route::apiResource('perguntas', PerguntaController::class);
 

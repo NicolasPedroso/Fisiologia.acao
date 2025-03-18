@@ -1,5 +1,5 @@
 <template>
-	<v-app full-height theme="dark">
+	<v-app full-height theme="light">
 		<!-- Drawer que contém os links para as páginas -->
 		<v-no-ssr>
 			<v-navigation-drawer v-model="drawer">
@@ -10,18 +10,12 @@
 				<v-list lines="3" class="my-2">
 					<v-list-item
 						class="drawer-logo"
-						title="Ecomp"
-						subtitle="Empresa júnior de computação da UFPR"
+						title="Endo Games"
+						subtitle="@endo.games"
+						prepend
 					>
 						<template #prepend>
-							<v-img
-								width="40"
-								height="56"
-								contain
-								class="mr-4"
-								src="/images/logo.png"
-								alt="Logo da Ecomp"
-							/>
+							<v-icon icon="mdi-lock" size="48" color="#fff" />
 						</template>
 					</v-list-item>
 				</v-list>
@@ -63,13 +57,6 @@
 			<NuxtPage />
 		</v-main>
 		<!-- Conteúdo -->
-		<!-- Footer -->
-		<v-no-ssr>
-			<v-footer app inset class="primary-color">
-				<span class="text-color"> &copy; Ecomp 2024 </span>
-			</v-footer>
-		</v-no-ssr>
-		<!-- Footer -->
 	</v-app>
 </template>
 <script setup>
@@ -79,36 +66,43 @@ import { useAuthStore } from "~/store/auth"
 
 // Variáveis de ambiente
 const router = useRouter()
-const drawer = ref(false)
+const drawer = ref(true)
 
 // Variáveis e funções da STORE
 const { logUserOut } = useAuthStore()
 
 // Array de paginas que serão exibidas no drawer
 const drawerItems = [
+	{ type: "subheader", title: "Ajuda" },
 	{
-		icon: "mdi-monitor-dashboard",
-		title: "Dashboard 1",
-		subtitle: "Controle geral do sistema",
-		link: "/dashboard/dashboard1",
+		icon: "mdi-help",
+		title: "FAQ e tutorial de uso",
+		subtitle: "Entenda como funciona o painel do adminstrador",
+		link: "/dashboard/",
+	},
+	{ type: "subheader", title: "Edição de conteúdo" },
+	{
+		icon: "mdi-video-box",
+		title: "Temas e vídeos",
+		subtitle: "Edite os vídeos/temas",
+		link: "/dashboard/video",
 	},
 	{
-		icon: "mdi-monitor-dashboard",
-		title: "Dashboard 2",
-		subtitle: "Controle geral do sistema",
-		link: "/dashboard/dashboard2",
+		icon: "mdi-email-edit",
+		title: "Edição de e-mail",
+		subtitle: "Atualize seu e-mail",
+		link: "/dashboard/email",
 	},
 ]
 
 // Tema que será utilizado na dashboard
 const theme = {
 	/* Fundo do Drawer da dashboard */
-	drawerBackground: "url(/images/drawer/background.jpg)",
 	drawerTextColor: "#ffffff",
 	/* Cores de fundo da dashboard  */
-	backgroundColor: "#1f1f1f",
+	backgroundColor: "#1356D3",
 	/* Cores de texto da dashboard  */
-	textColor: "#ffffff",
+	textColor: "#fff",
 }
 
 // Métodos e funções
@@ -148,27 +142,21 @@ useHead({
 	height: 100%;
 	width: 100%;
 	/* Imagens e alterações do fundo do Drawer */
-	background-image: v-bind("theme.drawerBackground");
-	filter: brightness(0.5);
+	background: linear-gradient(0deg, #053181 0%, #0b214b 100%);
 	background-size: cover;
 	background-position: center center;
-}
-
-.drawer-text {
-	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 .primary-color {
 	background-color: v-bind("theme.backgroundColor") !important;
 }
 .text-color {
-	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 	color: v-bind("theme.textColor") !important;
 }
 
+.drawer-logo :deep(.v-list-item-title),
 .drawer-logo :deep(.v-list-item-subtitle),
 .drawer-text :deep(.v-list-item-subtitle) {
 	word-break: normal !important;
+	color: #fff !important;
 }
 </style>

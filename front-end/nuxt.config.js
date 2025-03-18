@@ -63,6 +63,7 @@ export default defineNuxtConfig({
 	build: {
 		transpile: ["vuetify"],
 	},
+
 	modules: [
 		(_options, nuxt) => {
 			nuxt.hooks.hook("vite:extendConfig", (config) => {
@@ -70,10 +71,19 @@ export default defineNuxtConfig({
 				config.plugins.push(vuetify({ autoImport: true }))
 			})
 		},
+		[
+			"@nuxtjs/google-fonts",
+			{
+				families: {
+					Roboto: true,
+				},
+			},
+		],
 		"@nuxtjs/eslint-module",
 		"nuxt3-notifications",
 		"@pinia/nuxt",
 	],
+
 	vite: {
 		vue: {
 			template: {
@@ -82,4 +92,6 @@ export default defineNuxtConfig({
 		},
 		plugins: [eslintPlugin()],
 	},
+
+	compatibilityDate: "2025-02-14",
 })
