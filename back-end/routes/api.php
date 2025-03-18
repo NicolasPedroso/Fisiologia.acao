@@ -1,40 +1,47 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\FaseController;
+use App\Http\Controllers\PerguntaController;
+use App\Http\Controllers\RespostaController;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| Aqui você registra as rotas da sua API. Elas são carregadas pelo
+| RouteServiceProvider dentro de um grupo que contém o middleware "api".
 |
 */
 
-/*
-    Rotas de login.
-*/
-Route::post('login', 'API\AuthController@login');
-Route::post('signup', 'API\AuthController@signup');
+// // Rotas públicas de login/signup
+// Route::post('login', 'API\AuthController@login');
+// Route::post('signup', 'API\AuthController@signup');
 
-/* 
-    Rota de cadastro:
-    Realiza GET, POST, PUT, DELETE
-*/
+// CRUD Fases
+Route::apiResource('fases', FaseController::class);
+
+
 Route::apiResource ('register', 'API\RegisterController');
 
 
-/* 
-    Rotas de autenticação.
-*/
-Route::middleware(['auth:api'])->group(function () {
+Route::apiResource ('cadastro', 'API\CadastroController');
 
-    Route::get('logout', 'API\AuthController@logout');
-    Route::get('user', 'API\AuthController@user');
+// CRUD Perguntas
+Route::apiResource('perguntas', PerguntaController::class);
 
-});
+// CRUD individual de Respostas
+Route::apiResource('respostas', RespostaController::class);
+
+// Rota adicional para criar múltiplas respostas de uma só vez (bulk)
+// Receberá algo do tipo POST /api/perguntas/1/respostas/bulk
+Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
+
+// // Rotas que exigem autenticação por token
+// Route::middleware(['auth:api'])->group(function () {
+//     Route::get('logout', 'API\AuthController@logout');
+//     Route::get('user', 'API\AuthController@user');
+// });
