@@ -199,6 +199,7 @@ class AuthController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
 
+        $user = Auth::user();
         $tokenResult = $request->user()->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
@@ -209,7 +210,8 @@ class AuthController extends Controller
             'access_token' => $tokenResult->accessToken,
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
-            )->toDateTimeString()
+            )->toDateTimeString(),
+            'admin' => $user->admin
         ]);
     }
 
