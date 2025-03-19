@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CadastroRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,12 @@ class CadastroRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome'  => 'required|string|max:255',
-            'senha' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'endereço' => 'required|string|max:255',
-            'telefone' => 'required|string|max:255',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|unique:users',
+            'password' => 'required|string',
+            'address'  => 'required|string|max:255',
+            'phone'    => 'required|regex:/^(\d{2})(\d{4,5})-(\d{4})$/',
+            'image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
     }
 }
