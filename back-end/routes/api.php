@@ -15,12 +15,11 @@ use App\Http\Controllers\RespostaController;
 */
 
 // // Rotas públicas de login/signup
-// Route::post('login', 'API\AuthController@login');
-// Route::post('signup', 'API\AuthController@signup');
+Route::post('login', 'API\AuthController@login');
+Route::post('signup', 'API\AuthController@signup');
 
 // CRUD Fases
 Route::apiResource('fases', FaseController::class);
-
 
 Route::apiResource ('cadastro', 'API\CadastroController');
 
@@ -35,7 +34,7 @@ Route::apiResource('respostas', RespostaController::class);
 Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
 
 // // Rotas que exigem autenticação por token
-// Route::middleware(['auth:api'])->group(function () {
-//     Route::get('logout', 'API\AuthController@logout');
-//     Route::get('user', 'API\AuthController@user');
-// });
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('logout', 'API\AuthController@logout');
+    Route::get('user', 'API\AuthController@user');
+});
