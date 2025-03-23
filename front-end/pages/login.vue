@@ -24,11 +24,6 @@
 				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
 				@click:append-inner="togglePassword"
 			/>
-			<div class="my-4">
-				<nuxt-link class="auth-link" to="/password-recovery">
-					<span class="register-link">Esqueceu a senha?</span>
-				</nuxt-link>
-			</div>
 			<v-btn
 				type="submit"
 				class="login-btn rounded-lg my-12"
@@ -38,14 +33,6 @@
 				<h1>Entrar</h1>
 			</v-btn>
 		</v-form>
-		<!-- <nuxt-link class="auth-link" to="/"> Esqueceu a senha? </nuxt-link> -->
-		<div>
-			<nuxt-link class="auth-link mb-4" to="/register">
-				<span class="register-link"
-					>Não tem uma conta ainda? Clique aqui</span
-				>
-			</nuxt-link>
-		</div>
 	</v-container>
 	<!-- Conteudo da pagina -->
 </template>
@@ -137,7 +124,7 @@ async function login() {
 
 // Layout da página e middlewares
 definePageMeta({
-	layout: "login",
+	layout: "auth",
 	middleware: ["auth"],
 })
 

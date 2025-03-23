@@ -142,7 +142,7 @@ onMounted(fetchEmail)
 
 definePageMeta({
 	layout: "dashboard",
-	middleware: ["guest", "admin"],
+	middleware: ["guest"],
 })
 </script>
 
