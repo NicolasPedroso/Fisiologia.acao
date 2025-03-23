@@ -5,6 +5,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\FaseController;
 use App\Http\Controllers\PerguntaController;
 use App\Http\Controllers\RespostaController;
+use App\Http\Controllers\API\CadastroController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,6 +22,12 @@ use App\Http\Controllers\RespostaController;
 
 // CRUD Fases
 Route::apiResource('fases', FaseController::class);
+
+/* 
+    Rota de cadastro:
+    Realiza GET, POST, PUT, DELETE
+*/
+Route::apiResource ('cadastro', 'API\CadastroController');
 
 
 /* 
