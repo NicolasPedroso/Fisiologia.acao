@@ -22,7 +22,7 @@ class NotificationIconRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'notification' => 'required|boolean'
+            'notification' => 'required|integer|min:0|max:1'
         ];
     }
 }

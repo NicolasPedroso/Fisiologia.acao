@@ -27,7 +27,7 @@ Route::post('signup', 'API\AuthController@signup');
 */
 Route::apiResource ('cadastro', 'API\CadastroController');
 
-Route::apiResource('notification', 'API\NotificationIconController')->only('index','get','update','delete');
+Route::apiResource('notification', 'API\NotificationIconController')->only('index','get','store','update','delete');
 
 
 /* 
