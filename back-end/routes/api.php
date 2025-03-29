@@ -40,11 +40,18 @@ Route::apiResource ('user', 'API\UserController');
 // // Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
-    Route::get('logout', 'API\AuthController@logout');
 
     // middleware de ações realizadas somente pelo admin, setado no Kernel e no middleware como CheckIsAdmin
     Route::middleware(['admin'])->group(function () {
         Route::apiResource('contato', 'API\ContactController')->only(['store','update','destroy']);
-        Route::get('user', 'API\AuthController@user');
+
+        //retorna todos os usuários existentes
+        Route::get('users', 'API\UserController@index');
+        //retorna o usuário pelo id 
+        Route::get('user/{id}', 'API\UserController@show');
     });
+
+    Route::get('logout', 'API\AuthController@logout');
+    //retorna os dados do usuário logado, 
+	// Route::get('user', 'API\AuthController@user');
 });

@@ -12,13 +12,12 @@ use App\User;
 class UserController extends Controller
 {
     /* Função retorna todos os usuários cadastrados */
-    public function index() {
-        $data = User::all();
+    public function index()
+    {
         return response()->json([
-            'message'=>'success',
-            'data'=>$data
-
-        ],200);
+            'message'   =>  'Sucesso:',
+            'data'      =>  User::all()
+        ], 200);
     }
 
     /* Mostra um usuário conforme id*/

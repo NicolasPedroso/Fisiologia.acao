@@ -26,9 +26,8 @@ class UserRequest extends FormRequest
             'password' => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'address'  => 'required|string|max:255',
-            'phone'    => 'required|regex:/^(\d{2})(\d{4,5})-(\d{4})$/',
+            'phone'    => 'required|string|max:255',
             'image'    => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'admin'    => 'required|boolean'
         ];
     }
 }
