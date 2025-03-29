@@ -93,16 +93,25 @@ class AuthController extends Controller
      */
     public function signup(UserRequest $request)
     {
-        $request->merge([
-            'password' => bcrypt($request->password),
-        ]);
-        $user = User::create($request->all());
-        return response()->json([
-            'message'   =>  'Usuário criado: ',
-            'data'      =>   $user
-        ], 201);
+    
+        if ($request->hasFile('image')) {
+            $file_path = $request->file('image')->store('image', 'public');
+        }
 
-        return response()->json('Usuário criado com sucesso!', 201);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'image' => $file_path,
+        ]);
+    
+        return response()->json([
+            'message' => 'Usuário criado com sucesso!',
+            'data' => $user,
+            'teste' => $file_path,
+        ], 201);
     }
 
     /**

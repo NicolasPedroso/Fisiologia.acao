@@ -17,6 +17,9 @@ use App\Http\Controllers\API\RespostaController;
 
 // Rotas públicas de login/signup, ambas funcionais
 Route::post('login', 'API\AuthController@login');
+
+// A Signup tem o campo password_confirmation, mesmo não aparecendo na request!!! O laravel vai verificar
+// se os valores são iguais
 Route::post('signup', 'API\AuthController@signup');
 
 /* 

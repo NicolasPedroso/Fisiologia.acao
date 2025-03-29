@@ -23,11 +23,11 @@ class UserRequest extends FormRequest
     {
         return [
             'name'     => 'required|string|max:255',
-            'password' => 'required|string|max:255',
+            'password' => 'required|string|max:255|confirmed',
             'email'    => 'required|email|unique:users,email',
             'address'  => 'required|string|max:255',
-            'phone'    => 'required|string|max:255',
-            'image'    => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'phone' => 'required|string|max:255|regex:/^\(\d{2}\) \d{4,5}-\d{4}$/',
+            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 }
