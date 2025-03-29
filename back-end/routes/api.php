@@ -28,19 +28,19 @@ Route::apiResource ('user', 'API\UserController');
 
 // CRUD Perguntas
 
-Route::apiResource('perguntas', PerguntaController::class);
+// Route::apiResource('perguntas', PerguntaController::class);
 
-// CRUD individual de Respostas
-Route::apiResource('respostas', RespostaController::class);
+// // CRUD individual de Respostas
+// Route::apiResource('respostas', RespostaController::class);
 
-// Rota adicional para criar múltiplas respostas de uma só vez (bulk)
-// Receberá algo do tipo POST /api/perguntas/1/respostas/bulk
-Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
+// // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
+// // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk
+// Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
 
 // // Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
-    Route::get('logout', 'API\AuthController@logout');
     Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
+    Route::get('logout', 'API\AuthController@logout');
 
     // middleware de ações realizadas somente pelo admin
     Route::middleware(['admin'])->group(function () {
