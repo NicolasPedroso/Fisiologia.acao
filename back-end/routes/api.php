@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FaseController;
-use App\Http\Controllers\PerguntaController;
-use App\Http\Controllers\RespostaController;
+use App\Http\Controllers\API\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,10 +18,11 @@ use App\Http\Controllers\RespostaController;
 Route::post('login', 'API\AuthController@login');
 Route::post('signup', 'API\AuthController@signup');
 
-// CRUD Fases
-Route::apiResource('fases', FaseController::class);
-
-Route::apiResource ('cadastro', 'API\CadastroController');
+/* 
+    Rota de cadastro:
+    Realiza GET, POST, PUT, DELETE
+*/
+Route::apiResource ('user', 'API\UserController');
 
 // CRUD Perguntas
 Route::apiResource('perguntas', PerguntaController::class);
