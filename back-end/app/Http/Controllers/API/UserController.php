@@ -44,12 +44,18 @@ class UserController extends Controller
 
     /* Atualiza um usuário */
     public function update($id, Request $request) {
-        $data = User::find($id);
-        if (!$data)
+        $user = User::find($id);
+        if (!$user)
             return response()->json(['message' => 'Usuário nao encontrado', 'data' => null], 404);
-        $register = $request->all();
-        if ($request->has('password'))
-            $register['password']= Hash::make($request->password);
+
+        $data = $request->all();
+
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
         if ($request->hasFile('image')) {
             if (Storage::exist ('/public/' . $request->image)) {
                 Storage::delete ('/public/' . $request->image);
@@ -57,8 +63,9 @@ class UserController extends Controller
             $file_path = $request->file('image')->store('image', ['disk' => 'public']);
             $data['image'] = $file_path;
         }
-        $data->update ($register);
-        return response()->json(['message' => 'Usuário atualizado', 'data' => $register], 200);
+
+        $user->update($data);
+        return response()->json(['message' => 'Usuário atualizado com sucesso', 'data' => $user], 200);
 
     }
 

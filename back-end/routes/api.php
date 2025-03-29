@@ -47,6 +47,8 @@ Route::middleware(['auth:api'])->group(function () {
 
         //retorna todos os usuários existentes
         Route::get('users', 'API\UserController@index');
+        //consegue mudar qualquer campo do usuário
+        Route::put('user/{id}', 'API\UserController@update');
         //retorna o usuário pelo id 
         Route::get('user/{id}', 'API\UserController@show');
     });
