@@ -24,6 +24,7 @@ Route::post('signup', 'API\AuthController@signup');
 */
 Route::apiResource ('user', 'API\UserController');
 
+Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
 // CRUD Perguntas
 Route::apiResource('perguntas', PerguntaController::class);
 
@@ -38,4 +39,5 @@ Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, '
 Route::middleware(['auth:api'])->group(function () {
     Route::get('logout', 'API\AuthController@logout');
     Route::get('user', 'API\AuthController@user');
+    Route::apiResource('contato', 'API\ContactController')->only(['store','update','destroy']);
 });
