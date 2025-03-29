@@ -61,7 +61,7 @@ class PerguntaController extends Controller
             'fase_id'      => 'required|exists:fases,id',
             'texto'        => 'required|string',
             'dificuldade'  => 'required|integer|in:1,2,3',
-            'imagem'       => 'required|string',
+            'imagem'       => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'video_link'   => 'required|string',
         ], [
             'fase_id.required' => 'Falta preencher o campo fase_id',
