@@ -24,7 +24,7 @@ Route::post('signup', 'API\AuthController@signup');
     Realiza GET, POST, PUT, DELETE
 */
 
-// Rota alternativa pra cadastro de usuário, aceita o POST
+// Rota alternativa pra cadastro de usuário, aceita somente POST
 Route::post ('user', 'API\UserController@store');
 
 // // Rotas que exigem autenticação por token
@@ -40,6 +40,7 @@ Route::middleware(['auth:api'])->group(function () {
     // CRUD Fase. Para ter uma pergunta e resposta deve existir uma fase criada
     Route::apiResource('fase', 'API\FaseController');
 
+    // A rota abaixo é a mais complexa do projeto, então coloquei comentários para ajudar o front
     // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
     // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk. Com o id da pergunta criada, crie um raw como abaixo
     /* 
@@ -51,7 +52,22 @@ Route::middleware(['auth:api'])->group(function () {
             }
         ]
     }
-    */
+
+    Ou assim:
+    /**
+     * Criar VÁRIAS respostas de uma só vez (bulk),
+     * vinculado a uma pergunta específica (via URL).
+     *
+     * Exemplo de body (JSON) esperado:
+     * {
+     *   "respostas": [
+     *     { "texto": "Alternativa A", "correta": false },
+     *     { "texto": "Alternativa B", "correta": true },
+     *     ...
+     *   ]
+     * }
+     */
+
     Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
 
     // middleware de ações realizadas somente pelo admin, setado no Kernel e no middleware como CheckIsAdmin
@@ -60,12 +76,13 @@ Route::middleware(['auth:api'])->group(function () {
 
         //retorna todos os usuários existentes
         Route::get('users', 'API\UserController@index');
-        //consegue mudar qualquer campo do usuário
+        //consegue mudar qualquer campo do usuário, por isso só o admin pode utilizar. Também pode mudar a senha do próprio admin,
         Route::put('user/{id}', 'API\UserController@update');
         //retorna o usuário pelo id 
         Route::get('user/{id}', 'API\UserController@show');
     });
 
     Route::get('logout', 'API\AuthController@logout'); 
+    // retorna os campos do usuário logado
 	Route::get('user', 'API\AuthController@user');
 });
