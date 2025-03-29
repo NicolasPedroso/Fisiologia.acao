@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\RespostaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,22 +25,34 @@ Route::post('signup', 'API\AuthController@signup');
 */
 
 // Rota alternativa pra cadastro de usuário, aceita o POST
-Route::apiResource ('user', 'API\UserController');
-
-// CRUD Perguntas
-
-// Route::apiResource('perguntas', PerguntaController::class);
-
-// // CRUD individual de Respostas
-// Route::apiResource('respostas', RespostaController::class);
-
-// // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
-// // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk
-// Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
+Route::post ('user', 'API\UserController@store');
 
 // // Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
+
+    // CRUD Perguntas. Precisa da chave estrangeira da fase
+    Route::apiResource('perguntas', 'API\PerguntaController');
+
+    // CRUD individual de Respostas. Precisa da chave estrangeira da pergunta
+    Route::apiResource('respostas', 'API\RespostaController');
+
+    // CRUD Fase. Para ter uma pergunta e resposta deve existir uma fase criada
+    Route::apiResource('fase', 'API\FaseController');
+
+    // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
+    // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk. Com o id da pergunta criada, crie um raw como abaixo
+    /* 
+    {
+        "respostas": [
+            {
+                "texto": "Uma pergunta",
+                "correta": 0
+            }
+        ]
+    }
+    */
+    Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
 
     // middleware de ações realizadas somente pelo admin, setado no Kernel e no middleware como CheckIsAdmin
     Route::middleware(['admin'])->group(function () {
@@ -53,7 +66,6 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('user/{id}', 'API\UserController@show');
     });
 
-    Route::get('logout', 'API\AuthController@logout');
-    //retorna os dados do usuário logado, 
-	// Route::get('user', 'API\AuthController@user');
+    Route::get('logout', 'API\AuthController@logout'); 
+	Route::get('user', 'API\AuthController@user');
 });
