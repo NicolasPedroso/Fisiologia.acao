@@ -40,7 +40,7 @@ class UserController extends Controller
         $register = User::create($data);
         if (!$register)
             return response()->json(['message' => 'Usuário não criado', 'data' => null], 404);
-        return response()->json(['message' => 'Usuário criado', 'data' => $register], 201);
+        return response()->json(['message' => 'Usuário criado com sucesso', 'data' => $register], 201);
     }
 
     /* Atualiza um usuário */

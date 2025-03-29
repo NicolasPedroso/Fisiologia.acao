@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'phone' => "4411122",
             'image' => "teste.jpg",
             'admin' => true,
+            'name' => "paulo",
         ]);
 
         DB::table('users')->insert([
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
             'phone' => "4411223344",
             'image' => "user.jpg",
             'admin' => false, 
+            'name' => "paulo",
         ]);
     }
 }

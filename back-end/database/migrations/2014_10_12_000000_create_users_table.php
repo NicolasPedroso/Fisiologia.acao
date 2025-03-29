@@ -17,6 +17,9 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            // caso queiram adicionar confirmação de senha no cadastro, só tirar esse nullable
+            $table->timestamp('password_confirmation')->nullable();
+            $table->string('name');
             $table->string('password');
             $table->string('address');
             $table->string('phone');

@@ -14,7 +14,7 @@ use App\Http\Controllers\API\UserController;
 |
 */
 
-// // Rotas públicas de login/signup
+// Rotas públicas de login/signup, ambas funcionais
 Route::post('login', 'API\AuthController@login');
 Route::post('signup', 'API\AuthController@signup');
 
@@ -23,7 +23,7 @@ Route::post('signup', 'API\AuthController@signup');
     Realiza GET, POST, PUT, DELETE
 */
 
-// Rota para usuário realizar o cadastro, só aceita POST, está gerando um usuário funcional com admin setado por padrão como 0. Problema é que cria um campo email_verified_at
+// Rota alternativa pra cadastro de usuário, aceita o POST
 Route::apiResource ('user', 'API\UserController');
 
 // CRUD Perguntas
@@ -42,10 +42,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
     Route::get('logout', 'API\AuthController@logout');
 
-    // middleware de ações realizadas somente pelo admin
+    // middleware de ações realizadas somente pelo admin, setado no Kernel e no middleware como CheckIsAdmin
     Route::middleware(['admin'])->group(function () {
         Route::apiResource('contato', 'API\ContactController')->only(['store','update','destroy']);
-        // retorna somente os valores do usuário que está logado
         Route::get('user', 'API\AuthController@user');
     });
 });
