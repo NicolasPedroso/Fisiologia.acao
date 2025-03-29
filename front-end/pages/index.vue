@@ -1,59 +1,150 @@
 <template>
-	<v-container fluid class="ma-0 pa-0">
-		<!-- Ao iniciar o projeto, deletar todo o conteúdo dentro do v-container -->
-		<div
-			style="
-				background-color: #0b0b0b;
-				height: 100vh;
-				color: #fff;
-				gap: 20px;
-			"
-			class="text-center d-flex flex-column justify-center align-center"
-		>
-			<h1 style="color: #00dc80">Bem-vindo(a) ao Projeto Base de 2024</h1>
-			<p>
-				1. Olhem e pesquisem sobre a estrutura das Pastas NUXT no drive
-				de Projetos antes de iniciar
-			</p>
-			<p>
-				2. Utilizem o Vuetify, contém vários componentes e scripts
-				prontos
-			</p>
-			<p>
-				3. Para pegar dados do backend, vejam o uso do
-				<strong>useDataLoader</strong> que fizemos para vocês, ele está
-				documentado em composables/useDataLoader.js e veja bem como
-				$fetch e useFetch funciona no Nuxt3
-			</p>
-			<p>
-				4. Sigam o padrão de código estabelecido por Qualidade na
-				<a
-					href="https://wiki-ecomp.vercel.app/docs/Padrao/Carreiras/Front-End/"
-					target="_blank"
-					style="color: #00dc80"
+	<NuxtNotifications />
+	<!-- Conteudo da pagina -->
+	<v-container fluid class="ma-0 pa-0 text-center">
+		<v-form v-model="valid" @submit.prevent>
+			<h1 class="my-4">Email</h1>
+			<v-text-field
+				v-model="email"
+				label="E-mail"
+				variant="outlined"
+				:rules="rules.email"
+				class="field-content mt-3"
+				tile
+				hint
+			/>
+			<h1 class="my-4">Senha</h1>
+			<v-text-field
+				v-model="password"
+				class="field-content mt-3"
+				label="Senha"
+				variant="outlined"
+				:type="showPassword ? 'text' : 'password'"
+				:rules="rules.password"
+				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+				@click:append-inner="togglePassword"
+			/>
+			<div class="my-4">
+				<nuxt-link class="auth-link" to="/password-recovery">
+					<span class="register-link">Esqueceu a senha?</span>
+				</nuxt-link>
+			</div>
+			<v-btn
+				type="submit"
+				class="login-btn rounded-lg my-12"
+				variant="outlined"
+				@click="login"
+			>
+				<h1>Entrar</h1>
+			</v-btn>
+		</v-form>
+		<!-- <nuxt-link class="auth-link" to="/"> Esqueceu a senha? </nuxt-link> -->
+		<div>
+			<nuxt-link class="auth-link mb-4" to="/register">
+				<span class="register-link"
+					>Não tem uma conta ainda? Clique aqui</span
 				>
-					wiki deles
-				</a>
-			</p>
-			<p>
-				5. Utilize e abuse da documentação do Nuxt3, Vue3, Vuetify e dos
-				materiais das capacitações
-			</p>
-			<p>
-				6.
-				<strong style="color: #00dc80">
-					E por fim, não hesitem em perguntar, somos todos ECOMP
-				</strong>
-			</p>
+			</nuxt-link>
 		</div>
-		<!-- Ao iniciar o projeto, deletar todo o conteúdo dentro do v-container -->
 	</v-container>
+	<!-- Conteudo da pagina -->
 </template>
 <script setup>
-// Cabeçalhos da pagina
+// Import das funções e gerenciamento de STORE
+import { storeToRefs } from "pinia"
+import { useAuthStore } from "~/store/auth"
+
+// Campos do formulário
+const email = ref("")
+const password = ref("")
+
+// Usar o snackbar
+const { notify } = useNotification()
+
+const showPassword = ref(false)
+
+const togglePassword = () => {
+	showPassword.value = !showPassword.value
+}
+
+// Regras e validade do formulário
+const valid = ref(false)
+const rules = {
+	email: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+		(value) => {
+			if (/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(value))
+				return true
+			return "O e-mail deve ser válido"
+		},
+	],
+	password: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+	],
+}
+
+// Função de autenticação da STORE
+const { authenticateUser } = useAuthStore()
+const { authenticated } = storeToRefs(useAuthStore())
+const router = useRouter()
+
+// Funções
+async function login() {
+	// Verifica se o formulário está preenchido corretamente
+	if (valid.value) {
+		console.log("ENTROU")
+		console.log("email e senha =", email.value, password.value)
+		// Feedback que está carregando a requisição
+		notify({
+			id: "loading",
+			text: "Carregando...",
+			type: "info",
+		})
+		console.log("ENTROU")
+		// Envia os dados para o backend
+		await authenticateUser({
+			email: email.value,
+			password: password.value,
+		})
+		if (authenticated.value) {
+			// Redireciona para a dashboard
+			router.push("/Endogames")
+		} else {
+			// Feedback de erro
+			console.log("Deu erro")
+			router.push("/dashboard")
+			notify.close("loading")
+			notify({
+				title: "Erro de autenticação",
+				text: "Não foi possível autenticar o usuário. Verifique os dados e tente novamente.",
+				type: "error",
+			})
+		}
+	} else {
+		// feedback de erro
+		notify({
+			text: "Preencha os campos corretamente para continuar",
+			type: "info",
+		})
+	}
+}
+
+// Layout da página e middlewares
+definePageMeta({
+	layout: "login",
+	middleware: ["auth"],
+})
+
+// Cabeçalho da página
 useSeoMeta({
-	title: "Página inicial",
-	description: "Página inicial do projeto base 2024 da Ecomp.",
+	description: "Página para login para acesso a dashboard.",
+	keywords: "login, dashboard, acesso",
 })
 useHead({
 	htmlAttrs: {
@@ -62,9 +153,53 @@ useHead({
 	link: [
 		{
 			rel: "icon",
-			type: "image/ico",
-			href: "/favicon.ico",
+			type: "image/png",
+			href: "/favicon.png",
 		},
 	],
 })
 </script>
+<style scoped>
+h1 {
+	align-self: flex-start;
+	text-align: left;
+	font-size: 28px;
+}
+
+:deep(.v-field__outline) {
+	--v-field-border-width: 3px !important;
+	--v-field-border-opacity: 1 !important;
+}
+
+.login-btn {
+	width: 100%;
+	height: 5rem;
+	background-color: #0d45ae;
+	color: #ffffff;
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+	transition: box-shadow 0.3s ease;
+}
+
+.login-btn:hover {
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.register-link {
+	font-size: 28px;
+}
+
+.auth-link {
+	color: black;
+	font-size: 1.1rem;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+:deep(.v-text-field input) {
+	font-size: 1.5rem;
+}
+
+.auth-link:hover {
+	color: #0d45ae;
+}
+</style>
