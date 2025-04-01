@@ -30,7 +30,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('logout', 'API\AuthController@logout');
     Route::get('user', 'API\AuthController@user');
 
+    Route::apiResource('profileIcon','API\ProfileIconController')->only(['store','update','delete']);
+    
     Route::middleware(['admin'])->group(function(){
-        Route::apiResource('profileIcon','API\ProfileIconController')->only(['store','update','show']);
     });
 });
