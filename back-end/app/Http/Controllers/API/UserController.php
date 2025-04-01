@@ -55,7 +55,6 @@ class UserController extends Controller
         } else {
             unset($data['password']);
         }
-
         if ($request->hasFile('image')) {
             if (Storage::exist ('/public/' . $request->image)) {
                 Storage::delete ('/public/' . $request->image);
@@ -63,7 +62,6 @@ class UserController extends Controller
             $file_path = $request->file('image')->store('image', ['disk' => 'public']);
             $data['image'] = $file_path;
         }
-
         $user->update($data);
         return response()->json(['message' => 'Usuário atualizado com sucesso', 'data' => $user], 200);
 

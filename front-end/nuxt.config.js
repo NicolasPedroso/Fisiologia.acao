@@ -1,6 +1,6 @@
 // Plugins imports
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify"
-import eslintPlugin from "vite-plugin-eslint"
+// import eslintPlugin from "vite-plugin-eslint"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // Exports from Nuxt
@@ -71,15 +71,7 @@ export default defineNuxtConfig({
 				config.plugins.push(vuetify({ autoImport: true }))
 			})
 		},
-		[
-			"@nuxtjs/google-fonts",
-			{
-				families: {
-					Roboto: true,
-				},
-			},
-		],
-		"@nuxtjs/eslint-module",
+		// "@nuxtjs/eslint-module",
 		"nuxt3-notifications",
 		"@pinia/nuxt",
 	],
@@ -90,8 +82,8 @@ export default defineNuxtConfig({
 				transformAssetUrls,
 			},
 		},
-		plugins: [eslintPlugin()],
+		plugins: [],
 	},
 
-	compatibilityDate: "2025-02-14",
+	compatibilityDate: "2025-02-13",
 })
