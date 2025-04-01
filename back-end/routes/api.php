@@ -4,7 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RespostaController;
-
+use App\Http\Controllers\API\FaseController;
+use App\Http\Controllers\API\PerguntaController;
+use App\Http\Controllers\API\RespostaController;
+use App\Http\Controllers\API\CadastroController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +32,15 @@ Route::post('signup', 'API\AuthController@signup');
 
 // Rota alternativa pra cadastro de usuário, aceita somente POST
 Route::post ('user', 'API\UserController@store');
+Route::apiResource ('cadastro', 'API\CadastroController');
+
+
+/* 
+    Rota de cadastro:
+    Realiza GET, POST, PUT, DELETE
+*/
+Route::apiResource ('user', 'API\UserController');
+Route::apiResource ('cadastro', 'API\CadastroController');
 
 // // Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
