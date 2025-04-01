@@ -9,86 +9,85 @@ use Illuminate\Http\Request;
 
 class NotificationIconController extends Controller
 {
-/**
-     * Display a listing of the resource.
+    /**
+     * Retorna o status atual da notificação.
      */
     public function index()
     {
-        $notificationIcon = NotificationIcon::first();
+        $notification = NotificationIcon::first();
+        $status = $notification ? (bool) $notification->notification : false;
     
         return response()->json([
             'message' => 'Status da notificação recuperado com sucesso',
-            'data' => $notificationIcon
-        ], 200);
-    }    
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(NotificationIconRequest $request)
-    {
-        $notificationIcon = NotificationIcon::updateOrCreate(
-            [], // Garantindo que só exista um registro
-            ['notification' => $request->notification]
-        );
-
-        return response()->json([
-            'message' => 'Status da notificação atualizado com sucesso',
-            'data' => $notificationIcon
+            'status' => $status
         ], 200);
     }
 
+    /**
+     * Cria ou atualiza o status da notificação.
+     */
+    public function store(NotificationIconRequest $request)
+    {
+        $notification = NotificationIcon::updateOrCreate(
+            [],
+            ['notification' => (bool) $request->notification]
+        );
+    
+        return response()->json([
+            'message' => 'Status da notificação salvo com sucesso',
+            'status' => (bool) $notification->notification
+        ], 200);
+    }
 
     /**
-     * Display the specified resource.
+     * Exibe o status específico da notificação.
      */
     public function show(NotificationIcon $notificationIcon)
     {
         return response()->json([
             'message' => 'Status da notificação recuperado com sucesso',
-            'data' => $notificationIcon
+            'status' => (bool) $notificationIcon->notification
         ], 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza o status da notificação.
      */
     public function update(NotificationIconRequest $request)
     {
-        $notificationIcon = NotificationIcon::first();
-        
-        if (!$notificationIcon) {
+        $notification = NotificationIcon::first();
+    
+        if (!$notification) {
             return response()->json([
                 'message' => 'Registro de notificação não encontrado'
             ], 404);
         }
     
-        $notificationIcon->update(['notification' => $request->notification]);
+        $notification->update(['notification' => (bool) $request->notification]);
     
         return response()->json([
-            'message' => 'Status da notificacao atualizado com sucesso',
-            'data' => $notificationIcon
+            'message' => 'Status da notificação atualizado com sucesso',
+            'status' => (bool) $notification->notification
         ], 200);
     }
     
     /**
-     * Remove the specified resource from storage.
+     * Remove o status da notificação.
      */
     public function destroy()
     {
-        $notificationIcon = NotificationIcon::first();
+        $notification = NotificationIcon::first();
     
-        if (!$notificationIcon) {
+        if (!$notification) {
             return response()->json([
                 'message' => 'Nenhuma notificação encontrada'
             ], 404);
         }
     
-        $notificationIcon->delete();
+        $notification->delete();
     
         return response()->json([
             'message' => 'Notificação removida com sucesso'
         ], 200);
     }
-    
 }
