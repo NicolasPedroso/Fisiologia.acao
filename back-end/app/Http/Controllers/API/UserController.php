@@ -12,13 +12,12 @@ use App\User;
 class UserController extends Controller
 {
     /* Função retorna todos os usuários cadastrados */
-    public function index() {
-        $data = User::all();
+    public function index()
+    {
         return response()->json([
-            'message'=>'success',
-            'data'=>$data
-
-        ],200);
+            'message'   =>  'Sucesso:',
+            'data'      =>  User::all()
+        ], 200);
     }
 
     /* Mostra um usuário conforme id*/
@@ -40,17 +39,23 @@ class UserController extends Controller
         $register = User::create($data);
         if (!$register)
             return response()->json(['message' => 'Usuário não criado', 'data' => null], 404);
-        return response()->json(['message' => 'Usuário criado', 'data' => $register], 201);
+        return response()->json(['message' => 'Usuário criado com sucesso', 'data' => $register], 201);
     }
 
     /* Atualiza um usuário */
     public function update($id, Request $request) {
-        $data = User::find($id);
-        if (!$data)
+        $user = User::find($id);
+        if (!$user)
             return response()->json(['message' => 'Usuário nao encontrado', 'data' => null], 404);
-        $register = $request->all();
-        if ($request->has('password'))
-            $register['password']= Hash::make($request->password);
+
+        $data = $request->all();
+
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
         if ($request->hasFile('image')) {
             if (Storage::exist ('/public/' . $request->image)) {
                 Storage::delete ('/public/' . $request->image);
@@ -58,8 +63,9 @@ class UserController extends Controller
             $file_path = $request->file('image')->store('image', ['disk' => 'public']);
             $data['image'] = $file_path;
         }
-        $data->update ($register);
-        return response()->json(['message' => 'Usuário atualizado', 'data' => $register], 200);
+
+        $user->update($data);
+        return response()->json(['message' => 'Usuário atualizado com sucesso', 'data' => $user], 200);
 
     }
 

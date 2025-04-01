@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Validator;
@@ -90,23 +91,26 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(Request $request)
+    public function signup(UserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
-        ]);
+    
+        if ($request->hasFile('image')) {
+            $file_path = $request->file('image')->store('image', 'public');
+        }
 
-        if ($validator->fails())
-            return response()->json($validator->errors(), 400);
-
-        $user = new User([
+        $user = User::create([
+            'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'image' => $file_path,
         ]);
-        $user->save();
-
-        return response()->json('Usuário criado com sucesso!', 201);
+    
+        return response()->json([
+            'message' => 'Usuário criado com sucesso!',
+            'data' => $user,
+        ], 201);
     }
 
     /**
