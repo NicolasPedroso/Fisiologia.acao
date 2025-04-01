@@ -33,6 +33,8 @@ Route::post ('user', 'API\UserController@store');
 // // Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
+  
+    Route::apiResource('notificacao', 'API\NotificationIconController')->only('index','get','store','update','delete');
 
     // CRUD Perguntas. Precisa da chave estrangeira da fase
     Route::apiResource('perguntas', 'API\PerguntaController');
