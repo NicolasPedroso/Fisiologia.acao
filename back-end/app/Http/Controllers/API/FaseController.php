@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Fase;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FaseController extends Controller
 {
     public function index()
     {
+        // Lista todas as fases, sem paginação.
         return response()->json(Fase::all());
     }
 
@@ -24,10 +26,8 @@ class FaseController extends Controller
         return response()->json($fase, 201);
     }
 
-    // Note aqui que a assinatura recebe Fase $fase
     public function show(Fase $fase)
     {
-        // $fase já está carregado, ou 404 se não achar
         return response()->json($fase, 200);
     }
 

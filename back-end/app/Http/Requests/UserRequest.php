@@ -19,15 +19,15 @@ class UserRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|unique:users',
-            'password' => 'required|string',
+            'password' => 'required|string|max:255|confirmed',
+            'email'    => 'required|email|unique:users,email',
             'address'  => 'required|string|max:255',
-            'phone'    => 'required|regex:/^(\d{2})(\d{4,5})-(\d{4})$/',
-            'image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'phone' => 'required|string|max:255|regex:/^\(\d{2}\) \d{4,5}-\d{4}$/',
+            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Resposta;
 use App\Models\Pergunta;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class RespostaController extends Controller
 {
@@ -27,7 +28,7 @@ class RespostaController extends Controller
             'correta'     => 'required|boolean',
         ]);
 
-        // Se for "correta = true", checar se já existe outra resposta correta
+        // Se já existir uma resposta correta, não podemos criar outra
         if ($request->correta) {
             $existeCorreta = Resposta::where('pergunta_id', $request->pergunta_id)
                                      ->where('correta', true)
@@ -117,7 +118,6 @@ class RespostaController extends Controller
         $inseridas = [];
 
         foreach ($data['respostas'] as $resp) {
-            // Se estiver marcando como correta, verificar se já existe outra
             if ($resp['correta']) {
                 $existeCorreta = Resposta::where('pergunta_id', $pergunta->id)
                                          ->where('correta', true)
@@ -129,7 +129,6 @@ class RespostaController extends Controller
                 }
             }
 
-            // Criar a resposta
             $nova = Resposta::create([
                 'pergunta_id' => $pergunta->id,
                 'texto'       => $resp['texto'],
