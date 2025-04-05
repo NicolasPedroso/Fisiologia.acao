@@ -108,7 +108,7 @@ const theme = {
 // Métodos e funções
 async function logout() {
 	await logUserOut()
-	router.push("/login")
+	router.push("/")
 }
 
 // Cabeçalhos da pagina
