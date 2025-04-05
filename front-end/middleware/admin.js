@@ -1,7 +1,10 @@
 /* eslint-disable */
 export default defineNuxtRouteMiddleware((to, from) => {
-	const isAdmin = true
-	if (isAdmin !== true) {
-		return navigateTo("/", { redirectCode: 401 })
+	const cookieAdmin = useCookie("admin", {
+		sameSite: true,
+	})
+
+	if (cookieAdmin.value !== true) {
+		return navigateTo("/Endogames", { redirectCode: 200 })
 	}
 })

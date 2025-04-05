@@ -138,7 +138,7 @@
 						<v-col cols="12">
 							<span>CONFIRME SUA SENHA</span>
 							<v-text-field
-								v-model="confirmPassword"
+								v-model="password_confirm"
 								label="Confirme sua senha"
 								:type="show2 ? 'text' : 'password'"
 								variant="outlined"
@@ -172,91 +172,127 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import axios from "axios";
+definePageMeta({
+	layout: "Auth",
+	middleware: ["auth"],
+})
 
-const name = ref("");
-const email = ref("");
-const phone = ref("");
-const address = ref("");
-const password = ref("");
-const confirmPassword = ref("");
-const file = ref(null);
-const fileError = ref("");
-const show1 = ref(false);
-const show2 = ref(false);
+// Cabeçalho da página
+useSeoMeta({
+	description: "Página para cadastro",
+})
+useHead({
+	htmlAttrs: {
+		lang: "pt-br",
+	},
+	link: [
+		{
+			rel: "icon",
+			type: "image/png",
+			href: "/favicon.png",
+		},
+	],
+})
+
+import { ref, computed } from "vue"
+import axios from "axios"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+
+const name = ref("")
+const email = ref("")
+const phone = ref("")
+const address = ref("")
+const password = ref("")
+const password_confirm = ref("")
+const file = ref(null)
+const fileError = ref("")
+const show1 = ref(false)
+const show2 = ref(false)
 
 const imageRequired = (v) => {
-    if (!v) {
-        fileError.value = "Imagem de perfil é obrigatória";
-        return false;
-    }
-    fileError.value = "";
-    return true;
-};
+	if (!v) {
+		fileError.value = "Imagem de perfil é obrigatória"
+		return false
+	}
+	fileError.value = ""
+	return true
+}
 
-const nameRules = (v) => !!v || "Nome é obrigatório";
+const nameRules = (v) => !!v || "Nome é obrigatório"
 
 const emailRules = [
-    (v) => !!v || "E-mail é obrigatório",
-    (v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido",
-];
+	(v) => !!v || "E-mail é obrigatório",
+	(v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido",
+]
 
-const phoneRules = (v) => !!v || "Telefone é obrigatório";
+const phoneRules = (v) => !!v || "Telefone é obrigatório"
 
 const passwordRules = [
-    (v) => !!v || "Senha é obrigatória",
-    (v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
-];
+	(v) => !!v || "Senha é obrigatória",
+	(v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
+]
 
-const passwordMatch = (v) => v === password.value || "As senhas não coincidem";
+const passwordMatch = (v) => v === password.value || "As senhas não coincidem"
 
 const isFormValid = computed(() => {
-    return (
-        name.value &&
-        emailRules.every((rule) => rule(email.value) === true) &&
-        phone.value &&
-        passwordRules.every((rule) => rule(password.value) === true) &&
-        passwordMatch(confirmPassword.value) === true &&
-        !!file.value
-    );
-});
+	return (
+		name.value &&
+		emailRules.every((rule) => rule(email.value) === true) &&
+		phone.value &&
+		passwordRules.every((rule) => rule(password.value) === true) &&
+		passwordMatch(password_confirm.value) === true &&
+		!!file.value
+	)
+})
 
 const formatPhone = () => {
-    phone.value = phone.value.replace(/\D/g, "").slice(0, 11);
-    if (phone.value.length > 2) {
-        phone.value = `(${phone.value.slice(0, 2)}) ${phone.value.slice(2)}`;
-    }
-};
+	let cleaned = phone.value.replace(/\D/g, "").slice(0, 11)
+
+	if (cleaned.length > 2) {
+		cleaned = `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`
+	}
+
+	phone.value = cleaned
+}
 
 const submit = async () => {
-    if (!isFormValid.value) {
-        alert("Preencha todos os campos corretamente!");
-        return;
-    }
+	if (!isFormValid.value) {
+		alert("Preencha todos os campos corretamente!")
+		return
+	}
 
-    const formData = new FormData();
-    formData.append("nome", name.value);
-    formData.append("email", email.value);
-    formData.append("telefone", phone.value);
-    formData.append("endereço", address.value || "");
-    formData.append("senha", password.value);
-    // formData.append("file", file.value);
+	const formData = new FormData()
+	formData.append("name", name.value)
+	formData.append("email", email.value)
+	formData.append("phone", phone.value)
+	formData.append("address", address.value || "")
+	formData.append("password", password.value)
+	formData.append("password_confirmation", password_confirm.value)
+	formData.append("image", file.value)
 
-    try {
-        const response = await axios.post("http://127.0.0.1:8000/api/cadastro", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        alert("Cadastro realizado com sucesso!");
-        console.log(response.data);
-    } catch (error) {
-        console.error("Erro ao cadastrar:", error.response?.data || error.message);
-        alert("Erro ao cadastrar. Tente novamente.");
-    }
-};
-
+	try {
+		const response = await axios.post(
+			"http://127.0.0.1:8000/api/signup",
+			formData,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			},
+		)
+		alert("Cadastro realizado com sucesso!")
+		console.log(response.data)
+		router.push("/login")
+	} catch (error) {
+		console.error(
+			"Erro ao cadastrar:",
+			error.response?.data || error.message,
+		)
+		alert("Erro ao cadastrar. Tente novamente.")
+	}
+}
 </script>
 
 <style scoped>

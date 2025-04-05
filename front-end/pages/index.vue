@@ -126,7 +126,7 @@ async function login() {
 			notify.close("loading")
 			notify({
 				title: "Erro de autenticação",
-				text: "Erro de conexão",
+				text: "Usuário inexistente",
 				type: "error",
 			})
 		}

@@ -59,6 +59,7 @@
 
 <script setup>
 const { notify } = useNotification()
+const actualProjectId = useRoute().query.id
 
 const email = ref("")
 const currentEmail = ref("")
@@ -73,9 +74,13 @@ const rules = {
 
 async function fetchEmail() {
 	try {
-		const response = await useDataLoader("http://localhost:4000/e-mail/1", {
-			method: "GET",
-		})
+		const response = await useDataLoader(
+			"http://127.0.0.1:8000/api/user/1",
+			{
+				method: "GET",
+			},
+		)
+		console.log("Valor = ", response)
 		currentEmail.value = response.email
 	} catch (error) {
 		notify({
@@ -142,7 +147,7 @@ onMounted(fetchEmail)
 
 definePageMeta({
 	layout: "dashboard",
-	middleware: ["guest"],
+	middleware: ["guest", "admin"],
 })
 </script>
 
