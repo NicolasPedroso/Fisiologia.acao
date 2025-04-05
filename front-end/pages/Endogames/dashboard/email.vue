@@ -2,59 +2,42 @@
 	<v-row class="content-container">
 		<nuxt-notifications />
 		<div class="items-container">
-			<h1 class="title">Informações sobre o email</h1>
-			<v-text-field
-				v-model="currentEmail"
-				label="E-mail atual"
-				variant="solo-filled"
-				class="email-text-field"
-			></v-text-field>
-			<v-btn
-				prepend-icon="mdi-email-sync"
-				color="#1356D3"
-				class="email-btn mt-5"
-				@click="dialog = true"
-			>
-				<span class="button"> Mudar e-mail </span>
-			</v-btn>
-		</div>
-	</v-row>
-	<v-dialog v-model="dialog" width="380" height="325" persistent>
-		<v-card
-			max-width="400"
-			min-width="200"
-			class="pa-4"
-			prepend-icon="mdi-update"
-			text="Digite o seu novo e-mail"
-			title="Mudança de e-mail"
-		>
-			<v-card-text>
+			<div class="internal-blue-container pa-3 d-flex justify-center">
+				<h1 class="title-internal-blue-container mr-1 mt-2">
+					E-mail administrador
+				</h1>
+			</div>
+			<div>
+				<h1 class="title mb-8">Informações sobre o email</h1>
+				<span class="label-title mb-2"> E-mail atual </span>
+				<v-text-field
+					v-model="currentEmail"
+					label="E-mail atual"
+					variant="solo-filled"
+					class="email-text-field"
+				></v-text-field>
+				<span class="label-title mb-2"> Novo e-mail </span>
 				<v-text-field
 					v-model="email"
-					variant="outlined"
+					class="email-text-field"
+					variant="solo-filled"
 					label="Novo E-mail"
 					type="email"
-					required
 					:rules="rules.email"
 				/>
-			</v-card-text>
-			<v-card-actions class="justify-start ml-5">
-				<v-btn
-					variant="flat"
-					:loading="loadingRes"
-					text="Atualizar"
-					color="primary"
-					@click="updateEmail"
-				></v-btn>
-				<v-btn
-					variant="outlined"
-					text="Cancelar"
-					color="primary"
-					@click="dialog = false"
-				></v-btn>
-			</v-card-actions>
-		</v-card>
-	</v-dialog>
+				<div class="d-flex justify-center">
+					<v-btn
+						prepend-icon="mdi-email-edit"
+						color="#1356D3"
+						class="email-btn mt-5 mb-9"
+						@click="updateEmail"
+					>
+						<span class="button"> Mudar e-mail </span>
+					</v-btn>
+				</div>
+			</div>
+		</div>
+	</v-row>
 </template>
 
 <script setup>
@@ -75,13 +58,13 @@ const rules = {
 async function fetchEmail() {
 	try {
 		const response = await useDataLoader(
+			// uso o primeiro usuário pelo admin ser definido no seeder, não existir a criação de usuário por outros métodos
 			"http://127.0.0.1:8000/api/user/1",
 			{
 				method: "GET",
 			},
 		)
-		console.log("Valor = ", response)
-		currentEmail.value = response.email
+		currentEmail.value = response.data.email
 	} catch (error) {
 		notify({
 			title: "Erro ao buscar e-mail",
@@ -104,20 +87,14 @@ async function updateEmail() {
 		return
 	}
 
-	const data = {
-		id: 1,
-		email: email.value,
-	}
-
-	await useDataLoader("http://localhost:4000/e-mail/1", {
+	await useDataLoader("http://127.0.0.1:8000/api/user/1", {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify(data),
+		body: JSON.stringify({ email: email.value }),
 	})
 		.then(() => {
-			dialog.value = false
 			loadingRes.value = false
 			notify({
 				title: "Sucesso",
@@ -136,13 +113,6 @@ async function updateEmail() {
 			})
 		})
 }
-
-const dialog = ref(false)
-
-watch(email, (newValue) => {
-	console.log("E-mail digitado:", newValue)
-})
-
 onMounted(fetchEmail)
 
 definePageMeta({
@@ -153,28 +123,55 @@ definePageMeta({
 
 <style scoped>
 .content-container {
-	padding: 2rem;
 	display: flex;
 	justify-content: center;
 	align-content: center;
 	height: 100%;
 }
 
+.label-title {
+	display: flex;
+	align-content: start;
+	justify-content: start;
+	font-family: "Roboto", sans-serif;
+	font-weight: 600;
+}
+
+.blue-container-title {
+	font-family: "Roboto", sans-serif;
+	font-weight: 500;
+	color: #ffffff;
+}
+
+.internal-blue-container {
+	background-color: #1657c1;
+	width: 100%;
+	height: 6rem;
+	position: relative;
+	bottom: 2rem;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.title-internal-blue-container {
+	color: #ffffff;
+	font-family: "Roboto", sans-serif;
+	font-weight: 600;
+}
+
 .items-container {
-	background-color: #1356d3;
+	background-color: #ffffff;
 	align-content: center;
 	justify-items: center;
-	width: 30rem;
-	height: 20rem;
-	border-radius: 1rem;
+	width: 40rem;
+	height: 33rem;
+	border-radius: 10px;
 	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .title {
 	font-family: "Roboto", sans-serif;
-	margin-bottom: 2.5em;
-	margin-top: 1rem;
-	color: #ffffff;
 }
 
 .email-text-field {
@@ -185,7 +182,8 @@ definePageMeta({
 }
 
 .email-btn {
-	width: 15rem;
+	display: flex;
+	width: 25rem;
 	height: 3rem;
 	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }

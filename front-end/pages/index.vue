@@ -3,7 +3,7 @@
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<v-form v-model="valid" @submit.prevent>
-			<h1 class="my-4">Email</h1>
+			<h1 class="my-4">E-mail</h1>
 			<v-text-field
 				v-model="email"
 				label="E-mail"
@@ -24,11 +24,6 @@
 				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
 				@click:append-inner="togglePassword"
 			/>
-			<div class="my-4">
-				<nuxt-link class="auth-link" to="/password-recovery">
-					<span class="register-link">Esqueceu a senha?</span>
-				</nuxt-link>
-			</div>
 			<v-btn
 				type="submit"
 				class="login-btn rounded-lg my-12"
@@ -40,7 +35,7 @@
 		</v-form>
 		<!-- <nuxt-link class="auth-link" to="/"> Esqueceu a senha? </nuxt-link> -->
 		<div>
-			<nuxt-link class="auth-link mb-4" to="/register">
+			<nuxt-link class="auth-link mb-4" to="/cadastro">
 				<span class="register-link"
 					>Não tem uma conta ainda? Clique aqui</span
 				>
@@ -154,13 +149,6 @@ useHead({
 	htmlAttrs: {
 		lang: "pt-br",
 	},
-	link: [
-		{
-			rel: "icon",
-			type: "image/png",
-			href: "/favicon.png",
-		},
-	],
 })
 </script>
 <style scoped>
@@ -171,13 +159,13 @@ h1 {
 }
 
 :deep(.v-field__outline) {
-	--v-field-border-width: 3px !important;
+	--v-field-border-width: 2px !important;
 	--v-field-border-opacity: 1 !important;
 }
 
 .login-btn {
-	width: 100%;
-	height: 5rem;
+	width: 64%;
+	height: 4.5rem;
 	background-color: #0d45ae;
 	color: #ffffff;
 	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
@@ -200,7 +188,7 @@ h1 {
 }
 
 :deep(.v-text-field input) {
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 }
 
 .auth-link:hover {

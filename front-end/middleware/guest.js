@@ -24,6 +24,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	console.log("Valor dos cookie são ", cookieAdmin.value)
 
 	if (cookieAuth.value === false || cookieToken.value === null) {
-		return navigateTo("/login", { redirectCode: 401 })
+		return navigateTo("/", { redirectCode: 401 })
 	}
 })

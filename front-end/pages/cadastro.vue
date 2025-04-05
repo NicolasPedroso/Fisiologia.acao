@@ -61,10 +61,10 @@
 							cols="12"
 							class="d-flex justify-center font-weight-black text-blue-darken-4 text-h4"
 						>
-							<span>CADASTRE-SE</span>
+							<span>Cadastre-se</span>
 						</v-col>
 						<v-col cols="12">
-							<span>NOME</span>
+							<span class="text-field-label">Nome</span>
 							<v-text-field
 								v-model="name"
 								label="Coloque seu nome"
@@ -77,7 +77,7 @@
 						</v-col>
 
 						<v-col cols="12">
-							<span>EMAIL</span>
+							<span class="text-field-label">E-mail</span>
 							<v-text-field
 								v-model="email"
 								hide-details="auto"
@@ -94,7 +94,7 @@
 						</v-col>
 
 						<v-col cols="12">
-							<span>TELEFONE</span>
+							<span class="text-field-label">Telefone</span>
 							<v-text-field
 								v-model="phone"
 								label="(XX) XXXXXXXX"
@@ -108,7 +108,7 @@
 						</v-col>
 
 						<v-col cols="12">
-							<span>ENDEREÇO</span>
+							<span class="text-field-label">Endereço</span>
 							<v-text-field
 								v-model="address"
 								label="Coloque seu endereço (opcional)"
@@ -119,7 +119,7 @@
 						</v-col>
 
 						<v-col cols="12">
-							<span>SENHA</span>
+							<span class="text-field-label">Senha</span>
 							<v-text-field
 								v-model="password"
 								hint="Use uma senha segura"
@@ -129,14 +129,16 @@
 								clearable
 								required
 								:rules="passwordRules"
-								:append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+								:append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
 								prepend-inner-icon="mdi-lock-outline"
 								@click:append="show1 = !show1"
 							></v-text-field>
 						</v-col>
 
 						<v-col cols="12">
-							<span>CONFIRME SUA SENHA</span>
+							<span class="text-field-label"
+								>Confirme sua senha</span
+							>
 							<v-text-field
 								v-model="password_confirm"
 								label="Confirme sua senha"
@@ -145,7 +147,7 @@
 								clearable
 								required
 								:rules="[...passwordRules, passwordMatch]"
-								:append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+								:append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
 								prepend-inner-icon="mdi-lock-outline"
 								@click:append="show2 = !show2"
 							></v-text-field>
@@ -159,7 +161,7 @@
 								:disabled="!isFormValid"
 								@click="submit"
 							>
-								CADASTRAR
+								Cadastrar
 							</v-btn>
 						</v-col>
 					</v-card>
@@ -304,7 +306,13 @@ const submit = async () => {
 	border-radius: 50%;
 }
 
-::v-deep .custom-icon-size .v-icon--size-default {
+.text-field-label {
+	font-family: "Roboto", sans-serif;
+	font-weight: 600;
+	margin-bottom: 120px;
+}
+
+:deep(.custom-icon-size .v-icon--size-default) {
 	font-size: 100px;
 }
 
@@ -313,9 +321,7 @@ const submit = async () => {
 	font-size: 14px;
 	font-weight: bold;
 }
-</style>
 
-<style scoped>
 * {
 	background-color: #ffffff;
 }
@@ -324,8 +330,8 @@ const submit = async () => {
 	border-radius: 50%;
 }
 
-::v-deep .custom-icon-size .v-icon--size-default {
-	font-size: 100px;
-	/* Ajuste o tamanho conforme necessário */
+:deep(.v-field__outline) {
+	--v-field-border-width: 2px !important;
+	--v-field-border-opacity: 1 !important;
 }
 </style>
