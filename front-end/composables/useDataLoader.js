@@ -16,19 +16,31 @@
  * @param {*} opts - Opções do fetch (método, headers, etc...)
  * @returns {Object} - Retorna um objeto com as propriedades: data, error, loading proprias do $fetch
  */
+import { useAuthStore } from "~/store/auth"
 export const useDataLoader = async (request, opts) => {
+	const router = useRouter()
 	const config = useRuntimeConfig()
-	// const { value: token } = useCookie("token", { sameSite: true })
+	const { logUserOut } = useAuthStore()
+	const { value: token } = useCookie("token", { sameSite: true })
 
-	// Objeto com os cabeçalhos
 	let headersOpts = {}
 	if (opts?.headers) headersOpts = opts.headers
-	// if (token) headersOpts.Authorization = `Bearer ${token}`
+	if (token) headersOpts.Authorization = `Bearer ${token}`
 
-	// Retorna o objeto com as propriedades: data, error, loading, ...
-	return await $fetch(request, {
-		baseURL: config.public.baseURL,
-		headers: headersOpts,
-		...opts,
-	})
+	try {
+		const data = await $fetch(request, {
+			baseURL: config.public.baseURL,
+			headers: headersOpts,
+			...opts,
+		})
+
+		return data
+	} catch (error) {
+		if (error.response?.status === 401) {
+			await logUserOut() // Redirecionar para o login
+			return router.push("/")
+		}
+
+		throw error
+	}
 }
