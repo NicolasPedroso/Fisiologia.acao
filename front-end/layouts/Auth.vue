@@ -1,7 +1,7 @@
 <template>
 	<v-app full-height>
 		<div class="title-container">
-			<span class="title">Área do Administrador</span>
+			<span class="title">Endogames</span>
 		</div>
 		<v-main fluid class="d-flex justify-center align-center">
 			<v-card

@@ -10,9 +10,20 @@
  * @param {Object} from - Pagina que o usuario esta vindo
  */
 export default defineNuxtRouteMiddleware((to, from) => {
-	const cookieAuth = useCookie("authenticated")
-	const cookieToken = useCookie("token")
+	const cookieAuth = useCookie("authenticated", {
+		sameSite: true,
+	})
+	const cookieToken = useCookie("token", {
+		sameSite: true,
+	})
+
+	const cookieAdmin = useCookie("admin", {
+		sameSite: true,
+	})
+
+	console.log("Valor dos cookie são ", cookieAdmin.value)
+
 	if (cookieAuth.value === false || cookieToken.value === null) {
-		return navigateTo("/login", { redirectCode: 401 })
+		return navigateTo("/", { redirectCode: 401 })
 	}
 })

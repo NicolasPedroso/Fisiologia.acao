@@ -1,7 +1,7 @@
 <template>
 	<v-app full-height>
 		<div class="title-container">
-			<span class="title">Área de Login</span>
+			<span class="title">Conecte-se ao Endogames</span>
 		</div>
 		<v-main fluid class="d-flex justify-center align-center">
 			<v-card

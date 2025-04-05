@@ -78,20 +78,20 @@ const drawerItems = [
 		icon: "mdi-help",
 		title: "FAQ e tutorial de uso",
 		subtitle: "Entenda como funciona o painel do adminstrador",
-		link: "/dashboard/",
+		link: "/Endogames/dashboard/",
 	},
 	{ type: "subheader", title: "Edição de conteúdo" },
 	{
 		icon: "mdi-video-box",
 		title: "Temas e vídeos",
 		subtitle: "Edite os vídeos/temas",
-		link: "/dashboard/video",
+		link: "/Endogames/dashboard/video",
 	},
 	{
 		icon: "mdi-email-edit",
 		title: "Edição de e-mail",
 		subtitle: "Atualize seu e-mail",
-		link: "/dashboard/email",
+		link: "/Endogames/dashboard/email",
 	},
 ]
 
@@ -108,7 +108,7 @@ const theme = {
 // Métodos e funções
 async function logout() {
 	await logUserOut()
-	router.push("/login")
+	router.push("/")
 }
 
 // Cabeçalhos da pagina

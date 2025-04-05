@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { defineStore } from "pinia"
+import admin from "~/middleware/admin"
 export const useAuthStore = defineStore("auth", {
 	state: () => ({
 		authenticated: false,
@@ -32,6 +33,11 @@ export const useAuthStore = defineStore("auth", {
 					expires: expiresDate,
 				})
 
+				const admin = useCookie("admin", {
+					sameSite: true,
+					expires: expiresDate,
+				})
+
 				/**
 				 * Se não der algum erro, vai ser feito as seguintes ações:
 				 * 		- Definir o token de acesso
@@ -39,18 +45,32 @@ export const useAuthStore = defineStore("auth", {
 				 **/
 				token.value = response.access_token
 				authenticated.value = true
+				admin.value =
+					!response.admin || response.admin === 0 ? false : true
 				this.authenticated = true
 			} catch (err) {
-				
+				const authenticated = useCookie("authenticated", {
+					sameSite: true,
+					expires: expiresDate,
+				})
+				const token = useCookie("token", {
+					sameSite: true,
+					expires: expiresDate,
+				})
+				const admin = useCookie("admin", {
+					sameSite: true,
+					expires: expiresDate,
+				})
+
 				/**
 				 * Caso de algum erro durante o LOGIN
 				 * 		- Remove o token de acesso
 				 * 		- Remove o estado de autenticado
 				 * 		- Coloca o ERRO no console
 				 **/
-				console.error(err)
 				this.authenticated = false // set authenticated  state value to false
 				token.value = null // clear the token cookie
+				admin.value = false
 				authenticated.value = false
 			}
 		},
@@ -64,6 +84,9 @@ export const useAuthStore = defineStore("auth", {
 			const authenticated = useCookie("authenticated", {
 				sameSite: true,
 			})
+			const admin = useCookie("admin", {
+				sameSite: true,
+			})
 
 			// Desconecta o usuário (deletar o TOKEN de autenticacao)
 			await $fetch(`/api/logout`, {
@@ -75,6 +98,7 @@ export const useAuthStore = defineStore("auth", {
 			// Remove token de acesso e estado de autorizado
 			this.authenticated = false
 			authenticated.value = false
+			admin.value = false
 			token.value = null
 		},
 	},
