@@ -37,8 +37,8 @@ export const useDataLoader = async (request, opts) => {
 		return data
 	} catch (error) {
 		if (error.response?.status === 401) {
-			await logUserOut() // Redirecionar para o login
-			return router.push("/")
+			await logUserOut()
+			return router.push("/Endogames")
 		}
 
 		throw error
