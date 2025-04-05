@@ -98,39 +98,43 @@ const router = useRouter()
 async function login() {
 	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
-		console.log("ENTROU")
-		console.log("email e senha =", email.value, password.value)
 		// Feedback que está carregando a requisição
 		notify({
 			id: "loading",
 			text: "Carregando...",
 			type: "info",
 		})
-		console.log("ENTROU")
 		// Envia os dados para o backend
-		await authenticateUser({
-			email: email.value,
-			password: password.value,
-		})
-		if (authenticated.value) {
-			// Redireciona para a dashboard
-			router.push("/Endogames")
-		} else {
-			// Feedback de erro
-			console.log("Deu erro")
-			router.push("/dashboard")
+		try {
+			await authenticateUser({
+				email: email.value,
+				password: password.value,
+			})
+			if (authenticated.value) {
+				// Redireciona para a dashboard
+				router.push("/Endogames")
+			} else {
+				// Feedback de erro, caso a autenticação não tenha sido bem-sucedida
+				notify.close("loading")
+				notify({
+					title: "Erro de autenticação",
+					text: "Dados inválidos",
+					type: "error",
+				})
+			}
+		} catch (error) {
 			notify.close("loading")
 			notify({
 				title: "Erro de autenticação",
-				text: "Não foi possível autenticar o usuário. Verifique os dados e tente novamente.",
+				text: "Erro de conexão",
 				type: "error",
 			})
 		}
 	} else {
-		// feedback de erro
 		notify({
+			title: "Campos faltando",
 			text: "Preencha os campos corretamente para continuar",
-			type: "info",
+			type: "error",
 		})
 	}
 }

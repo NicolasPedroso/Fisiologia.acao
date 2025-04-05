@@ -10,6 +10,7 @@
  * @param {Object} from - Pagina que o usuario esta vindo
  */
 export default defineNuxtRouteMiddleware((to, from) => {
+
 	const cookieAuth = useCookie("authenticated", {
 		sameSite: true,
 	})
@@ -18,6 +19,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	})
 
 	if (cookieAuth.value === true && cookieToken.value !== null) {
-		return navigateTo("/dashboard", { redirectCode: 200 })
+		return navigateTo("/Endogames", { redirectCode: 200 })
 	}
 })
