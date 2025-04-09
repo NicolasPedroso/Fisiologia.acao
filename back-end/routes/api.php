@@ -43,6 +43,8 @@ Route::middleware(['auth:api'])->group(function () {
     // CRUD Fase. Para ter uma pergunta e resposta deve existir uma fase criada
     Route::apiResource('fase', 'API\FaseController');
 
+    Route::apiResource('tema_do_video', 'API\VideoThemeController')->only(['show','index']);
+
     // A rota abaixo é a mais complexa do projeto, então coloquei comentários para ajudar o front
     // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
     // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk. Com o id da pergunta criada, crie um raw como abaixo
@@ -83,6 +85,8 @@ Route::middleware(['auth:api'])->group(function () {
         Route::put('user/{id}', 'API\UserController@update');
         //retorna o usuário pelo id 
         Route::get('user/{id}', 'API\UserController@show');
+
+        Route::apiResource('tema_do_video', 'API\VideoThemeController');
     });
 
     Route::get('logout', 'API\AuthController@logout'); 
