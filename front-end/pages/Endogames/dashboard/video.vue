@@ -6,7 +6,8 @@
 				<v-btn
 					height="46"
 					prepend-icon="mdi-plus"
-					color="#1356D3"
+					color="var(--secondary-color)"
+					theme="dark"
 					@click="openCreate()"
 				>
 					<span class="button"> Adicionar vídeo </span>

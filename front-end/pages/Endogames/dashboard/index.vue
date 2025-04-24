@@ -13,6 +13,4 @@ definePageMeta({
 	layout: "dashboard",
 	middleware: ["guest", "admin"],
 })
-
-
 </script>

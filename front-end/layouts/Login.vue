@@ -1,17 +1,10 @@
 <template>
 	<v-app full-height>
 		<div class="title-container">
-			<span class="title">Conecte-se ao Endogames</span>
+			<span class="title">Fisiologia em ação</span>
 		</div>
 		<v-main fluid class="d-flex justify-center align-center">
-			<v-card
-				min-width="300px"
-				width="90vw"
-				max-width="900px"
-				class="auth-card rounded-xl pa-2 px-8 pa-sm-10 mt-9"
-			>
-				<NuxtPage />
-			</v-card>
+			<NuxtPage />
 		</v-main>
 	</v-app>
 </template>
@@ -25,15 +18,16 @@
 }
 
 .title-container {
-	background-color: #1356d3;
+	background-color: var(--primary-color);
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 96px;
+	font-size: 60px;
 	font-weight: 500;
 	color: #ffffff;
 	text-align: center;
-	height: 25vh;
+	height: 125px;
 	width: 100vw;
 }
 
@@ -42,7 +36,7 @@
 	font-weight: 500;
 	font-size: 76px;
 	line-height: 122.88px;
-	letter-spacing: 0%;
+	letter-spacing: -5px;
 	text-shadow: 6px 2px 4px rgba(0, 0, 0, 0.5);
 }
 

@@ -18,7 +18,7 @@
 							cover
 							src="../public/images/logo.png"
 							style="max-width: 200px"
-						></v-img>
+						/>
 					</v-col>
 
 					<v-col
@@ -38,11 +38,10 @@
 							class="custom-icon-size"
 							:error-messages="fileError"
 							@change="previewImage"
-						>
-						</v-file-input>
-						<span class="text-error"
-							>Coloque uma foto de perfil. (obrigatório)</span
-						>
+						/>
+						<span class="text-error">
+							Coloque uma foto de perfil. (obrigatório)
+						</span>
 					</v-col>
 				</v-row>
 			</v-col>
@@ -73,7 +72,7 @@
 								clearable
 								required
 								:rules="[nameRules]"
-							></v-text-field>
+							/>
 						</v-col>
 
 						<v-col cols="12">
@@ -90,7 +89,7 @@
 								clearable
 								required
 								prepend-inner-icon="mdi-email-outline"
-							></v-text-field>
+							/>
 						</v-col>
 
 						<v-col cols="12">
@@ -104,7 +103,7 @@
 								required
 								:rules="[phoneRules]"
 								@input="formatPhone"
-							></v-text-field>
+							/>
 						</v-col>
 
 						<v-col cols="12">
@@ -115,7 +114,7 @@
 								variant="outlined"
 								prepend-inner-icon="mdi-home-outline"
 								clearable
-							></v-text-field>
+							/>
 						</v-col>
 
 						<v-col cols="12">
@@ -129,10 +128,12 @@
 								clearable
 								required
 								:rules="passwordRules"
-								:append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+								:append-inner-icon="
+									show1 ? 'mdi-eye' : 'mdi-eye-off'
+								"
 								prepend-inner-icon="mdi-lock-outline"
 								@click:append="show1 = !show1"
-							></v-text-field>
+							/>
 						</v-col>
 
 						<v-col cols="12">
@@ -147,10 +148,12 @@
 								clearable
 								required
 								:rules="[...passwordRules, passwordMatch]"
-								:append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+								:append-inner-icon="
+									show2 ? 'mdi-eye' : 'mdi-eye-off'
+								"
 								prepend-inner-icon="mdi-lock-outline"
 								@click:append="show2 = !show2"
-							></v-text-field>
+							/>
 						</v-col>
 
 						<v-col cols="12" class="d-flex justify-center">
@@ -174,6 +177,10 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue"
+import axios from "axios"
+import { useRouter } from "vue-router"
+
 definePageMeta({
 	layout: "Auth",
 	middleware: ["auth"],
@@ -195,10 +202,6 @@ useHead({
 		},
 	],
 })
-
-import { ref, computed } from "vue"
-import axios from "axios"
-import { useRouter } from "vue-router"
 
 const router = useRouter()
 

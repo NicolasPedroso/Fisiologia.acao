@@ -28,7 +28,7 @@
 				<div class="d-flex justify-center">
 					<v-btn
 						prepend-icon="mdi-email-edit"
-						color="#1356D3"
+						color="var(--secondary-color)"
 						class="email-btn mt-5 mb-9"
 						@click="updateEmail"
 					>
@@ -144,7 +144,7 @@ definePageMeta({
 }
 
 .internal-blue-container {
-	background-color: #1657c1;
+	background-color: var(--secondary-color);
 	width: 100%;
 	height: 6rem;
 	position: relative;
@@ -188,8 +188,12 @@ definePageMeta({
 	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+:deep(.mdi-email-edit::before) {
+	color: #fff !important;
+}
 .button {
 	font-family: "Roboto", sans-serif !important;
+	color: #fff !important;
 	font-size: 1rem !important;
 	text-transform: capitalize !important;
 }

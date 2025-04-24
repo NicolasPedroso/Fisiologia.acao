@@ -3,22 +3,30 @@
 		fluid
 		class="background-error h-screen d-flex justify-center align-center"
 	>
-		<v-card class="pa-2 pa-sm-8" color="#fffffff3" rounded="xl">
-			<v-empty-state
-				:headline="`Whoops, erro ${error.statusCode}`"
-				:title="errorMessage()"
-				text="Se esse erro persistir, por favor, entre em contato com o suporte."
-				icon="mdi-magnify"
+		<v-empty-state
+			:headline="`${error.statusCode}`"
+			:title="errorMessage()"
+			text="Se esse erro persistir, por favor, entre em contato com o suporte."
+			class="error-text"
+		>
+			<v-btn
+				prepend-icon="mdi-home"
+				color="#fff"
+				variant="tonal"
+				class="mr-4"
+				@click="handleError('/')"
 			>
-				<v-btn
-					prepend-icon="mdi-home"
-					variant="text"
-					@click="handleError('/')"
-				>
-					Voltar a home
-				</v-btn>
-			</v-empty-state>
-		</v-card>
+				Voltar
+			</v-btn>
+			<v-btn
+				prepend-icon="mdi-trash"
+				color="#fff"
+				variant="tonal"
+				@click="handleError('/')"
+			>
+				Contato
+			</v-btn>
+		</v-empty-state>
 	</v-container>
 </template>
 <script setup>
@@ -65,7 +73,26 @@ useHead({
 </script>
 <style scoped>
 .background-error {
-	background: url("/images/auth/background.jpeg") no-repeat center center
-		fixed;
+	background: #1356d3;
+	background: linear-gradient(
+		45deg,
+		rgba(19, 86, 211, 1) 0%,
+		rgba(17, 50, 112, 1) 100%
+	);
+}
+
+.error-text,
+.error-text :deep(.v-empty-state__headline) {
+	color: #fff;
+}
+
+.error-text :deep(.v-empty-state__headline) {
+	font-size: 12rem;
+	font-weight: 800;
+	letter-spacing: -5px;
+}
+
+:deep(v-btn__content) {
+	font-family: "Roboto", sans-serif;
 }
 </style>

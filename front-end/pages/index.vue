@@ -2,45 +2,64 @@
 	<NuxtNotifications />
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<v-form v-model="valid" @submit.prevent>
-			<h1 class="my-4">E-mail</h1>
-			<v-text-field
-				v-model="email"
-				label="E-mail"
-				variant="outlined"
-				:rules="rules.email"
-				class="field-content mt-3"
-				tile
-				hint
-			/>
-			<h1 class="my-4">Senha</h1>
-			<v-text-field
-				v-model="password"
-				class="field-content mt-3"
-				label="Senha"
-				variant="outlined"
-				:type="showPassword ? 'text' : 'password'"
-				:rules="rules.password"
-				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-				@click:append-inner="togglePassword"
-			/>
-			<v-btn
-				type="submit"
-				class="login-btn rounded-lg my-12"
-				variant="outlined"
-				@click="login"
+		<v-row>
+			<v-col cols="12" md="7" class="ma-12">
+				<v-form v-model="valid" @submit.prevent>
+					<h1>E-mail</h1>
+					<v-text-field
+						v-model="email"
+						label="Insira seu E-mail"
+						variant="outlined"
+						:rules="rules.email"
+						class="field-content mt-3"
+						tile
+						hint
+					/>
+					<h1 class="mt-2">Senha</h1>
+					<v-text-field
+						v-model="password"
+						class="field-content mt-3"
+						label="Insira sua Senha"
+						variant="outlined"
+						:type="showPassword ? 'text' : 'password'"
+						:rules="rules.password"
+						:append-inner-icon="
+							showPassword ? 'mdi-eye-off' : 'mdi-eye'
+						"
+						@click:append-inner="togglePassword"
+					/>
+					<v-row class="align-center justify-space-between mr-1">
+						<v-checkbox hide-details label="Permanecer logado" />
+						<nuxt-link class="auth-link" to="/">
+							Esqueceu a senha?
+						</nuxt-link>
+					</v-row>
+					<v-btn
+						type="submit"
+						class="login-btn rounded-lg mt-8"
+						variant="outlined"
+						@click="login"
+					>
+						<h1>Entrar</h1>
+					</v-btn>
+				</v-form>
+				<div class="mt-1 text-start">
+					<nuxt-link class="text-start auth-link mb-4" to="/cadastro">
+						<span>
+							Não tem uma conta ainda?
+							<strong>Clique aqui</strong>
+						</span>
+					</nuxt-link>
+				</div>
+			</v-col>
+			<v-col
+				class="d-none d-md-flex align-center justify-center"
+				cols="12"
+				md="4"
 			>
-				<h1>Entrar</h1>
-			</v-btn>
-		</v-form>
-		<!-- <nuxt-link class="auth-link" to="/"> Esqueceu a senha? </nuxt-link> -->
-		<div>
-			<nuxt-link class="auth-link mb-4" to="/cadastro">
-				<span class="register-link"
-					>Não tem uma conta ainda? Clique aqui</span
-				>
-			</nuxt-link>
-		</div>
+				<!-- Imagem-->
+			</v-col>
+		</v-row>
 	</v-container>
 	<!-- Conteudo da pagina -->
 </template>
@@ -164,9 +183,9 @@ h1 {
 }
 
 .login-btn {
-	width: 64%;
+	width: 100%;
 	height: 4.5rem;
-	background-color: #0d45ae;
+	background-color: var(--primary-color);
 	color: #ffffff;
 	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
 	transition: box-shadow 0.3s ease;
@@ -182,16 +201,27 @@ h1 {
 
 .auth-link {
 	color: black;
-	font-size: 1.1rem;
+	font-size: 1rem;
 	text-decoration: none;
-	font-weight: 600;
+	font-weight: 200;
+	transition: all 0.25s;
+}
+
+.field-content :deep(.v-field__outline) {
+	border-radius: 8px;
 }
 
 :deep(.v-text-field input) {
 	font-size: 1.2rem;
 }
 
+.auth-link strong {
+	font-weight: 800;
+	color: var(--secondary-color);
+}
+
 .auth-link:hover {
-	color: #0d45ae;
+	color: var(--secondary-color);
+	text-decoration: underline;
 }
 </style>

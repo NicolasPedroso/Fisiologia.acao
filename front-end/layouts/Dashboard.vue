@@ -10,14 +10,9 @@
 				<v-list lines="3" class="my-2">
 					<v-list-item
 						class="drawer-logo"
-						title="Endo Games"
-						subtitle="@endo.games"
-						prepend
-					>
-						<template #prepend>
-							<v-icon icon="mdi-lock" size="48" color="#fff" />
-						</template>
-					</v-list-item>
+						title="Fisiologia em ação"
+						subtitle="@fisiologia.em.acao"
+					/>
 				</v-list>
 				<!-- Logo e nome do Projeto -->
 				<!-- Itens do drawer -->
@@ -100,7 +95,7 @@ const theme = {
 	/* Fundo do Drawer da dashboard */
 	drawerTextColor: "#ffffff",
 	/* Cores de fundo da dashboard  */
-	backgroundColor: "#1356D3",
+	backgroundColor: "var(--primary-color)",
 	/* Cores de texto da dashboard  */
 	textColor: "#fff",
 }
@@ -142,7 +137,11 @@ useHead({
 	height: 100%;
 	width: 100%;
 	/* Imagens e alterações do fundo do Drawer */
-	background: linear-gradient(0deg, #053181 0%, #0b214b 100%);
+	background: linear-gradient(
+		0deg,
+		var(--secondary-color) 0%,
+		var(--primary-color) 100%
+	);
 	background-size: cover;
 	background-position: center center;
 }
@@ -151,6 +150,10 @@ useHead({
 }
 .text-color {
 	color: v-bind("theme.textColor") !important;
+}
+
+.v-navigation-drawer--left {
+	border: none !important;
 }
 
 .drawer-logo :deep(.v-list-item-title),
