@@ -12,6 +12,7 @@
 						class="drawer-logo"
 						title="Fisiologia em ação"
 						subtitle="@fisiologia.em.acao"
+						prepend-avatar="/logo.png"
 					/>
 				</v-list>
 				<!-- Logo e nome do Projeto -->
@@ -43,7 +44,7 @@
 				Painel do Administrador
 			</v-toolbar-title>
 			<template #append>
-				<v-btn class="text-color" @click="logout()"> Sair </v-btn>
+				<v-btn class="text-color" @click="logout()"> Voltar </v-btn>
 			</template>
 		</v-app-bar>
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
@@ -57,14 +58,10 @@
 <script setup>
 // Import do roteamento e dos arquivos de STORE
 import { useRouter } from "vue-router"
-import { useAuthStore } from "~/store/auth"
 
 // Variáveis de ambiente
 const router = useRouter()
 const drawer = ref(true)
-
-// Variáveis e funções da STORE
-const { logUserOut } = useAuthStore()
 
 // Array de paginas que serão exibidas no drawer
 const drawerItems = [
@@ -73,20 +70,20 @@ const drawerItems = [
 		icon: "mdi-help",
 		title: "FAQ e tutorial de uso",
 		subtitle: "Entenda como funciona o painel do adminstrador",
-		link: "/Endogames/dashboard/",
+		link: "/fea/dashboard/",
 	},
 	{ type: "subheader", title: "Edição de conteúdo" },
 	{
 		icon: "mdi-video-box",
 		title: "Temas e vídeos",
 		subtitle: "Edite os vídeos/temas",
-		link: "/Endogames/dashboard/video",
+		link: "/fea/dashboard/video",
 	},
 	{
 		icon: "mdi-email-edit",
 		title: "Edição de e-mail",
 		subtitle: "Atualize seu e-mail",
-		link: "/Endogames/dashboard/email",
+		link: "/fea/dashboard/email",
 	},
 ]
 
@@ -95,14 +92,13 @@ const theme = {
 	/* Fundo do Drawer da dashboard */
 	drawerTextColor: "#ffffff",
 	/* Cores de fundo da dashboard  */
-	backgroundColor: "var(--primary-color)",
+	backgroundColor: "var(--secondary-color)",
 	/* Cores de texto da dashboard  */
 	textColor: "#fff",
 }
 
 // Métodos e funções
-async function logout() {
-	await logUserOut()
+function logout() {
 	router.push("/")
 }
 
@@ -138,9 +134,9 @@ useHead({
 	width: 100%;
 	/* Imagens e alterações do fundo do Drawer */
 	background: linear-gradient(
-		0deg,
+		180deg,
 		var(--secondary-color) 0%,
-		var(--primary-color) 100%
+		var(--secondary-color-alt) 100%
 	);
 	background-size: cover;
 	background-position: center center;
