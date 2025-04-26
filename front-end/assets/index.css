@@ -1,3 +1,12 @@
+:root {
+	--primary-color: #bc191e;
+	--secondary-color: #0e0d32;
+
+	--secondary-color-alt: #0e0b54;
+
+	--font-family: "Roboto", sans-serif;
+}
+
 * {
 	font-family: "Roboto", sans-serif;
 }

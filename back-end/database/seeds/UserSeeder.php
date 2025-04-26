@@ -14,6 +14,21 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'email' => 'admin@ecomp.co',
             'password' => bcrypt('secret'),
+            'address' => "Endereço do admin",
+            'phone' => "4411223344",
+            'image' => "teste.jpg",
+            'admin' => true,
+            'name' => "Admin",
+        ]);
+
+        DB::table('users')->insert([
+            'email' => 'user@ecomp.co',
+            'password' => bcrypt('secret'),
+            'address' => "endereço do usuário",
+            'phone' => "4411223344",
+            'image' => "user.jpg",
+            'admin' => false, 
+            'name' => "Usuário",
         ]);
     }
 }
