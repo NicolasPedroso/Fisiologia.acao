@@ -19,7 +19,7 @@
 				Voltar
 			</v-btn>
 			<v-btn
-				prepend-icon="mdi-trash"
+				prepend-icon="mdi-account-box"
 				color="#fff"
 				variant="tonal"
 				@click="handleError('/')"
@@ -72,13 +72,27 @@ useHead({
 })
 </script>
 <style scoped>
+@keyframes bg {
+	0% {
+		background-position: 0% 0%;
+	}
+	50% {
+		background-position: 50% 50%;
+	}
+	100% {
+		background-position: 0% 0%;
+	}
+}
+
 .background-error {
-	background: #1356d3;
+	background: var(--primary-color);
 	background: linear-gradient(
-		45deg,
-		rgba(19, 86, 211, 1) 0%,
-		rgba(17, 50, 112, 1) 100%
+		0deg,
+		var(--primary-color) 0%,
+		var(--secondary-color) 100%
 	);
+	background-size: 400% 400%;
+	animation: bg 10s infinite;
 }
 
 .error-text,
@@ -87,8 +101,11 @@ useHead({
 }
 
 .error-text :deep(.v-empty-state__headline) {
-	font-size: 12rem;
+	color: #fff;
+	mix-blend-mode: overlay;
+	font-size: 18rem;
 	font-weight: 800;
+	line-height: 13rem;
 	letter-spacing: -5px;
 }
 
