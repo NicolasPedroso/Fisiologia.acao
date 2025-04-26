@@ -22,5 +22,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		return
 	}
 
-	return navigateTo("/Endogames", { redirectCode: 200 })
+	return navigateTo("/fea", { redirectCode: 200 })
 })
