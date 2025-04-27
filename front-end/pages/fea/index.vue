@@ -5,6 +5,9 @@
 		<nuxt-link class="auth-link mb-4" to="fea/dashboard">
 			<span> Acessar dashboard </span>
 		</nuxt-link>
+		<nuxt-link class="auth-link mb-4" to="fea/profile">
+			<span> Acessar dashboard </span>
+		</nuxt-link>
 	</div>
 </template>
 

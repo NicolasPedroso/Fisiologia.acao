@@ -12,5 +12,5 @@ export default (url) => {
 	const configURL = config.public.baseURL
 
 	// Troca o public/ por storage/ na URL da imagem
-	return `${configURL}/${url.replace("public/", "storage/")}`
+	return `${configURL}/storage/${url}`
 }
