@@ -16,7 +16,7 @@
 							:width="150"
 							aspect-ratio="1/1"
 							cover
-							src="../public/images/logo.png"
+							src="../public/logo.png"
 							style="max-width: 200px"
 						/>
 					</v-col>

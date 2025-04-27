@@ -29,9 +29,9 @@ Route::post('signup', 'API\AuthController@signup');
 // Rota alternativa pra cadastro de usuário, aceita somente POST
 Route::post ('user', 'API\UserController@store');
 
-// // Rotas que exigem autenticação por token
+// Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
-    Route::apiResource ('contato', 'API\ContactController')->only(['show','index']);
+    Route::apiResource('contato', 'API\ContactController')->only(['show','index']);
   
     Route::apiResource('notificacao', 'API\NotificationIconController')->only('index','get','store','update','delete');
 

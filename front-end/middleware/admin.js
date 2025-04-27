@@ -5,6 +5,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	})
 
 	if (cookieAdmin.value !== true) {
-		return navigateTo("/Endogames", { redirectCode: 200 })
+		return navigateTo("/fea", { redirectCode: 200 })
 	}
 })

@@ -16,12 +16,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	const cookieToken = useCookie("token", {
 		sameSite: true,
 	})
-
 	const cookieAdmin = useCookie("admin", {
 		sameSite: true,
 	})
-
-	console.log("Valor dos cookie são ", cookieAdmin.value)
 
 	if (cookieAuth.value === false || cookieToken.value === null) {
 		return navigateTo("/", { redirectCode: 401 })

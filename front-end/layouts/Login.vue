@@ -1,5 +1,5 @@
 <template>
-	<v-app full-height>
+	<v-app style="overflow-x: hidden !important">
 		<div class="title-container">
 			<span class="title">Fisiologia em ação</span>
 		</div>
@@ -40,10 +40,10 @@
 	text-shadow: 6px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 959px) {
 	.title {
-		font-size: 60px;
-		text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+		font-size: clamp(32px, 8vw, 60px) !important;
+		letter-spacing: -4px;
 	}
 }
 

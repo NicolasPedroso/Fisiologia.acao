@@ -3,7 +3,7 @@
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<v-row>
-			<v-col cols="12" md="7" class="ma-12">
+			<v-col cols="12" md="7" class="d-flex flex-column ma-6 ma-md-12">
 				<v-form v-model="valid" @submit.prevent>
 					<h1>E-mail</h1>
 					<v-text-field
@@ -30,7 +30,7 @@
 					/>
 					<v-row class="align-center justify-space-between mr-1">
 						<v-checkbox hide-details label="Permanecer logado" />
-						<nuxt-link class="auth-link" to="/">
+						<nuxt-link class="auth-link" to="/esqueceu-a-senha">
 							Esqueceu a senha?
 						</nuxt-link>
 					</v-row>
@@ -126,7 +126,7 @@ async function login() {
 			})
 			if (authenticated.value) {
 				// Redireciona para a dashboard
-				router.push("/Endogames")
+				router.push("/fea")
 			} else {
 				// Feedback de erro, caso a autenticação não tenha sido bem-sucedida
 				notify.close("loading")
@@ -158,16 +158,22 @@ definePageMeta({
 	layout: "login",
 	middleware: ["auth"],
 })
-
-// Cabeçalho da página
 useSeoMeta({
-	description: "Página para login para acesso a dashboard.",
-	keywords: "login, dashboard, acesso",
+	title: "Login - Fisiologia em Ação",
+	description: "Faça login na Fisiologia em Ação",
+	keywords: "login, acesso, fisiologia, ação",
 })
 useHead({
 	htmlAttrs: {
 		lang: "pt-br",
 	},
+	link: [
+		{
+			rel: "icon",
+			type: "image/png",
+			href: "/favicon.png",
+		},
+	],
 })
 </script>
 <style scoped>
