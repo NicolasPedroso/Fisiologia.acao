@@ -1,13 +1,12 @@
 /* eslint-disable */
 import { defineStore } from "pinia"
-import admin from "~/middleware/admin"
 export const useAuthStore = defineStore("auth", {
 	state: () => ({
 		authenticated: false,
 	}),
 	actions: {
 		// Função de autenticação
-		async authenticateUser({ email, password }) {
+		async authenticateUser({ email, password, remember_me }) {
 			try {
 				// Tentar fazer o LOGIN usando os campos de email & password
 				const response = await $fetch(`/api/login`, {
@@ -17,6 +16,7 @@ export const useAuthStore = defineStore("auth", {
 					body: {
 						email,
 						password,
+						remember_me,
 					},
 				})
 
