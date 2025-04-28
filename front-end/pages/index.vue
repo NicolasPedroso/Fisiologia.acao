@@ -29,7 +29,11 @@
 						@click:append-inner="togglePassword"
 					/>
 					<v-row class="align-center justify-space-between mr-1">
-						<v-checkbox hide-details label="Permanecer logado" />
+						<v-checkbox
+							v-model="remember_me"
+							hide-details
+							label="Permanecer logado"
+						/>
 						<nuxt-link class="auth-link" to="/esqueceu-a-senha">
 							Esqueceu a senha?
 						</nuxt-link>
@@ -71,6 +75,7 @@ import { useAuthStore } from "~/store/auth"
 // Campos do formulário
 const email = ref("")
 const password = ref("")
+const remember_me = ref(false)
 
 // Usar o snackbar
 const { notify } = useNotification()
@@ -123,6 +128,7 @@ async function login() {
 			await authenticateUser({
 				email: email.value,
 				password: password.value,
+				remember_me: remember_me.value,
 			})
 			if (authenticated.value) {
 				// Redireciona para a dashboard

@@ -14,6 +14,13 @@
 					:title="item.name"
 					:to="item.link"
 				/>
+				<v-list-item
+					v-if="cookieAdmin === true"
+					prepend-icon="mdi-layers-edit"
+					title="Dashboard"
+					subtitle="Altere as informações do site"
+					to="/fea/dashboard"
+				/>
 			</v-list>
 			<template #append>
 				<v-list density="compact" nav>
@@ -33,6 +40,10 @@
 </template>
 <script setup>
 import { useAuthStore } from "~/store/auth"
+
+const cookieAdmin = useCookie("admin", {
+	sameSite: true,
+})
 
 const { logUserOut } = useAuthStore()
 const links = [

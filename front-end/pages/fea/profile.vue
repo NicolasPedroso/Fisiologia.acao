@@ -3,6 +3,7 @@
 	<v-container
 		v-if="status !== 'pending'"
 		class="profile__wrapper pa-0 ma-0"
+		full-height
 		fluid
 	>
 		<Transition>
@@ -301,6 +302,7 @@ definePageMeta({
 	flex-direction: column;
 	align-items: center;
 	min-height: 100vh;
+	height: 100%;
 	background: var(--primary-color);
 	background: linear-gradient(
 		0deg,
