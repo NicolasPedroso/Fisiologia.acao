@@ -37,6 +37,10 @@ export default defineNuxtConfig({
 				},
 			],
 		},
+		pageTransition: {
+			name: "bounce",
+			mode: "out-in", // default
+		},
 	},
 
 	/**

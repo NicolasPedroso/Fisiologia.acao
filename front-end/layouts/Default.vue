@@ -1,6 +1,12 @@
 <template>
 	<v-app style="overflow-x: hidden !important">
-		<v-navigation-drawer expand-on-hover rail permament color="#fff">
+		<v-navigation-drawer
+			mobile-breakpoint="0"
+			expand-on-hover
+			rail
+			permament
+			color="#fff"
+		>
 			<v-list>
 				<v-list-item
 					prepend-avatar="/logo.png"
@@ -13,6 +19,7 @@
 					:prepend-icon="item.icon"
 					:title="item.name"
 					:to="item.link"
+					color="var(--secondary-color-alt)"
 				/>
 				<v-list-item
 					v-if="cookieAdmin === true"
@@ -28,11 +35,30 @@
 						nav
 						prepend-icon="mdi-logout"
 						title="Sair da conta"
+						base-color="var(--primary-color)"
 						@click="logout()"
 					/>
 				</v-list>
 			</template>
 		</v-navigation-drawer>
+
+		<v-btn
+			position="fixed"
+			location="top, right"
+			variant="text"
+			elevation="0"
+			style="margin: 24px"
+			size="48"
+			rounded
+			disabled
+		>
+			<v-badge content="0" color="var(--secondary-color)">
+				<v-icon size="36" color="var(--secondary-color-alt)">
+					mdi-bell
+				</v-icon>
+			</v-badge>
+		</v-btn>
+
 		<v-main>
 			<NuxtPage />
 		</v-main>
@@ -51,6 +77,16 @@ const links = [
 		name: "Página inicial",
 		icon: "mdi-home",
 		link: "/fea",
+	},
+	{
+		name: "Estastísticas",
+		icon: "mdi-chart-bar",
+		link: "/fea/stats",
+	},
+	{
+		name: "Perguntas frequentes",
+		icon: "mdi-help",
+		link: "/fea/faq",
 	},
 	{
 		name: "Perfil",

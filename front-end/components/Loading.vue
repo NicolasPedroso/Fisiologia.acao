@@ -1,5 +1,5 @@
 <template>
-	<Transition>
+	<Transition name="fade">
 		<div v-if="status === 'pending'" class="loading-wrapper">
 			<div class="loader"></div>
 		</div>
@@ -10,15 +10,15 @@ defineProps({
 	status: String,
 })
 </script>
-<style lang="css" scoped>
+<style scoped>
 /* Transicao */
-.v-enter-active,
-.v-leave-active {
+.fade-enter-active,
+.fade-leave-active {
 	transition: opacity 1s ease;
 }
 
-.v-enter-from,
-.v-leave-to {
+.fade-enter-from,
+.fade-leave-to {
 	opacity: 0;
 }
 
@@ -36,9 +36,13 @@ defineProps({
 }
 
 .loading-wrapper {
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;

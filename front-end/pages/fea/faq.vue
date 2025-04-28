@@ -1,7 +1,7 @@
 <template>
-	<v-container fluid class="ma-0 pa-0 text-center">
-		<v-row>
-			<v-col cols="12" class="text-h3" style="margin: 3%">
+	<v-container fluid full-height class="ma-0 pa-0 text-center">
+		<v-row class="mt-12">
+			<v-col cols="12" class="text-h3">
 				<span class="font-weight-black">
 					Questões frequentemente perguntadas (FAQ)
 				</span>
@@ -17,12 +17,14 @@
 							>
 								<v-expansion-panel-title
 									class="text-h5 font-weight-black faq-title"
-									>{{ faq.pergunta }}</v-expansion-panel-title
 								>
+									{{ faq.pergunta }}
+								</v-expansion-panel-title>
 								<v-expansion-panel-text
 									class="text-h6 font-weight-black"
-									>{{ faq.resposta }}</v-expansion-panel-text
 								>
+									{{ faq.resposta }}
+								</v-expansion-panel-text>
 							</v-expansion-panel>
 						</v-expansion-panels>
 					</v-col>
@@ -30,15 +32,13 @@
 			</v-container>
 		</v-row>
 	</v-container>
-	<!-- Conteudo da pagina -->
 </template>
 <script setup>
 definePageMeta({
 	middleware: ["guest"],
 })
-import { ref } from "vue"
 
-const faqs = ref([
+const faqs = [
 	{
 		pergunta: "Quem pode usar essa plataforma?",
 		resposta:
@@ -68,7 +68,7 @@ const faqs = ref([
 		resposta:
 			"O time da EndoGames, composto por desenvolvedores e designers experientes.",
 	},
-])
+]
 </script>
 <style scoped>
 /* Define a largura para deixar 20% de margem nas laterais */
