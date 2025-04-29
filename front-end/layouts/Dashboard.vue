@@ -105,7 +105,7 @@ function logout() {
 // Cabeçalhos da pagina
 useSeoMeta({
 	title: "Dashboard",
-	description: "Página para controlar os conteudos da DataBase.",
+	description: "Página para controlar os conteudos da DataBase",
 	middleware: ["guest"],
 	// Endereço da imagem que será exibida quando a página for compartilhada
 	// ogImage: "endereco-da-imagem",
