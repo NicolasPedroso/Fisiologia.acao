@@ -1,30 +1,34 @@
 <template>
 	<div class="container my-10">
-		<h1 class="title">Página dos vídeos</h1>
-		<div>
-			<button @click="prevVideo" :disabled="currentIndex === 0">
-				Retroceder
-			</button>
-			<button
-				@click="nextVideo"
-				:disabled="currentIndex === youtubeUrls.length - 1"
+		<div class="inner-container">
+			<h1 class="title" v-if="currentIndex >= 1">
+				{{ theme[currentIndex] }}
+			</h1>
+			<div
+				class="video-container"
+				v-if="currentIndex >= 1 && currentIndex < youtubeUrls.length"
 			>
-				Avançar
-			</button>
-		</div>
-		<div class="card-container"></div>
-		<div
-			class="video-container"
-			v-if="currentIndex >= 1 && currentIndex < youtubeUrls.length"
-		>
-			<iframe
-				width="640"
-				height="360"
-				:src="getEmbedUrl(youtubeUrls[currentIndex])"
-				frameborder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-				allowfullscreen
-			></iframe>
+				<iframe
+					width="640"
+					height="360"
+					:src="getEmbedUrl(youtubeUrls[currentIndex])"
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen
+				></iframe>
+			</div>
+			<div class="buttons-container">
+				<div class="personalized-button" @click="prevVideo">
+					<button :disabled="currentIndex === youtubeUrls.length - 1">
+						<span>Anterior</span>
+					</button>
+				</div>
+				<div class="personalized-button" @click="nextVideo">
+					<button class="button-area" :disabled="currentIndex === 0">
+						<span>Próximo</span>
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -36,8 +40,9 @@ const { status } = useAsyncData(() =>
 	useDataLoader("/api/tema_do_video")
 		.then((response) => {
 			response.data.forEach((value) => {
-				console.log("valor = ", value.link)
+				console.log("valor = ", value)
 				youtubeUrls.value.push(value.link)
+				theme.value.push(value.tema)
 			})
 		})
 		.catch((error) => {
@@ -52,6 +57,7 @@ const { status } = useAsyncData(() =>
 )
 
 const youtubeUrls = ref([""])
+const theme = ref([""])
 const currentIndex = ref(1)
 
 const nextVideo = () => {
@@ -78,16 +84,36 @@ const getEmbedUrl = (url) => {
 </script>
 
 <style scoped>
-
 .title {
-    
+	margin-top: 6rem;
+	margin-right: 57rem;
+	font-size: 48px;
 }
 
 .container {
 	display: flex;
 	align-items: center;
-	justify-items: center;
 	flex-direction: column;
+	justify-items: center;
+}
+
+.inner-container {
+	margin-top: 150px;
+	width: 50%;
+	background-color: red;
+	border-radius: 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-items: center;
+}
+
+.buttons-container {
+	width: 40%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 10rem;
 }
 
 .video-container {
@@ -97,6 +123,9 @@ const getEmbedUrl = (url) => {
 	padding-bottom: 25%;
 	overflow: hidden;
 	background-color: black;
+	border-radius: 25px;
+	margin-top: 3rem;
+	border: 4px solid black;
 }
 
 .video-container iframe {
@@ -105,6 +134,46 @@ const getEmbedUrl = (url) => {
 	left: 0;
 	width: 100%;
 	height: 100%;
-    background-color: black;
+	background-color: black;
+}
+
+.arrow-button {
+	width: 40px;
+	height: 40px;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	position: relative;
+}
+
+.arrow-button::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 30px;
+	height: 0px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	padding: 6px;
+	transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.arrow-button.left::before {
+	transform: translate(-50%, -50%) rotate(135deg);
+}
+
+.arrow-button.right::before {
+	transform: translate(-50%, -50%) rotate(315deg);
+}
+
+.personalized-button {
+	height: 90px;
+	width: 150px;
+	background-color: blue;
+	display: flex;
+	justify-content: center;
+	border-radius: 20px;
+	cursor: pointer;
 }
 </style>

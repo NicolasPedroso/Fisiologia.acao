@@ -1,9 +1,3 @@
-<!--
-	Componente de Título de autenticação
-	LOGO da Ecomp + Título personalizado
-	
-	<auth-title :title="'Registro'" />
--->
 <template>
 	<div class="d-flex flex-column align-center">
 		<span class="auth-title"> {{ title }} </span>

@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     /**
      * @OA\Property(
-     *     example="admin@ecomp.co",
+     *     example="admin@email.com",
      *     format="string",
      *     type="string"
      * )
