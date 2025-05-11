@@ -102,8 +102,18 @@
 								:disabled="typeDialog === 2"
 								required
 							/>
+							<v-text-field
+								v-model="formData.identification"
+								variant="outlined"
+								label="Identificador do vídeo"
+								placeholder="https://www.example.com/page"
+								type="text"
+								:rules="rules.link"
+								disabled
+								required
+							/>
 							<v-autocomplete
-								v-model="formData.theme"
+								v-model="formData.tema"
 								variant="outlined"
 								label="Tema do vídeo"
 								:items="themes"
@@ -162,7 +172,7 @@ const { notify } = useNotification()
 const search = ref("")
 const groupBy = ref([
 	{
-		key: "theme",
+		key: "tema",
 		order: "asc",
 	},
 ])
@@ -189,6 +199,7 @@ const formData = reactive({
 	id: 0,
 	link: "",
 	theme: "",
+	identification: 2,
 })
 const loadingRes = ref(false)
 const validForm = ref(false)
@@ -197,12 +208,14 @@ const subtitle = ref("")
 const themes = ["Endócrino", "Renal", "Cardiovascular"]
 
 // Requisicao inicial
-const { status, refresh } = useAsyncData("inicial-requistion", () =>
-	useDataLoader(urlRequistion)
+const { status, refresh } = useAsyncData(() =>
+	useDataLoader("/api/tema_do_video")
 		.then((response) => {
-			return (data.value = response)
+			console.log("Deu certo", response)
+			data.value = response.data
 		})
 		.catch((error) => {
+			console.log("Deu erro")
 			console.error(error)
 			notify({
 				title: "Erro!",
@@ -272,7 +285,9 @@ async function createItem() {
 
 	loadingRes.value = true
 
-	await useDataLoader(urlRequistion, {
+	console.log("Enviando = ", __formData)
+
+	await useDataLoader("/api/tema_do_video", {
 		method: "POST",
 		body: __formData,
 		"Content-Type": "application/json",
@@ -311,7 +326,7 @@ async function editItem() {
 
 	loadingRes.value = true
 
-	await useDataLoader(`${urlRequistion}/${formData.id}`, {
+	await useDataLoader(`${api/tema_do_video}/${formData.id}`, {
 		method: "PUT",
 		body: __formData,
 		"Content-Type": "application/json",
@@ -338,7 +353,7 @@ async function editItem() {
 
 async function deleteItem() {
 	loadingRes.value = true
-	await useDataLoader(`${urlRequistion}/${formData.id}`, {
+	await useDataLoader(`${api/tema_do_video}/${formData.id}`, {
 		method: "DELETE",
 	})
 		.then(() => {
