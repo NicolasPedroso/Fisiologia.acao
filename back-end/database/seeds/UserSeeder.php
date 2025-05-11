@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'email' => 'admin@ecomp.co',
+            'email' => 'admin@fisiologia.com',
             'password' => bcrypt('secret'),
             'address' => "Endereço do admin",
             'phone' => "4411223344",
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'email' => 'user@ecomp.co',
+            'email' => 'user@fisiologia.com',
             'password' => bcrypt('secret'),
             'address' => "endereço do usuário",
             'phone' => "4411223344",
