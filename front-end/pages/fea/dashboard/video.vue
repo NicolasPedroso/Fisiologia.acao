@@ -326,7 +326,7 @@ async function editItem() {
 
 	loadingRes.value = true
 
-	await useDataLoader(`${api/tema_do_video}/${formData.id}`, {
+	await useDataLoader(`${api / tema_do_video}/${formData.id}`, {
 		method: "PUT",
 		body: __formData,
 		"Content-Type": "application/json",
@@ -353,7 +353,7 @@ async function editItem() {
 
 async function deleteItem() {
 	loadingRes.value = true
-	await useDataLoader(`${api/tema_do_video}/${formData.id}`, {
+	await useDataLoader(`${api / tema_do_video}/${formData.id}`, {
 		method: "DELETE",
 	})
 		.then(() => {

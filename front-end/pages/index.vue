@@ -2,68 +2,58 @@
 	<NuxtNotifications />
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<v-row>
-			<v-col cols="12" md="7" class="d-flex flex-column ma-6 ma-md-12">
-				<v-form v-model="valid" @submit.prevent>
-					<h1>E-mail</h1>
-					<v-text-field
-						v-model="email"
-						label="Insira seu E-mail"
-						variant="outlined"
-						:rules="rules.email"
-						class="field-content mt-3"
-						tile
-						hint
-					/>
-					<h1 class="mt-2">Senha</h1>
-					<v-text-field
-						v-model="password"
-						class="field-content mt-3"
-						label="Insira sua Senha"
-						variant="outlined"
-						:type="showPassword ? 'text' : 'password'"
-						:rules="rules.password"
-						:append-inner-icon="
-							showPassword ? 'mdi-eye-off' : 'mdi-eye'
-						"
-						@click:append-inner="togglePassword"
-					/>
-					<v-row class="align-center justify-space-between mr-1">
-						<v-checkbox
-							v-model="remember_me"
-							hide-details
-							label="Permanecer logado"
-						/>
-						<nuxt-link class="auth-link" to="/esqueceu-a-senha">
-							Esqueceu a senha?
-						</nuxt-link>
-					</v-row>
-					<v-btn
-						type="submit"
-						class="login-btn rounded-lg mt-8"
-						variant="outlined"
-						@click="login"
-					>
-						<h1>Entrar</h1>
-					</v-btn>
-				</v-form>
-				<div class="mt-1 text-start">
-					<nuxt-link class="text-start auth-link mb-4" to="/cadastro">
-						<span>
-							Não tem uma conta ainda?
-							<strong>Clique aqui</strong>
-						</span>
-					</nuxt-link>
-				</div>
-			</v-col>
-			<v-col
-				class="d-none d-md-flex align-center justify-center"
-				cols="12"
-				md="4"
+		<h1 class="text-center">Entre no Fisiologia Em Ação</h1>
+		<h3 class="text-center mb-12">Descrição do projeto</h3>
+
+		<v-form v-model="valid" @submit.prevent>
+			<v-text-field
+				v-model="email"
+				label="Insira seu E-mail"
+				prepend-inner-icon="mdi-email-outline"
+				variant="outlined"
+				:rules="rules.email"
+				class="field-content mt-3"
+				tile
+				hint
+			/>
+			<v-text-field
+				v-model="password"
+				class="field-content mt-3"
+				label="Insira sua Senha"
+				prepend-inner-icon="mdi-lock-outline"
+				variant="outlined"
+				:type="showPassword ? 'text' : 'password'"
+				:rules="rules.password"
+				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+				@click:append-inner="togglePassword"
+			/>
+			<v-row class="align-center justify-space-between mr-1">
+				<v-checkbox
+					v-model="remember_me"
+					hide-details
+					label="Permanecer logado"
+				/>
+				<nuxt-link class="auth-link" to="/esqueceu-a-senha">
+					Esqueceu a senha?
+				</nuxt-link>
+			</v-row>
+			<v-btn
+				type="submit"
+				class="login-btn rounded-lg mt-8"
+				variant="outlined"
+				@click="login"
 			>
-				<!-- Imagem-->
-			</v-col>
-		</v-row>
+				<h1>Entrar</h1>
+			</v-btn>
+		</v-form>
+		<div class="mt-1 text-center">
+			<nuxt-link class="text-center auth-link mb-4" to="/cadastro">
+				<span>
+					Não tem uma conta ainda?
+					<strong>Clique aqui</strong>
+				</span>
+			</nuxt-link>
+		</div>
 	</v-container>
 	<!-- Conteudo da pagina -->
 </template>
@@ -193,11 +183,14 @@ h1 {
 	--v-field-border-width: 2px !important;
 	--v-field-border-opacity: 1 !important;
 }
+:deep(.v-field__overlay) {
+	background-color: #ffff !important;
+}
 
 .login-btn {
 	width: 100%;
 	height: 4.5rem;
-	background-color: var(--primary-color);
+	background-color: var(--secondary-color);
 	color: #ffffff;
 	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
 	transition: box-shadow 0.3s ease;
@@ -217,6 +210,7 @@ h1 {
 	text-decoration: none;
 	font-weight: 200;
 	transition: all 0.25s;
+	text-align: center;
 }
 
 .field-content :deep(.v-field__outline) {
@@ -230,6 +224,7 @@ h1 {
 .auth-link strong {
 	font-weight: 800;
 	color: var(--secondary-color);
+	text-decoration: underline;
 }
 
 .auth-link:hover {
