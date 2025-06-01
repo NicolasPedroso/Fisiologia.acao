@@ -219,7 +219,7 @@ const { status, refresh } = useAsyncData(
 				return {}
 			}),
 	{
-		server: false,
+		server: true,
 	},
 )
 

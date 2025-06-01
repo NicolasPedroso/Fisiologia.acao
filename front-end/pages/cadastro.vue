@@ -1,194 +1,198 @@
 <template>
-	<v-container fluid class="ma-0 pa-0">
-		<v-row>
-			<v-col cols="11">
-				<v-row>
-					<v-col
-						cols="6"
-						class="d-flex justify-start align-start"
-						style="
-							height: 250px;
-							padding-left: 80px;
-							padding-top: 50px;
-						"
-					>
-						<v-img
-							:width="150"
-							aspect-ratio="1/1"
-							cover
-							src="../public/logo.png"
-							style="max-width: 200px"
-						/>
-					</v-col>
+	<NuxtNotifications />
+	<!-- Conteudo da pagina -->
+	<v-container fluid class="ma-0 pa-0 text-center">
+		<h1 class="text-center">Cadastre-se no Fisiologia em Ação</h1>
+		<h3 class="description text-center mb-6">
+			Estude com quizzes inteligentes. Cadastre-se e aproveite!
+		</h3>
 
-					<v-col
-						cols="6"
-						class="d-flex justify-center align-center flex-column"
-						style="align-content: center; margin-top: 100px"
-					>
-						<v-file-input
-							v-model="file"
-							accept="image/*"
-							label="Escolha uma imagem"
-							prepend-icon="mdi-camera-plus-outline"
-							color="black"
-							hide-input
-							rounded
-							:rules="[imageRequired]"
-							class="custom-icon-size"
-							:error-messages="fileError"
-							@change="previewImage"
-						/>
-						<span class="text-error">
-							Coloque uma foto de perfil. (obrigatório)
-						</span>
-					</v-col>
-				</v-row>
-			</v-col>
-			<v-col cols="1" style="background-color: #1356d3"></v-col>
-		</v-row>
-
-		<v-row>
-			<v-col
-				cols="11"
-				class="d-flex justify-center"
-				style="margin-bottom: 30px"
+		<v-form v-model="valid" @submit.prevent>
+			<span>Campos marcados com asterisco* são obrigatórios</span>
+			<v-text-field
+				v-model="email"
+				label="Nome*"
+				prepend-inner-icon="mdi-account"
+				variant="outlined"
+				:rules="rules.email"
+				class="field-content mt-3"
+				tile
+				hint
+			/>
+			<v-text-field
+				v-model="email"
+				label="E-mail"
+				prepend-inner-icon="mdi-email-outline"
+				variant="outlined"
+				:rules="rules.email"
+				class="field-content mt-3"
+				tile
+				hint
+			/>
+			<v-text-field
+				v-model="email"
+				label="Endereço"
+				prepend-inner-icon="mdi-road-variant"
+				variant="outlined"
+				:rules="rules.email"
+				class="field-content mt-3"
+				tile
+				hint
+			/>
+			<v-text-field
+				v-model="email"
+				label="Telefone"
+				prepend-inner-icon="mdi-phone"
+				variant="outlined"
+				:rules="rules.email"
+				class="field-content mt-3"
+				tile
+				hint
+			/>
+			<v-text-field
+				v-model="password"
+				class="field-content mt-3"
+				label="Insira sua Senha"
+				prepend-inner-icon="mdi-lock-outline"
+				variant="outlined"
+				:type="showPassword ? 'text' : 'password'"
+				:rules="rules.password"
+				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+				@click:append-inner="togglePassword"
+			/>
+			<v-text-field
+				v-model="password"
+				class="field-content mt-3"
+				label="Insira sua Senha"
+				prepend-inner-icon="mdi-lock-outline"
+				variant="outlined"
+				:type="showPassword ? 'text' : 'password'"
+				:rules="rules.password"
+				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+				@click:append-inner="togglePassword"
+			/>
+			<v-btn
+				type="submit"
+				class="login-btn rounded-lg mt-4"
+				variant="outlined"
+				:disabled="!valid"
+				@click="login"
 			>
-				<v-col cols="7">
-					<v-card variant="outlined" style="padding: 40px">
-						<v-col
-							cols="12"
-							class="d-flex justify-center font-weight-black text-blue-darken-4 text-h4"
-						>
-							<span>Cadastre-se</span>
-						</v-col>
-						<v-col cols="12">
-							<span class="text-field-label">Nome</span>
-							<v-text-field
-								v-model="name"
-								label="Coloque seu nome"
-								variant="outlined"
-								prepend-inner-icon="mdi-account-check-outline"
-								clearable
-								required
-								:rules="[nameRules]"
-							/>
-						</v-col>
-
-						<v-col cols="12">
-							<span class="text-field-label">E-mail</span>
-							<v-text-field
-								v-model="email"
-								hide-details="auto"
-								label="Coloque seu email"
-								hint="Digite um email válido"
-								placeholder="exemplo@gmail.com"
-								type="email"
-								variant="outlined"
-								:rules="emailRules"
-								clearable
-								required
-								prepend-inner-icon="mdi-email-outline"
-							/>
-						</v-col>
-
-						<v-col cols="12">
-							<span class="text-field-label">Telefone</span>
-							<v-text-field
-								v-model="phone"
-								label="(XX) XXXXXXXX"
-								variant="outlined"
-								prepend-inner-icon="mdi-phone-outline"
-								clearable
-								required
-								:rules="[phoneRules]"
-								@input="formatPhone"
-							/>
-						</v-col>
-
-						<v-col cols="12">
-							<span class="text-field-label">Endereço</span>
-							<v-text-field
-								v-model="address"
-								label="Coloque seu endereço (opcional)"
-								variant="outlined"
-								prepend-inner-icon="mdi-home-outline"
-								clearable
-							/>
-						</v-col>
-
-						<v-col cols="12">
-							<span class="text-field-label">Senha</span>
-							<v-text-field
-								v-model="password"
-								hint="Use uma senha segura"
-								label="Senha"
-								:type="show1 ? 'text' : 'password'"
-								variant="outlined"
-								clearable
-								required
-								:rules="passwordRules"
-								:append-inner-icon="
-									show1 ? 'mdi-eye' : 'mdi-eye-off'
-								"
-								prepend-inner-icon="mdi-lock-outline"
-								@click:append="show1 = !show1"
-							/>
-						</v-col>
-
-						<v-col cols="12">
-							<span class="text-field-label"
-								>Confirme sua senha</span
-							>
-							<v-text-field
-								v-model="password_confirm"
-								label="Confirme sua senha"
-								:type="show2 ? 'text' : 'password'"
-								variant="outlined"
-								clearable
-								required
-								:rules="[...passwordRules, passwordMatch]"
-								:append-inner-icon="
-									show2 ? 'mdi-eye' : 'mdi-eye-off'
-								"
-								prepend-inner-icon="mdi-lock-outline"
-								@click:append="show2 = !show2"
-							/>
-						</v-col>
-
-						<v-col cols="12" class="d-flex justify-center">
-							<v-btn
-								block
-								color="#1356D3"
-								size="large"
-								:disabled="!isFormValid"
-								@click="submit"
-							>
-								Cadastrar
-							</v-btn>
-						</v-col>
-					</v-card>
-				</v-col>
-			</v-col>
-
-			<v-col cols="1" style="background-color: #1356d3"></v-col>
-		</v-row>
+				Cadastrar
+			</v-btn>
+		</v-form>
+		<div class="mt-1 text-center">
+			<nuxt-link class="text-center link mb-4" to="/">
+				<span>
+					Já tem uma conta?
+					<strong>Clique aqui</strong>
+				</span>
+			</nuxt-link>
+		</div>
 	</v-container>
+	<!-- Conteudo da pagina -->
 </template>
-
 <script setup>
-import { ref, computed } from "vue"
-import axios from "axios"
-import { useRouter } from "vue-router"
+// Import das funções e gerenciamento de STORE
+import { storeToRefs } from "pinia"
+import { useAuthStore } from "~/store/auth"
 
+// Campos do formulário
+const email = ref("")
+const password = ref("")
+const remember_me = ref(false)
+
+// Usar o snackbar
+const { notify } = useNotification()
+
+const showPassword = ref(false)
+
+const togglePassword = () => {
+	showPassword.value = !showPassword.value
+}
+
+// Regras e validade do formulário
+const valid = ref(false)
+const rules = {
+	email: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+		(value) => {
+			if (/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(value))
+				return true
+			return "O e-mail deve ser válido"
+		},
+	],
+	password: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+	],
+}
+
+// Função de autenticação da STORE
+const { authenticateUser } = useAuthStore()
+const { authenticated } = storeToRefs(useAuthStore())
+const router = useRouter()
+
+// Funções
+async function login() {
+	// Verifica se o formulário está preenchido corretamente
+	if (valid.value) {
+		// Feedback que está carregando a requisição
+		notify({
+			id: "loading",
+			text: "Carregando...",
+			type: "info",
+		})
+		// Envia os dados para o backend
+		try {
+			await authenticateUser({
+				email: email.value,
+				password: password.value,
+				remember_me: remember_me.value,
+			})
+			if (authenticated.value) {
+				// Redireciona para a dashboard
+				router.push("/fea")
+			} else {
+				// Feedback de erro, caso a autenticação não tenha sido bem-sucedida
+				notify.close("loading")
+				notify({
+					title: "Erro de autenticação",
+					text: "Dados inválidos",
+					type: "error",
+				})
+			}
+		} catch (error) {
+			notify.close("loading")
+			notify({
+				title: "Erro de autenticação",
+				text: "Usuário inexistente",
+				type: "error",
+			})
+		}
+	} else {
+		notify({
+			title: "Campos faltando",
+			text: "Preencha os campos corretamente para continuar",
+			type: "error",
+		})
+	}
+}
+
+// Layout da página e middlewares
 definePageMeta({
-	layout: "Auth",
+	layout: "login",
 	middleware: ["auth"],
 })
-
-// Cabeçalho da página
 useSeoMeta({
-	description: "Página para cadastro",
+	title: "Login - Fisiologia em Ação",
+	description: "Faça login na Fisiologia em Ação",
+	keywords: "login, acesso, fisiologia, ação",
 })
 useHead({
 	htmlAttrs: {
@@ -202,139 +206,70 @@ useHead({
 		},
 	],
 })
-
-const router = useRouter()
-
-const name = ref("")
-const email = ref("")
-const phone = ref("")
-const address = ref("")
-const password = ref("")
-const password_confirm = ref("")
-const file = ref(null)
-const fileError = ref("")
-const show1 = ref(false)
-const show2 = ref(false)
-
-const imageRequired = (v) => {
-	if (!v) {
-		fileError.value = "Imagem de perfil é obrigatória"
-		return false
-	}
-	fileError.value = ""
-	return true
-}
-
-const nameRules = (v) => !!v || "Nome é obrigatório"
-
-const emailRules = [
-	(v) => !!v || "E-mail é obrigatório",
-	(v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido",
-]
-
-const phoneRules = (v) => !!v || "Telefone é obrigatório"
-
-const passwordRules = [
-	(v) => !!v || "Senha é obrigatória",
-	(v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
-]
-
-const passwordMatch = (v) => v === password.value || "As senhas não coincidem"
-
-const isFormValid = computed(() => {
-	return (
-		name.value &&
-		emailRules.every((rule) => rule(email.value) === true) &&
-		phone.value &&
-		passwordRules.every((rule) => rule(password.value) === true) &&
-		passwordMatch(password_confirm.value) === true &&
-		!!file.value
-	)
-})
-
-const formatPhone = () => {
-	let cleaned = phone.value.replace(/\D/g, "").slice(0, 11)
-
-	if (cleaned.length > 2) {
-		cleaned = `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`
-	}
-
-	phone.value = cleaned
-}
-
-const submit = async () => {
-	if (!isFormValid.value) {
-		alert("Preencha todos os campos corretamente!")
-		return
-	}
-
-	const formData = new FormData()
-	formData.append("name", name.value)
-	formData.append("email", email.value)
-	formData.append("phone", phone.value)
-	formData.append("address", address.value || "")
-	formData.append("password", password.value)
-	formData.append("password_confirmation", password_confirm.value)
-	formData.append("image", file.value)
-
-	try {
-		const response = await axios.post(
-			"http://127.0.0.1:8000/api/signup",
-			formData,
-			{
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			},
-		)
-		alert("Cadastro realizado com sucesso!")
-		console.log(response.data)
-		router.push("/login")
-	} catch (error) {
-		console.error(
-			"Erro ao cadastrar:",
-			error.response?.data || error.message,
-		)
-		alert("Erro ao cadastrar. Tente novamente.")
-	}
-}
 </script>
-
 <style scoped>
-* {
-	background-color: #ffffff;
-}
-
-.v-avatar {
-	border-radius: 50%;
-}
-
-.text-field-label {
-	font-family: "Roboto", sans-serif;
-	font-weight: 600;
-	margin-bottom: 120px;
-}
-
-:deep(.custom-icon-size .v-icon--size-default) {
-	font-size: 100px;
-}
-
-.text-error {
-	color: red;
-	font-size: 14px;
-	font-weight: bold;
-}
-
-* {
-	background-color: #ffffff;
-}
-
-.v-avatar {
-	border-radius: 50%;
+h1 {
+	align-self: flex-start;
+	text-align: left;
+	font-size: 28px;
 }
 
 :deep(.v-field__outline) {
 	--v-field-border-width: 2px !important;
 	--v-field-border-opacity: 1 !important;
+}
+:deep(.v-field__overlay) {
+	background-color: #ffff !important;
+}
+
+.login-btn {
+	width: 100%;
+	height: 3.5rem;
+	font-size: 1.5rem;
+	font-weight: 600;
+	background-color: var(--secondary-color);
+	color: #ffffff;
+	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+	transition: box-shadow 0.3s ease;
+}
+
+.login-btn:hover {
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.register-link {
+	font-size: 28px;
+}
+
+.link {
+	color: var(--secondary-color);
+	font-size: 1rem;
+	text-decoration: underline;
+	font-weight: 400;
+	transition: all 0.25s;
+	text-align: center;
+}
+
+.field-content :deep(.v-field__outline) {
+	border-radius: 8px;
+}
+
+:deep(.v-text-field input) {
+	font-size: 1.2rem;
+}
+
+.link strong {
+	font-weight: 800;
+	color: var(--secondary-color);
+	text-decoration: underline;
+}
+
+.link:hover {
+	color: var(--secondary-color);
+	text-decoration: underline;
+}
+
+.description {
+	font-weight: 400;
 }
 </style>

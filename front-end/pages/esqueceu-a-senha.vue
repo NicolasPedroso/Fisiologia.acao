@@ -2,10 +2,9 @@
 	<NuxtNotifications />
 	<!-- Conteudo da pagina -->
 	<v-container fluid class="ma-0 pa-0 text-center">
-		<h1 class="text-center">Entre no Fisiologia Em Ação</h1>
+		<h1 class="text-center">Esqueceu a sua senha?</h1>
 		<h3 class="description text-center mb-12">
-			Estude melhor, avance mais rápido. Faça login e mergulhe na
-			fisiologia!
+			Coloque seu e-mail para receber um link de redefinição
 		</h3>
 
 		<v-form v-model="valid" @submit.prevent>
@@ -19,41 +18,21 @@
 				tile
 				hint
 			/>
-			<v-text-field
-				v-model="password"
-				class="field-content mt-3"
-				label="Insira sua Senha"
-				prepend-inner-icon="mdi-lock-outline"
-				variant="outlined"
-				:type="showPassword ? 'text' : 'password'"
-				:rules="rules.password"
-				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-				@click:append-inner="togglePassword"
-			/>
-			<v-row class="align-center justify-space-between mr-1">
-				<v-checkbox
-					v-model="remember_me"
-					hide-details
-					label="Permanecer logado"
-				/>
-				<nuxt-link class="link" to="/esqueceu-a-senha">
-					Esqueceu a senha?
-				</nuxt-link>
-			</v-row>
 			<v-btn
 				type="submit"
 				class="login-btn rounded-lg mt-8"
 				variant="outlined"
+				:disabled="!valid"
 				@click="login"
 			>
-				Entrar
+				Mandar e-mail
 			</v-btn>
 		</v-form>
 		<div class="mt-1 text-center">
 			<nuxt-link class="text-center link mb-4" to="/cadastro">
 				<span>
-					Não tem uma conta ainda?
-					<strong>Clique aqui</strong>
+					Sabe sua senha?
+					<strong>Entre agora</strong>
 				</span>
 			</nuxt-link>
 		</div>

@@ -26,7 +26,7 @@
 					prepend-icon="mdi-layers-edit"
 					title="Dashboard"
 					subtitle="Altere as informações do site"
-					to="/fea/dashboard"
+					to="/fisiologia/dashboard"
 				/>
 			</v-list>
 			<template #append>
@@ -81,17 +81,17 @@ const links = [
 	{
 		name: "Estastísticas",
 		icon: "mdi-chart-bar",
-		link: "/fea/stats",
+		link: "/fisiologia/stats",
 	},
 	{
 		name: "Perguntas frequentes",
 		icon: "mdi-help",
-		link: "/fea/faq",
+		link: "/fisiologia/faq",
 	},
 	{
 		name: "Perfil",
 		icon: "mdi-account",
-		link: "/fea/profile",
+		link: "/fisiologia/profile",
 	},
 ]
 

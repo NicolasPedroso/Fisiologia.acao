@@ -70,20 +70,20 @@ const drawerItems = [
 		icon: "mdi-help",
 		title: "FAQ e tutorial de uso",
 		subtitle: "Entenda como funciona o painel do adminstrador",
-		link: "/fea/dashboard/",
+		link: "/fisiologia/dashboard/",
 	},
 	{ type: "subheader", title: "Edição de conteúdo" },
 	{
 		icon: "mdi-video-box",
 		title: "Temas e vídeos",
 		subtitle: "Edite os vídeos/temas",
-		link: "/fea/dashboard/video",
+		link: "/fisiologia/dashboard/video",
 	},
 	{
 		icon: "mdi-email-edit",
 		title: "Edição de e-mail",
 		subtitle: "Atualize seu e-mail",
-		link: "/fea/dashboard/email",
+		link: "/fisiologia/dashboard/email",
 	},
 ]
 
