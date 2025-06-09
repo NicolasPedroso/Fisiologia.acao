@@ -73,7 +73,14 @@ class PerguntaController extends Controller
             'video_link.required' => 'Falta preencher o campo video_link',
         ]);
 
-        $pergunta = Pergunta::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('imagem')) {
+            $file_path = $request->file('imagem')->store('image/pergunta', ['disk' => 'public']);
+            $data['imagem'] = $file_path;
+        }
+
+        $pergunta = Pergunta::create($data);
         return response()->json($pergunta, 201);
     }
 
@@ -86,7 +93,7 @@ class PerguntaController extends Controller
             'fase_id'      => 'required|exists:fases,id',
             'texto'        => 'required|string',
             'dificuldade'  => 'required|integer|in:1,2,3',
-            'imagem'       => 'required|string',
+            'imagem'       => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'video_link'   => 'required|string',
         ], [
             'fase_id.required' => 'Falta preencher o campo fase_id',
@@ -98,8 +105,18 @@ class PerguntaController extends Controller
             'video_link.required' => 'Falta preencher o campo video_link',
         ]);
 
-        $pergunta->update($request->all());
-        return response()->json($pergunta, 200);
+        $statuscode = 200;
+
+        $data = $request->all();
+
+        if ($request->hasFile('imagem')) {
+            $file_path = $request->file('imagem')->store('image/pergunta', ['disk' => 'public']);
+            $data['imagem'] = $file_path;
+            $statuscode = 201;
+        }
+
+        $pergunta->update($data);
+        return response()->json($pergunta, $statuscode);
     }
 
     /**
