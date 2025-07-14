@@ -1,9 +1,7 @@
 <template>
-	<Transition name="fade">
-		<div v-if="status === 'pending'" class="loading-wrapper">
-			<div class="loader"></div>
-		</div>
-	</Transition>
+	<div v-if="status === 'pending'" class="loading-wrapper">
+		<div class="loader"></div>
+	</div>
 </template>
 <script setup>
 defineProps({
@@ -11,17 +9,6 @@ defineProps({
 })
 </script>
 <style scoped>
-/* Transicao */
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 1s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-	opacity: 0;
-}
-
 /* CSS */
 @keyframes bg {
 	0% {

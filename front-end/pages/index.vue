@@ -18,6 +18,7 @@
 				class="field-content mt-3"
 				tile
 				hint
+				type="email"
 			/>
 			<v-text-field
 				v-model="password"
@@ -36,9 +37,9 @@
 					hide-details
 					label="Permanecer logado"
 				/>
-				<nuxt-link class="link" to="/esqueceu-a-senha">
+				<!-- <nuxt-link class="link" to="/esqueceu-a-senha">
 					Esqueceu a senha?
-				</nuxt-link>
+				</nuxt-link> -->
 			</v-row>
 			<v-btn
 				type="submit"
@@ -46,7 +47,7 @@
 				variant="outlined"
 				@click="login"
 			>
-				Entrar
+				<span class="login-btn__text"> Entrar </span>
 			</v-btn>
 		</v-form>
 		<div class="mt-1 text-center">
@@ -125,7 +126,7 @@ async function login() {
 			})
 			if (authenticated.value) {
 				// Redireciona para a dashboard
-				router.push("/fea")
+				router.push("/fisiologia")
 			} else {
 				// Feedback de erro, caso a autenticação não tenha sido bem-sucedida
 				notify.close("loading")
@@ -194,15 +195,27 @@ h1 {
 	width: 100%;
 	height: 3.5rem;
 	font-size: 1.5rem;
+	line-height: 0;
 	font-weight: 600;
 	background-color: var(--secondary-color);
 	color: #ffffff;
-	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-	transition: box-shadow 0.3s ease;
+	transition: background-color 1s ease;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .login-btn:hover {
-	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+	background-color: var(--primary-color);
+}
+
+.login-btn__text {
+	font-size: 1.2rem;
+	line-height: 1.2rem;
+	letter-spacing: 0.05rem;
+	text-transform: none;
+	font-weight: 600;
 }
 
 .register-link {

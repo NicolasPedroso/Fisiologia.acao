@@ -104,7 +104,7 @@ async function login() {
 			})
 			if (authenticated.value) {
 				// Redireciona para a dashboard
-				router.push("/fea")
+				router.push("/fisiologia")
 			} else {
 				// Feedback de erro, caso a autenticação não tenha sido bem-sucedida
 				notify.close("loading")

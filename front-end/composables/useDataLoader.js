@@ -38,7 +38,7 @@ export const useDataLoader = async (request, opts) => {
 	} catch (error) {
 		if (error.response?.status === 401) {
 			await logUserOut()
-			return router.push("/fea")
+			return router.push("/fisiologia")
 		}
 
 		throw error

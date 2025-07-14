@@ -1,23 +1,23 @@
 <template>
 	<NuxtNotifications />
 	<!-- Conteudo da pagina -->
-	<v-container fluid class="ma-0 pa-0 text-center">
+	<v-container fluid class="ma-0 pa-0 text-left">
 		<h1 class="text-center">Cadastre-se no Fisiologia em Ação</h1>
 		<h3 class="description text-center mb-6">
 			Estude com quizzes inteligentes. Cadastre-se e aproveite!
 		</h3>
 
 		<v-form v-model="valid" @submit.prevent>
-			<span>Campos marcados com asterisco* são obrigatórios</span>
 			<v-text-field
-				v-model="email"
-				label="Nome*"
+				v-model="name"
+				label="Nome"
 				prepend-inner-icon="mdi-account"
 				variant="outlined"
-				:rules="rules.email"
+				:rules="rules.required"
 				class="field-content mt-3"
 				tile
 				hint
+				hide-details
 			/>
 			<v-text-field
 				v-model="email"
@@ -28,48 +28,66 @@
 				class="field-content mt-3"
 				tile
 				hint
+				hide-details
+				type="email"
+			/>
+			<v-file-input
+				v-model="imageFile"
+				label="Imagem de perfil"
+				prepend-inner-icon="mdi-image"
+				prepend-icon=""
+				variant="outlined"
+				:rules="rules.image"
+				accept="image/jpg,image/jpeg,image/png"
+				class="field-content mt-3"
+				tile
+				hint
+				hide-details
+				show-size
 			/>
 			<v-text-field
-				v-model="email"
+				v-model="address"
 				label="Endereço"
 				prepend-inner-icon="mdi-road-variant"
 				variant="outlined"
-				:rules="rules.email"
 				class="field-content mt-3"
 				tile
 				hint
+				:rules="rules.required"
+				hide-details
 			/>
 			<v-text-field
-				v-model="email"
+				v-model="phone"
 				label="Telefone"
 				prepend-inner-icon="mdi-phone"
 				variant="outlined"
-				:rules="rules.email"
 				class="field-content mt-3"
 				tile
 				hint
+				hide-details
+				type="tel"
+				:rules="rules.phone"
+				@input="formatPhone"
 			/>
 			<v-text-field
 				v-model="password"
 				class="field-content mt-3"
-				label="Insira sua Senha"
+				label="Insira sua senha"
 				prepend-inner-icon="mdi-lock-outline"
 				variant="outlined"
-				:type="showPassword ? 'text' : 'password'"
-				:rules="rules.password"
-				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-				@click:append-inner="togglePassword"
+				type="password"
+				:rules="rules.required"
+				hide-details
 			/>
 			<v-text-field
-				v-model="password"
+				v-model="passwordConfirmation"
 				class="field-content mt-3"
-				label="Insira sua Senha"
+				label="Confirme sua senha"
 				prepend-inner-icon="mdi-lock-outline"
 				variant="outlined"
-				:type="showPassword ? 'text' : 'password'"
-				:rules="rules.password"
-				:append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-				@click:append-inner="togglePassword"
+				type="password"
+				:rules="rules.passwordConfirmation"
+				hide-details
 			/>
 			<v-btn
 				type="submit"
@@ -78,7 +96,7 @@
 				:disabled="!valid"
 				@click="login"
 			>
-				Cadastrar
+				<span class="login-btn__text"> Cadastrar </span>
 			</v-btn>
 		</v-form>
 		<div class="mt-1 text-center">
@@ -98,18 +116,16 @@ import { storeToRefs } from "pinia"
 import { useAuthStore } from "~/store/auth"
 
 // Campos do formulário
+const name = ref("")
 const email = ref("")
 const password = ref("")
-const remember_me = ref(false)
+const phone = ref("")
+const address = ref("")
+const passwordConfirmation = ref("")
+const imageFile = ref(null)
 
 // Usar o snackbar
 const { notify } = useNotification()
-
-const showPassword = ref(false)
-
-const togglePassword = () => {
-	showPassword.value = !showPassword.value
-}
 
 // Regras e validade do formulário
 const valid = ref(false)
@@ -125,17 +141,54 @@ const rules = {
 			return "O e-mail deve ser válido"
 		},
 	],
-	password: [
+	required: [
 		(value) => {
 			if (value) return true
 			return "O campo é obrigatório"
 		},
 	],
+	phone: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+		(value) => {
+			if (value.length == 15) return true
+			return "O telefone deve ser válido"
+		},
+	],
+	image: [
+		(value) => {
+			if (value && value[0]) return true
+			return "A imagem é obrigatória"
+		},
+		(value) => {
+			if (value[0] && value[0].size < 5000000) return true
+			return "A imagem deve ser menor que 5MB"
+		},
+	],
+	passwordConfirmation: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+		(value) => {
+			if (value === password.value) return true
+			return "As senhas não coincidem"
+		},
+	],
 }
 
-// Função de autenticação da STORE
-const { authenticateUser } = useAuthStore()
-const { authenticated } = storeToRefs(useAuthStore())
+const formatPhone = () => {
+	let cleaned = phone.value.replace(/\D/g, "").slice(0, 11)
+
+	if (cleaned.length > 2) {
+		cleaned = `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`
+	}
+
+	phone.value = cleaned
+}
+
 const router = useRouter()
 
 // Funções
@@ -148,30 +201,30 @@ async function login() {
 			text: "Carregando...",
 			type: "info",
 		})
+
+		const formData = new FormData()
+		formData.append("name", name.value)
+		formData.append("email", email.value)
+		formData.append("phone", phone.value)
+		formData.append("address", address.value || "")
+		formData.append("password", password.value)
+		formData.append("password_confirmation", passwordConfirmation.value)
+		formData.append("image", imageFile.value)
+
 		// Envia os dados para o backend
 		try {
-			await authenticateUser({
-				email: email.value,
-				password: password.value,
-				remember_me: remember_me.value,
+			await useDataLoader("/api/signup", {
+				method: "POST",
+				body: formData,
 			})
-			if (authenticated.value) {
-				// Redireciona para a dashboard
-				router.push("/fea")
-			} else {
-				// Feedback de erro, caso a autenticação não tenha sido bem-sucedida
-				notify.close("loading")
-				notify({
-					title: "Erro de autenticação",
-					text: "Dados inválidos",
-					type: "error",
-				})
-			}
+
+			notify.close("loading")
+			router.push("/")
 		} catch (error) {
 			notify.close("loading")
 			notify({
-				title: "Erro de autenticação",
-				text: "Usuário inexistente",
+				title: "Erro ao criar conta",
+				text: formatError(error),
 				type: "error",
 			})
 		}
@@ -190,9 +243,9 @@ definePageMeta({
 	middleware: ["auth"],
 })
 useSeoMeta({
-	title: "Login - Fisiologia em Ação",
-	description: "Faça login na Fisiologia em Ação",
-	keywords: "login, acesso, fisiologia, ação",
+	title: "Cadastro - Fisiologia em Ação",
+	description: "",
+	keywords: "cadastro, acesso, fisiologia, ação",
 })
 useHead({
 	htmlAttrs: {
@@ -215,7 +268,7 @@ h1 {
 }
 
 :deep(.v-field__outline) {
-	--v-field-border-width: 2px !important;
+	--v-field-border-width: 1px !important;
 	--v-field-border-opacity: 1 !important;
 }
 :deep(.v-field__overlay) {
@@ -226,15 +279,27 @@ h1 {
 	width: 100%;
 	height: 3.5rem;
 	font-size: 1.5rem;
+	line-height: 0;
 	font-weight: 600;
 	background-color: var(--secondary-color);
 	color: #ffffff;
-	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-	transition: box-shadow 0.3s ease;
+	transition: background-color 1s ease;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .login-btn:hover {
-	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+	background-color: var(--primary-color);
+}
+
+.login-btn__text {
+	font-size: 1.2rem;
+	line-height: 1.2rem;
+	letter-spacing: 0.05rem;
+	text-transform: none;
+	font-weight: 600;
 }
 
 .register-link {
@@ -255,7 +320,7 @@ h1 {
 }
 
 :deep(.v-text-field input) {
-	font-size: 1.2rem;
+	font-size: 1rem;
 }
 
 .link strong {

@@ -7,160 +7,158 @@
 			fluid
 		>
 			<nuxt-notifications />
-			<Transition>
-				<div v-if="!isEditing" class="profile__content">
-					<v-avatar
-						class="profile__image"
-						size="200"
-						image="/placeholder/avatar.png"
-					/>
+			<div v-if="!isEditing" class="profile__content">
+				<v-avatar
+					class="profile__image"
+					size="200"
+					image="/placeholder/avatar.png"
+				/>
 
-					<h1>{{ user.name }}</h1>
-					<h2>Level: 0</h2>
+				<h1>{{ user.name }}</h1>
+				<h2>Level: 0</h2>
 
-					<div class="profile__row__wrapper">
-						<div class="profile__row">
-							<strong>E-mail</strong>
-							<span>{{ user.email }}</span>
-						</div>
-						<div class="profile__row">
-							<strong>Telefone</strong>
-							<span>{{ user.phone }}</span>
-						</div>
-						<div class="profile__row">
-							<strong>Endereço</strong>
-							<span>{{ user.address }}</span>
-						</div>
-						<div class="profile__row">
-							<strong>Tipo de conta</strong>
-							<span>
-								{{
-									user.isAdmin === 1
-										? "Adminstrador"
-										: "Estudante"
-								}}
-							</span>
-						</div>
-
-						<v-row class="mt-6 d-flex justify-center">
-							<v-btn
-								color="var(--secondary-color)"
-								variant="outlined"
-								theme="dark"
-								width="100%"
-								@click.stop="isEditing = true"
-							>
-								Editar informações
-							</v-btn>
-							<v-btn
-								class="mt-2"
-								color="var(--primary-color)"
-								theme="dark"
-								width="100%"
-								variant="tonal"
-								disabled
-							>
-								Deletar conta
-							</v-btn>
-						</v-row>
+				<div class="profile__row__wrapper">
+					<div class="profile__row">
+						<strong>E-mail</strong>
+						<span>{{ user.email }}</span>
 					</div>
+					<div class="profile__row">
+						<strong>Telefone</strong>
+						<span>{{ user.phone }}</span>
+					</div>
+					<div class="profile__row">
+						<strong>Endereço</strong>
+						<span>{{ user.address }}</span>
+					</div>
+					<div class="profile__row">
+						<strong>Tipo de conta</strong>
+						<span>
+							{{
+								user.isAdmin === 1
+									? "Adminstrador"
+									: "Estudante"
+							}}
+						</span>
+					</div>
+
+					<v-row class="mt-6 d-flex justify-center">
+						<v-btn
+							color="var(--secondary-color)"
+							variant="outlined"
+							theme="dark"
+							width="100%"
+							@click.stop="isEditing = true"
+						>
+							Editar informações
+						</v-btn>
+						<v-btn
+							class="mt-2"
+							color="var(--primary-color)"
+							theme="dark"
+							width="100%"
+							variant="tonal"
+							disabled
+						>
+							Deletar conta
+						</v-btn>
+					</v-row>
 				</div>
-				<div v-else class="edit__wrapper">
-					<div class="edit__card">
-						<div class="edit__title">
-							<h1>Edição de perfil</h1>
-						</div>
-						<div class="edit__content">
-							<v-form v-model="validForm" @submit.prevent>
-								<h3 class="mb-2">Nome</h3>
+			</div>
+			<div v-else class="edit__wrapper">
+				<div class="edit__card">
+					<div class="edit__title">
+						<h1>Edição de perfil</h1>
+					</div>
+					<div class="edit__content">
+						<v-form v-model="validForm" @submit.prevent>
+							<h3 class="mb-2">Nome</h3>
+							<v-text-field
+								v-model="formData.name"
+								type="text"
+								variant="outlined"
+								placeholder="Fulano..."
+								:disabled="loadingRes"
+							/>
+							<h3 class="mb-2">E-mail</h3>
+							<v-text-field
+								v-model="formData.email"
+								type="email"
+								variant="outlined"
+								placeholder="fulano@ufpr.br"
+								:disabled="loadingRes"
+							/>
+							<h3 class="mb-2">Endereço (opcional)</h3>
+							<v-text-field
+								v-model="formData.address"
+								type="text"
+								variant="outlined"
+								clearable
+								placeholder="Rua dos hormônios"
+								:disabled="loadingRes"
+							/>
+							<h3 class="mb-2">Telefone (opcional)</h3>
+							<v-text-field
+								v-model="formData.phone"
+								type="tel"
+								variant="outlined"
+								clearable
+								placeholder="(XX) XXXXXXXX"
+								prepend-inner-icon="mdi-phone-outline"
+								:disabled="loadingRes"
+								@input="formatPhone"
+							/>
+							<h3 class="mb-2">Troca de senha (opcional)</h3>
+							<v-text-field
+								v-model="formData.pwdChange"
+								type="password"
+								variant="outlined"
+								clearable
+								placeholder="Nova senha"
+								:disabled="loadingRes"
+							/>
+							<div v-if="formData.pwdChange !== ''">
+								<h3 class="mb-2">
+									Confirmação da troca de senha
+								</h3>
 								<v-text-field
-									v-model="formData.name"
-									type="text"
-									variant="outlined"
-									placeholder="Fulano..."
-									:disabled="loadingRes"
-								/>
-								<h3 class="mb-2">E-mail</h3>
-								<v-text-field
-									v-model="formData.email"
-									type="email"
-									variant="outlined"
-									placeholder="fulano@ufpr.br"
-									:disabled="loadingRes"
-								/>
-								<h3 class="mb-2">Endereço (opcional)</h3>
-								<v-text-field
-									v-model="formData.address"
-									type="text"
-									variant="outlined"
-									clearable
-									placeholder="Rua dos hormônios"
-									:disabled="loadingRes"
-								/>
-								<h3 class="mb-2">Telefone (opcional)</h3>
-								<v-text-field
-									v-model="formData.phone"
-									type="tel"
-									variant="outlined"
-									clearable
-									placeholder="(XX) XXXXXXXX"
-									prepend-inner-icon="mdi-phone-outline"
-									:disabled="loadingRes"
-									@input="formatPhone"
-								/>
-								<h3 class="mb-2">Troca de senha (opcional)</h3>
-								<v-text-field
-									v-model="formData.pwdChange"
+									v-model="formData.pwdChangeConfirmation"
 									type="password"
 									variant="outlined"
 									clearable
-									placeholder="Nova senha"
+									placeholder="Confirmação da nova senha"
 									:disabled="loadingRes"
 								/>
-								<div v-if="formData.pwdChange !== ''">
-									<h3 class="mb-2">
-										Confirmação da troca de senha
-									</h3>
-									<v-text-field
-										v-model="formData.pwdChangeConfirmation"
-										type="password"
+							</div>
+							<v-row class="ma-0 mt-4">
+								<v-col class="pa-0 pr-1" cols="12" md="6">
+									<v-btn
+										type="submit"
+										class="cancel-btn rounded-lg"
 										variant="outlined"
-										clearable
-										placeholder="Confirmação da nova senha"
+										color="var(--secondary-color-alt)"
 										:disabled="loadingRes"
-									/>
-								</div>
-								<v-row class="ma-0 mt-4">
-									<v-col class="pa-0 pr-1" cols="12" md="6">
-										<v-btn
-											type="submit"
-											class="cancel-btn rounded-lg"
-											variant="outlined"
-											color="var(--secondary-color-alt)"
-											:disabled="loadingRes"
-											@click="cancelEdit()"
-										>
-											<h1>Cancelar</h1>
-										</v-btn>
-									</v-col>
-									<v-col class="pa-0 pl-1" cols="12" md="6">
-										<v-btn
-											type="submit"
-											class="update-btn rounded-lg"
-											color="var(--secondary-color)"
-											theme="dark"
-											:disabled="loadingRes"
-											@click="updateUser()"
-										>
-											<h1>Salvar</h1>
-										</v-btn>
-									</v-col>
-								</v-row>
-							</v-form>
-						</div>
+										@click="cancelEdit()"
+									>
+										<h1>Cancelar</h1>
+									</v-btn>
+								</v-col>
+								<v-col class="pa-0 pl-1" cols="12" md="6">
+									<v-btn
+										type="submit"
+										class="update-btn rounded-lg"
+										color="var(--secondary-color)"
+										theme="dark"
+										:disabled="loadingRes"
+										@click="updateUser()"
+									>
+										<h1>Salvar</h1>
+									</v-btn>
+								</v-col>
+							</v-row>
+						</v-form>
 					</div>
 				</div>
-			</Transition>
+			</div>
 			<Loading :status="status" />
 		</v-container>
 	</div>

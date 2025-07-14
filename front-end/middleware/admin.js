@@ -5,6 +5,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	})
 
 	if (cookieAdmin.value !== true) {
-		return navigateTo("/fea", { redirectCode: 200 })
+		return navigateTo("/fisiologia", { redirectCode: 200 })
 	}
 })

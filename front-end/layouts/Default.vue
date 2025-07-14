@@ -76,7 +76,7 @@ const links = [
 	{
 		name: "Página inicial",
 		icon: "mdi-home",
-		link: "/fea",
+		link: "/fisiologia",
 	},
 	{
 		name: "Estastísticas",

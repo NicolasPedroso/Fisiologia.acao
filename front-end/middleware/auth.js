@@ -22,5 +22,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		return
 	}
 
-	return navigateTo("/fea", { redirectCode: 200 })
+	return navigateTo("/fisiologia", { redirectCode: 200 })
 })
