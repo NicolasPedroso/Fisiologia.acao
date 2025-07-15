@@ -77,7 +77,7 @@
 		</v-main>
 
 		<v-footer class="d-flex justify-space-between align-center">
-			<div class="text-left d-flex flex-column">
+			<div class="text-subtitle-2 text-left d-flex flex-column">
 				<span>© 2025 Todos os direitos reservados</span>
 				<span>
 					Desenvolvido por discentes de
@@ -109,19 +109,19 @@ const homeURL = "/fisiologia"
 const links = [
 	{
 		name: "Quizzes",
-		icon: "mdi-home",
+		icon: "mdi-nintendo-game-boy",
 		link: "/fisiologia",
 		arialLabel: "Página inicial",
 	},
 	{
 		name: "FAQ",
-		icon: "mdi-help-circle",
+		icon: "mdi-tooltip-question",
 		link: "/fisiologia/faq",
 		arialLabel: "Perguntas frequentes",
 	},
 	{
 		name: "Dashboard",
-		icon: "mdi-chart-bar",
+		icon: "mdi-shield-crown",
 		link: "/fisiologia/dashboard",
 		arialLabel: "Painel de controle",
 		onlyAdmin: true,
@@ -155,7 +155,7 @@ async function logout() {
 .navbar__profile {
 	background:
 		linear-gradient(white, white) padding-box,
-		linear-gradient(to right, blue, red) border-box;
+		linear-gradient(to right, blue, purple) border-box;
 	border-radius: 50em;
 	border: 2px solid transparent;
 }
