@@ -1,0 +1,49 @@
+<template>
+	<v-card :to="theme.link" class="theme-card__wrapper d-flex flex-column">
+		<h3 class="w50">{{ theme.title }}</h3>
+		<p class="w50">{{ theme.quantity }} quizzes disponíveis</p>
+		<v-icon class="theme-card__image"> {{ theme.icon }} </v-icon>
+	</v-card>
+</template>
+<script setup>
+defineProps({
+	theme: {
+		type: Object,
+		required: true,
+		default: () => ({
+			title: "Tema de exemplo",
+			icon: "mdi-cat",
+			link: "/fisiologia",
+			quantity: 0,
+		}),
+	},
+})
+</script>
+<style scoped>
+.theme-card__wrapper {
+	background-color: var(--white);
+	color: var(--text-color);
+	padding: 16px;
+	border-radius: 8px;
+	text-align: left;
+	box-shadow: 0 0px 4px rgba(0, 0, 0, 0.25);
+
+	width: 100%;
+	height: 100%;
+	min-height: 200px;
+	position: relative;
+	overflow: hidden;
+}
+
+.theme-card__image {
+	position: absolute;
+	right: -96px;
+	bottom: -64px;
+	font-size: 280px;
+	transform: rotate(20deg) scaleX(-1);
+}
+
+.w50 {
+	width: 50%;
+}
+</style>

@@ -26,7 +26,7 @@ export default defineNuxtConfig({
 			 * Se houver um titulo, ele pega o nome do projeto do package.json e concatena com o titulo
 			 * 		Exemplo: "Titulo - Nome do Projeto do package.json"
 			 */
-			titleTemplate: `%s - ${process.env.npm_package_name}`,
+			titleTemplate: `%s`,
 			title: process.env.npm_package_name || "",
 			// Define o icone padrão do projeto
 			link: [
@@ -71,7 +71,6 @@ export default defineNuxtConfig({
 				config.plugins.push(vuetify({ autoImport: true }))
 			})
 		},
-		// "@nuxtjs/eslint-module",
 		"nuxt3-notifications",
 		"@pinia/nuxt",
 	],
