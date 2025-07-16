@@ -5,24 +5,29 @@
 		width="100%"
 		height="100%"
 	>
-		<div
-			class="quiz__content d-flex align-center flex-column"
-			style="width: 100%"
-		>
+		<div class="quiz__content d-flex align-center flex-column">
 			<h1>{{ title }}</h1>
-			<v-btn class="start-btn mt-5" elevation="0">
-				<span class="start-btn__text" @click.stop="startQuiz()">
-					Iniciar perguntas
-				</span>
+			<YouTube
+				ref="youtube"
+				:src="linkYoutube"
+				@ready="onReadyYTB"
+				:width="640 * 1.25"
+				:height="360 * 1.25"
+				class="my-4"
+			/>
+			<v-btn class="start-btn mt-5" elevation="0" @click="startQuiz()">
+				<span class="start-btn__text"> Começar quiz </span>
 			</v-btn>
 		</div>
 	</v-container>
 </template>
 <script setup>
+import YouTube from "vue3-youtube"
+
 // Emit para iniciar o quiz
 const emit = defineEmits(["startQuiz"])
 function startQuiz() {
-	emit("startQuiz", 2)
+	emit("startQuiz", 1)
 }
 
 defineProps({
@@ -32,9 +37,14 @@ defineProps({
 	},
 	linkYoutube: {
 		type: String,
-		default: "https://www.youtube.com/watch?v=example",
+		default: "https://www.youtube.com/watch?v=LACbVhgtx9I",
 	},
 })
+
+const youtube = useTemplateRef("youtube")
+function onReadyYTB() {
+	youtube.playVideo()
+}
 </script>
 <style scoped>
 .quiz__card__wrapper {

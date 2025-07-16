@@ -54,19 +54,17 @@
 			<h1>{{ title }}</h1>
 			<h3>Tema: {{ themeTitle }}</h3>
 			<p class="mt-4">{{ description }}</p>
-			<v-btn class="start-btn mt-5" elevation="0">
-				<span class="start-btn__text" @click.stop="startQuiz()">
-					Iniciar Quiz
-				</span>
+			<v-btn class="start-btn mt-5" elevation="0" @click="startVideo()">
+				<span class="start-btn__text"> Iniciar Quiz </span>
 			</v-btn>
 		</div>
 	</v-container>
 </template>
 <script setup>
 // Emit para iniciar o quiz
-const emit = defineEmits(["startQuiz"])
-function startQuiz() {
-	emit("startQuiz", 1)
+const emit = defineEmits(["startVideo"])
+function startVideo() {
+	emit("startVideo", 2)
 }
 
 defineProps({

@@ -9,16 +9,17 @@
 			:title="quiz.title"
 			:image="quiz.image"
 			:description="quiz.description"
-			:themeTitle="quiz.theme.title"
+			:theme-title="quiz.theme.title"
 			:quantity="quiz.quantity"
 			:link="quiz.link"
-			@start-quiz="selected = 1"
+			@start-video="selected = 1"
 		/>
 		<quiz-video
 			v-else-if="selected === 1"
-			:title="'Segunda tela'"
-			@start-quiz="selected = 1"
+			:title="quiz.title"
+			@start-quiz="selected = 2"
 		/>
+		<quiz-main v-else-if="selected === 2" />
 	</v-container>
 </template>
 <script setup>
