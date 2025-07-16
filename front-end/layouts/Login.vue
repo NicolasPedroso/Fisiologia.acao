@@ -31,7 +31,7 @@
 			<v-col
 				cols="12"
 				md="6"
-				class="main__content d-flex justify-content align-center pa-12 ma-0"
+				class="main__content d-flex justify-content align-center pa-2 pa-md-12 ma-0"
 			>
 				<NuxtPage />
 			</v-col>
@@ -45,8 +45,8 @@
 
 .gradient {
 	position: relative;
-	height: 100%;
-	width: 100%;
+	height: 100vh;
+	width: 50vw;
 	overflow: hidden;
 }
 
@@ -90,10 +90,13 @@
 
 	width: 100%;
 	height: 100%;
+	overflow: auto;
 }
 
 .main__wrapper {
 	margin: 0;
 	padding: 0;
+	height: 100vh;
+	width: 100vw;
 }
 </style>

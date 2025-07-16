@@ -17,7 +17,7 @@
 				class="field-content mt-3"
 				tile
 				hint
-				hide-details
+				hide-details="auto"
 			/>
 			<v-text-field
 				v-model="email"
@@ -28,7 +28,7 @@
 				class="field-content mt-3"
 				tile
 				hint
-				hide-details
+				hide-details="auto"
 				type="email"
 			/>
 			<v-file-input
@@ -42,7 +42,7 @@
 				class="field-content mt-3"
 				tile
 				hint
-				hide-details
+				hide-details="auto"
 				show-size
 			/>
 			<v-text-field
@@ -54,7 +54,7 @@
 				tile
 				hint
 				:rules="rules.required"
-				hide-details
+				hide-details="auto"
 			/>
 			<v-text-field
 				v-model="phone"
@@ -64,7 +64,7 @@
 				class="field-content mt-3"
 				tile
 				hint
-				hide-details
+				hide-details="auto"
 				type="tel"
 				:rules="rules.phone"
 				@input="formatPhone"
@@ -77,7 +77,7 @@
 				variant="outlined"
 				type="password"
 				:rules="rules.required"
-				hide-details
+				hide-details="auto"
 			/>
 			<v-text-field
 				v-model="passwordConfirmation"
@@ -87,7 +87,7 @@
 				variant="outlined"
 				type="password"
 				:rules="rules.passwordConfirmation"
-				hide-details
+				hide-details="auto"
 			/>
 			<v-btn
 				type="submit"
