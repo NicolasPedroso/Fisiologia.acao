@@ -81,6 +81,13 @@
 					</v-row>
 				</template>
 
+				<template #no-data>
+					<div class="text-center py-6">
+						<h2>Nenhum tema para {{ search }}</h2>
+						<p>Tente ajustar sua pesquisa.</p>
+					</div>
+				</template>
+
 				<template #footer="{ page, pageCount, prevPage, nextPage }">
 					<div class="d-flex align-center justify-center pa-4">
 						<v-btn
@@ -156,12 +163,12 @@
 					<!-- ITEM -->
 					<template #item="{ item }">
 						<tr
-							@click="item.link && $router.push(item.link)"
 							class="cursor-pointer table__row"
 							:class="{
 								'table__row--completed':
 									item.status === 'Completo',
 							}"
+							@click="item.link && $router.push(item.link)"
 						>
 							<td>
 								<div class="d-flex align-center ga-2">
@@ -174,8 +181,8 @@
 									/>
 									<strong>{{ item.title }}</strong>
 									<span
-										class="text-caption"
 										v-if="item.status !== 'Não iniciado'"
+										class="text-caption"
 									>
 										({{ item.status }})
 									</span>
@@ -215,6 +222,30 @@ const search = shallowRef("")
 const searchAllQuizzes = shallowRef("")
 
 const themes = [
+	{
+		title: "Tema 1",
+		icon: "mdi-cat",
+		link: "/fisiologia",
+		quantity: 5,
+	},
+	{
+		title: "Tema 1",
+		icon: "mdi-cat",
+		link: "/fisiologia",
+		quantity: 5,
+	},
+	{
+		title: "Tema 1",
+		icon: "mdi-cat",
+		link: "/fisiologia",
+		quantity: 5,
+	},
+	{
+		title: "Tema 2",
+		icon: "mdi-cat",
+		link: "/fisiologia",
+		quantity: 5,
+	},
 	{
 		title: "Tema 1",
 		icon: "mdi-cat",
@@ -312,7 +343,7 @@ useSeoMeta({
 	opacity: 1;
 }
 .table__row--completed {
-	background-color: rgba(0, 128, 0, 0.05);
+	background-color: rgba(0, 128f, 0, 0.05);
 	opacity: 0.5;
 }
 
