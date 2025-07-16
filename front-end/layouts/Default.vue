@@ -62,7 +62,7 @@
 						class="mr-1"
 						@click="logout()"
 					></v-btn>
-					<v-btn to="/fisiologia/profile" icon aria-label="Perfil">
+					<v-btn to="/fisiologia/perfil" icon aria-label="Perfil">
 						<v-avatar
 							class="navbar__profile"
 							image="/layout/profile.jpeg"
