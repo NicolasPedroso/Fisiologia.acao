@@ -19,7 +19,7 @@
 			:title="quiz.title"
 			@start-quiz="selected = 2"
 		/>
-		<quiz-main v-else-if="selected === 2" />
+		<quiz-main v-else-if="selected === 2" @finish-quiz="finishQuiz" />
 	</v-container>
 </template>
 <script setup>
@@ -36,6 +36,15 @@ const quiz = {
 	description:
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 	link: "/fisiologia/quiz/1",
+}
+
+const finishQuiz = (time) => {
+	if (time) {
+		alert(`Tempo gasto: ${time} segundos`)
+	}
+	selected.value = 0
+
+	// TODO: Implementar lógica de finalização do quiz, como salvar resultados ou redirecionar
 }
 
 definePageMeta({
