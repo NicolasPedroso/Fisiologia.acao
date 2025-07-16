@@ -66,7 +66,7 @@
 
 			<v-data-iterator
 				:items="themes"
-				:items-per-page="8"
+				:items-per-page="12"
 				:search="search"
 				:loading="false"
 			>
@@ -75,7 +75,8 @@
 						<v-col
 							v-for="item in items"
 							:key="item.title"
-							cols="3"
+							cols="4"
+							lg="3"
 							class="pa-2"
 						>
 							<theme-card :theme="item.raw" />
@@ -121,7 +122,8 @@
 						<v-col
 							v-for="(_, k) in [0, 1, 2, 3, 4, 5, 6, 7]"
 							:key="k"
-							cols="3"
+							cols="4"
+							lg="3"
 							class="pa-2"
 						>
 							<v-skeleton-loader
