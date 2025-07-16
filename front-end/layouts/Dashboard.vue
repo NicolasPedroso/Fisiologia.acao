@@ -2,7 +2,7 @@
 	<v-app full-height theme="light">
 		<!-- Drawer que contém os links para as páginas -->
 		<v-no-ssr>
-			<v-navigation-drawer v-model="drawer">
+			<v-navigation-drawer v-model="drawer" color="var(--primary-color)">
 				<template #image>
 					<div class="drawer-color" />
 				</template>
@@ -12,7 +12,7 @@
 						class="drawer-logo"
 						title="Fisiologia em ação"
 						subtitle="@fisiologia.em.acao"
-						prepend-avatar="/logo.png"
+						prepend-avatar="/layout/logoEmblem.svg"
 					/>
 				</v-list>
 				<!-- Logo e nome do Projeto -->
@@ -49,7 +49,7 @@
 		</v-app-bar>
 		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
 		<!-- Conteúdo -->
-		<v-main>
+		<v-main class="background__main">
 			<NuxtPage />
 		</v-main>
 		<!-- Conteúdo -->
@@ -90,9 +90,9 @@ const drawerItems = [
 // Tema que será utilizado na dashboard
 const theme = {
 	/* Fundo do Drawer da dashboard */
-	drawerTextColor: "#ffffff",
+	drawerTextColor: "#fff",
 	/* Cores de fundo da dashboard  */
-	backgroundColor: "var(--secondary-color)",
+	backgroundColor: "var(--primary-color)",
 	/* Cores de texto da dashboard  */
 	textColor: "#fff",
 }
@@ -145,5 +145,14 @@ useSeoMeta({
 .drawer-text :deep(.v-list-item-subtitle) {
 	word-break: normal !important;
 	color: #fff !important;
+}
+
+.background__main {
+	background: white;
+	background-image: radial-gradient(rgba(0, 0, 0, 0.25) 1px, transparent 0);
+	background-size: 20px 20px;
+	background-position: -16px -16px;
+
+	width: 100%;
 }
 </style>

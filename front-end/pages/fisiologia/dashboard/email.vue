@@ -7,7 +7,10 @@
 					E-mail administrador
 				</h1>
 			</div>
-			<div v-if="status === 'success'">
+			<div
+				class="d-flex align-center flex-column"
+				v-if="status === 'success'"
+			>
 				<h1 class="title mb-8">Informações sobre o email</h1>
 				<span class="label-title mb-2"> E-mail atual </span>
 				<v-text-field
