@@ -14,14 +14,9 @@
 			:link="quiz.link"
 			@start-quiz="selected = 1"
 		/>
-		<quiz-start
+		<quiz-video
 			v-else-if="selected === 1"
 			:title="'Segunda tela'"
-			:image="quiz.image"
-			:description="quiz.description"
-			:themeTitle="quiz.theme.title"
-			:quantity="quiz.quantity"
-			:link="quiz.link"
 			@start-quiz="selected = 1"
 		/>
 	</v-container>
