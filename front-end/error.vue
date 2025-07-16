@@ -58,18 +58,6 @@ function errorMessage() {
 useSeoMeta({
 	title: "Erro!",
 })
-useHead({
-	htmlAttrs: {
-		lang: "pt-br",
-	},
-	link: [
-		{
-			rel: "icon",
-			type: "image/ico",
-			href: "/favicon.ico",
-		},
-	],
-})
 </script>
 <style scoped>
 @keyframes bg {

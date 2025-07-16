@@ -141,18 +141,6 @@ useSeoMeta({
 	description: "Faça login na Fisiologia em Ação",
 	keywords: "login, acesso, fisiologia, ação",
 })
-useHead({
-	htmlAttrs: {
-		lang: "pt-br",
-	},
-	link: [
-		{
-			rel: "icon",
-			type: "image/png",
-			href: "/favicon.png",
-		},
-	],
-})
 </script>
 <style scoped>
 h1 {

@@ -81,9 +81,7 @@
 					</v-row>
 				</template>
 
-				<template
-					v-slot:footer="{ page, pageCount, prevPage, nextPage }"
-				>
+				<template #footer="{ page, pageCount, prevPage, nextPage }">
 					<div class="d-flex align-center justify-center pa-4">
 						<v-btn
 							:disabled="page === 1"
@@ -109,7 +107,7 @@
 					</div>
 				</template>
 
-				<template v-slot:loader>
+				<template #loader>
 					<v-row class="mt-6" dense>
 						<v-col
 							v-for="(_, k) in [0, 1, 2, 3, 4, 5, 6, 7]"
@@ -156,107 +154,17 @@ const themes = [
 		link: "/fisiologia",
 		quantity: 5,
 	},
+]
+
+const quizzes = [
 	{
-		title: "Tema 2",
-		icon: "mdi-dog",
-		link: "/fisiologia",
-		quantity: 3,
-	},
-	{
-		title: "Tema 3",
-		icon: "mdi-fish",
-		link: "/fisiologia",
-		quantity: 8,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 2",
-		icon: "mdi-dog",
-		link: "/fisiologia",
-		quantity: 3,
-	},
-	{
-		title: "Tema 3",
-		icon: "mdi-fish",
-		link: "/fisiologia",
-		quantity: 8,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 2",
-		icon: "mdi-dog",
-		link: "/fisiologia",
-		quantity: 3,
-	},
-	{
-		title: "Tema 3",
-		icon: "mdi-fish",
-		link: "/fisiologia",
-		quantity: 8,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 2",
-		icon: "mdi-dog",
-		link: "/fisiologia",
-		quantity: 3,
-	},
-	{
-		title: "Tema 3",
-		icon: "mdi-fish",
-		link: "/fisiologia",
-		quantity: 8,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 2",
-		icon: "mdi-dog",
-		link: "/fisiologia",
-		quantity: 3,
-	},
-	{
-		title: "Tema 3",
-		icon: "mdi-fish",
-		link: "/fisiologia",
-		quantity: 8,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 2",
-		icon: "mdi-dog",
-		link: "/fisiologia",
-		quantity: 3,
-	},
-	{
-		title: "Tema 3",
-		icon: "mdi-fish",
-		link: "/fisiologia",
-		quantity: 8,
+		image: "",
+		title: "Quiz 1",
+		dificulty: "Fácil",
+		quantity: 10,
+		status: "Completo",
+		theme: "Tema 1",
+		link: "/fisiologia/quiz/1",
 	},
 ]
 

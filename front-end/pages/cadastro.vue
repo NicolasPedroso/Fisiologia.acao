@@ -247,18 +247,6 @@ useSeoMeta({
 	description: "",
 	keywords: "cadastro, acesso, fisiologia, ação",
 })
-useHead({
-	htmlAttrs: {
-		lang: "pt-br",
-	},
-	link: [
-		{
-			rel: "icon",
-			type: "image/png",
-			href: "/favicon.png",
-		},
-	],
-})
 </script>
 <style scoped>
 h1 {

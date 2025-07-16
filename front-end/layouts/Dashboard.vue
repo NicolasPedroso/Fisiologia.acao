@@ -110,18 +110,6 @@ useSeoMeta({
 	// Endereço da imagem que será exibida quando a página for compartilhada
 	// ogImage: "endereco-da-imagem",
 })
-useHead({
-	htmlAttrs: {
-		lang: "pt-br",
-	},
-	link: [
-		{
-			rel: "icon",
-			type: "image/ico",
-			href: "/favicon.ico",
-		},
-	],
-})
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
