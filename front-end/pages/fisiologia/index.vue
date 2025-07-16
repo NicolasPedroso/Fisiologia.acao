@@ -140,6 +140,72 @@
 					clearable
 				></v-text-field>
 			</div>
+
+			<div>
+				<v-data-table
+					:items="quizzes"
+					:headers="headers"
+					:search="searchAllQuizzes"
+					:items-per-page="10"
+					:loading="false"
+					:items-per-page-options="[5, 10, 15]"
+					:sort-by="sortBy"
+					item-value="title"
+					class="mt-6"
+				>
+					<!-- ITEM -->
+					<template #item="{ item }">
+						<tr
+							@click="item.link && $router.push(item.link)"
+							class="cursor-pointer table__row"
+							:class="{
+								'table__row--completed':
+									item.status === 'Completo',
+							}"
+						>
+							<td>
+								<div class="d-flex align-center ga-2">
+									<img
+										:src="item.image"
+										width="50"
+										height="50"
+										style="border-radius: 4"
+										class="my-2"
+									/>
+									<strong>{{ item.title }}</strong>
+									<span
+										class="text-caption"
+										v-if="item.status !== 'Não iniciado'"
+									>
+										({{ item.status }})
+									</span>
+								</div>
+							</td>
+
+							<td>
+								<v-chip
+									:color="getColor(item.dificulty)"
+									:border="`${getColor(item.dificulty)} thin opacity-25`"
+									text-color="white"
+									class="ma-1"
+								>
+									{{ dificulty[item.dificulty] }}
+								</v-chip>
+							</td>
+
+							<td>
+								<strong>{{ item.quantity }}</strong> questões
+							</td>
+
+							<td>
+								<v-icon :icon="item.theme.icon" class="mb-1" />
+								{{ item.theme.title }}
+							</td>
+						</tr>
+					</template>
+					<!-- ITEM -->
+				</v-data-table>
+			</div>
 		</div>
 	</v-container>
 </template>
@@ -147,6 +213,7 @@
 <script setup>
 const search = shallowRef("")
 const searchAllQuizzes = shallowRef("")
+
 const themes = [
 	{
 		title: "Tema 1",
@@ -156,17 +223,63 @@ const themes = [
 	},
 ]
 
-const quizzes = [
+// Funcao para retorno de cores pra as dificuldades/status
+const getColor = (status) => {
+	switch (status) {
+		case 0: // Dificuldade fácil
+			return "success"
+		case 1: // Dificuldade média
+			return "warning"
+		case 2: // Dificuldade difícil
+			return "error"
+		default: // Fallback
+			return "grey"
+	}
+}
+
+const sortBy = ref([
+	{ key: "status", order: "desc" },
+	{ key: "dificulty", order: "asc" },
+	{ key: "title", order: "asc" },
+])
+
+const headers = [
 	{
-		image: "",
-		title: "Quiz 1",
-		dificulty: "Fácil",
-		quantity: 10,
-		status: "Completo",
-		theme: "Tema 1",
-		link: "/fisiologia/quiz/1",
+		title: "Nome do quiz",
+		key: "title",
+		align: "start",
+		sortable: false,
+	},
+	{
+		title: "Dificuldade",
+		key: "dificulty",
+		align: "start",
+		sortable: false,
+	},
+	{
+		title: "Questões",
+		key: "quantity",
+		align: "start",
+		sortable: false,
+	},
+	{
+		title: "Tema",
+		key: "theme",
+		align: "start",
+		sortable: false,
 	},
 ]
+
+const dificulty = ["Fácil", "Médio", "Difícil"]
+const quizzes = Array.from({ length: 50 }, (_, i) => ({
+	title: "Quiz " + (i + 1),
+	image: "/layout/profile.jpeg",
+	dificulty: Math.floor(Math.random() * dificulty.length),
+	status: Math.random() > 0.5 ? "Completo" : "Não iniciado",
+	quantity: Math.floor(Math.random() * 20) + 1,
+	theme: { title: "Tema 1", icon: "mdi-cat" },
+	link: "/fisiologia/quiz/1",
+}))
 
 definePageMeta({
 	middleware: ["guest"],
@@ -188,5 +301,22 @@ useSeoMeta({
 
 :deep(.v-field__overlay) {
 	background-color: var(--white);
+}
+
+.table__row {
+	transition: background-color 0.2s ease;
+	transition: opacity 0.2s ease;
+}
+.table__row:hover {
+	background-color: rgba(0, 12, 101, 0.05);
+	opacity: 1;
+}
+.table__row--completed {
+	background-color: rgba(0, 128, 0, 0.05);
+	opacity: 0.5;
+}
+
+:deep(.v-table) {
+	background-color: #ffffffa6;
 }
 </style>
