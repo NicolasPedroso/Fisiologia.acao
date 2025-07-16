@@ -21,6 +21,7 @@
 						color="var(--primary-color)"
 						class="shortcut_help"
 						variant="outlined"
+						@click="navigateTo(randomQuizLink())"
 					>
 						<v-icon class="mr-1" style="margin-bottom: 2px">
 							mdi-progress-question
@@ -36,6 +37,7 @@
 						color="var(--primary-color)"
 						class="shortcut_help"
 						variant="outlined"
+						@click="navigateTo(randomThemeLink())"
 					>
 						<v-icon class="mr-1" style="margin-bottom: 2px">
 							mdi-progress-question
@@ -225,31 +227,7 @@ const themes = [
 	{
 		title: "Tema 1",
 		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 2",
-		icon: "mdi-cat",
-		link: "/fisiologia",
-		quantity: 5,
-	},
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia",
+		link: "/fisiologia/tema/1",
 		quantity: 5,
 	},
 ]
@@ -305,17 +283,49 @@ const dificulty = ["Fácil", "Médio", "Difícil"]
 const quizzes = Array.from({ length: 50 }, (_, i) => ({
 	title: "Quiz " + (i + 1),
 	image: "/layout/profile.jpeg",
-	dificulty: Math.floor(Math.random() * dificulty.length),
+	dificulty: i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : 2,
 	status: Math.random() > 0.5 ? "Completo" : "Não iniciado",
 	quantity: Math.floor(Math.random() * 20) + 1,
 	theme: { title: "Tema 1", icon: "mdi-cat" },
-	link: "/fisiologia/quiz/1",
+	link: "/fisiologia/quiz/" + (i + 1),
 }))
+
+// Funcoes de sorteio de TEMA
+const randomThemeLink = () => {
+	const randomIndex = Math.floor(Math.random() * themes.length)
+	return themes[randomIndex].link
+}
+
+// Funcoes de sorteio de QUIZ
+const randomQuizLink = () => {
+	// Filtra os quizzes nao completos
+	const filteredQuizzes = quizzes.filter(
+		(quiz) => quiz.status === "Não iniciado",
+	)
+
+	// Tenta encontrar um quiz aleatório por dificuldade
+	if (filteredQuizzes.length > 0) {
+		for (let i = 0; i < 3; i++) {
+			const difficultyQuizzes = filteredQuizzes.filter(
+				(quiz) => quiz.dificulty === i,
+			)
+			if (difficultyQuizzes.length > 0) {
+				const randomIndex = Math.floor(
+					Math.random() * difficultyQuizzes.length,
+				)
+				return difficultyQuizzes[randomIndex].link
+			}
+		}
+	}
+
+	// Fallback (sorteia um quiz aleatório)
+	const randomIndex = Math.floor(Math.random() * quizzes.length)
+	return quizzes[randomIndex].link
+}
 
 definePageMeta({
 	middleware: ["guest"],
 })
-
 useSeoMeta({
 	title: "Quizzes",
 	description: "",
