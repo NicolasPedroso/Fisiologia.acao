@@ -8,8 +8,8 @@
 				</h1>
 			</div>
 			<div
-				class="d-flex align-center flex-column"
 				v-if="status === 'success'"
+				class="d-flex align-center flex-column"
 			>
 				<h1 class="title mb-8">Informações sobre o email</h1>
 				<span class="label-title mb-2"> E-mail atual </span>
@@ -46,7 +46,6 @@
 
 <script setup>
 const { notify } = useNotification()
-const actualProjectId = useRoute().query.id
 
 const email = ref("")
 const currentEmail = ref("")

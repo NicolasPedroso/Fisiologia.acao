@@ -10,10 +10,10 @@
 			<YouTube
 				ref="youtube"
 				:src="linkYoutube"
-				@ready="onReadyYTB"
 				:width="640 * 1.25"
 				:height="360 * 1.25"
 				class="my-4"
+				@ready="onReadyYTB"
 			/>
 			<v-btn class="start-btn mt-5" elevation="0" @click="startQuiz()">
 				<span class="start-btn__text"> Começar quiz </span>

@@ -111,10 +111,6 @@
 	<!-- Conteudo da pagina -->
 </template>
 <script setup>
-// Import das funções e gerenciamento de STORE
-import { storeToRefs } from "pinia"
-import { useAuthStore } from "~/store/auth"
-
 // Campos do formulário
 const name = ref("")
 const email = ref("")

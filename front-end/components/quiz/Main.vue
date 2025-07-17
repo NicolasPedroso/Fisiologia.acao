@@ -22,7 +22,6 @@
 				<v-btn
 					v-for="option in questions[actualQuestion].options"
 					:key="option.id"
-					@click="selectOption(option)"
 					:disabled="selectedOptions.includes(option.id)"
 					:color="
 						selectedOptions.includes(option.id) &&
@@ -38,6 +37,7 @@
 								: 1,
 					}"
 					elevation="0"
+					@click="selectOption(option)"
 				>
 					<v-icon
 						v-if="

@@ -165,7 +165,6 @@
 </template>
 <script setup>
 // ENV (PAGE VARIABLES)
-const urlRequistion = "/video"
 
 // DataTable variables
 const { notify } = useNotification()
