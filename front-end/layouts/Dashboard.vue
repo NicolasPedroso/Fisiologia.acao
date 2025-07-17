@@ -68,22 +68,41 @@ const drawerItems = [
 	{ type: "subheader", title: "Ajuda" },
 	{
 		icon: "mdi-help",
-		title: "FAQ e tutorial de uso",
+		title: "Tutorial de uso",
 		subtitle: "Entenda como funciona o painel do adminstrador",
 		link: "/fisiologia/dashboard/",
 	},
-	{ type: "subheader", title: "Edição de conteúdo" },
-	{
-		icon: "mdi-video-box",
-		title: "Temas e vídeos",
-		subtitle: "Edite os vídeos/temas",
-		link: "/fisiologia/dashboard/video",
-	},
+	// {
+	// 	icon: "mdi-video-box",
+	// 	title: "Temas e vídeos",
+	// 	subtitle: "Edite os vídeos/temas",
+	// 	link: "/fisiologia/dashboard/video",
+	// },
+	{ type: "subheader", title: "Segurança" },
 	{
 		icon: "mdi-email-edit",
 		title: "Edição de e-mail",
 		subtitle: "Atualize seu e-mail",
 		link: "/fisiologia/dashboard/email",
+	},
+	{
+		icon: "mdi-account-multiple",
+		title: "Usuários",
+		subtitle: "Gerencie os usuários",
+		link: "/fisiologia/dashboard/users",
+	},
+	{ type: "subheader", title: "Edição de conteúdo" },
+	{
+		icon: "mdi-book-open-page-variant",
+		title: "Quizzes",
+		subtitle: "Edite os quizzes",
+		link: "/fisiologia/dashboard/quizzes",
+	},
+	{
+		icon: "mdi-note-text",
+		title: "Temas",
+		subtitle: "Edite os temas",
+		link: "/fisiologia/dashboard/themes",
 	},
 ]
 
