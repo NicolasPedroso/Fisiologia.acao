@@ -1,262 +1,421 @@
 <template>
 	<div style="width: 100%; height: 100%">
+		<nuxt-notifications />
 		<v-container
 			v-if="status !== 'pending'"
 			class="profile__wrapper pa-0 ma-0"
 			full-height
 			fluid
 		>
-			<nuxt-notifications />
-			<div v-if="!isEditing" class="profile__content">
+			<div
+				class="profile__content d-flex flex-column align-center justify-center py-12"
+			>
 				<v-avatar
 					class="profile__image"
 					size="200"
-					image="/placeholder/avatar.png"
+					:image="formatImage(user.image)"
 				/>
 
-				<h1>{{ user.name }}</h1>
-				<h2>Level: 0</h2>
+				<h1 class="mt-2">{{ user.name }}</h1>
 
-				<div class="profile__row__wrapper">
-					<div class="profile__row">
-						<strong>E-mail</strong>
-						<span>{{ user.email }}</span>
-					</div>
-					<div class="profile__row">
-						<strong>Telefone</strong>
-						<span>{{ user.phone }}</span>
-					</div>
-					<div class="profile__row">
-						<strong>Endereço</strong>
-						<span>{{ user.address }}</span>
-					</div>
-					<div class="profile__row">
-						<strong>Tipo de conta</strong>
-						<span>
-							{{
-								user.isAdmin === 1
-									? "Adminstrador"
-									: "Estudante"
-							}}
-						</span>
-					</div>
+				<div class="profile__row__wrapper mt-6">
+					<v-row class="pa-0 ma-0 ga-8 align-center justify-center">
+						<div
+							class="information__wrapper d-flex align-center"
+							style="width: 90vw"
+						>
+							<div style="max-width: 50%">
+								<h3>Informações do perfil</h3>
+								<p>
+									Altere suas informações pessoais e foto de
+									perfil
+								</p>
+							</div>
+							<v-spacer />
+							<div class="information__actions d-flex ga-2">
+								<!-- <v-btn
+									elevation="0"
+									color="error"
+									variant="tonal"
+									class="button__action"
+									prepend-icon="mdi-delete"
+									@click="deleteAccount"
+								>
+									Deletar conta
+								</v-btn> -->
+								<v-btn
+									elevation="0"
+									color="primary"
+									variant="tonal"
+									class="button__action"
+									prepend-icon="mdi-logout"
+									@click="logout()"
+								>
+									Sair da conta
+								</v-btn>
+								<v-btn
+									elevation="0"
+									color="var(--primary-color)"
+									class="button__action"
+									@click="openCreateUser"
+								>
+									<span style="color: var(--white)">
+										Editar perfil
+									</span>
+								</v-btn>
+							</div>
+						</div>
 
-					<v-row class="mt-6 d-flex justify-center">
-						<v-btn
-							color="var(--secondary-color)"
-							variant="outlined"
-							theme="dark"
-							width="100%"
-							@click.stop="isEditing = true"
+						<v-divider class="border-opacity-75" length="90%" />
+
+						<div
+							class="personal__info__wrapper d-flex align-center"
+							style="width: 90vw"
 						>
-							Editar informações
-						</v-btn>
-						<v-btn
-							class="mt-2"
-							color="var(--primary-color)"
-							theme="dark"
-							width="100%"
-							variant="tonal"
-							disabled
+							<div style="max-width: 50%">
+								<h3>Perfil público</h3>
+								<p>
+									Seu nome é disponibilizado para outros
+									<br />
+									O seu email é privado
+								</p>
+							</div>
+							<v-spacer />
+							<div class="text-left">
+								<span>
+									<strong>Nome:</strong>
+									{{ user.name }}
+								</span>
+								<br />
+								<span>
+									<strong>Email:</strong>
+									{{ user.email }}
+								</span>
+							</div>
+						</div>
+
+						<v-divider class="border-opacity-75" length="90%" />
+
+						<div
+							class="personal__info__wrapper d-flex align-center"
+							style="width: 90vw"
 						>
-							Deletar conta
-						</v-btn>
+							<div style="max-width: 50%">
+								<h3>Foto de perfil</h3>
+								<p>Foto compartilhada com outros usuários.</p>
+							</div>
+							<v-spacer />
+							<div class="text-left">
+								<v-img
+									width="200px"
+									height="200px"
+									:src="formatImage(user.image)"
+									:aspect-ratio="1 / 1"
+									class="profile__image"
+								/>
+							</div>
+						</div>
+
+						<v-divider class="border-opacity-75" length="90%" />
+
+						<div
+							class="personal__info__wrapper d-flex align-center"
+							style="width: 90vw"
+						>
+							<div style="max-width: 50%">
+								<h3>Informações pessoais (opcionais)</h3>
+								<p>Relacionado a contato, apenas.</p>
+							</div>
+							<v-spacer />
+							<div class="text-left">
+								<span>
+									<strong>Endereço:</strong>
+									{{ user.address }}
+								</span>
+								<br />
+								<span>
+									<strong>Telefone:</strong>
+									{{ user.phone }}
+								</span>
+							</div>
+						</div>
 					</v-row>
 				</div>
 			</div>
-			<div v-else class="edit__wrapper">
-				<div class="edit__card">
-					<div class="edit__title">
-						<h1>Edição de perfil</h1>
-					</div>
-					<div class="edit__content">
-						<v-form v-model="validForm" @submit.prevent>
-							<h3 class="mb-2">Nome</h3>
-							<v-text-field
-								v-model="formData.name"
-								type="text"
-								variant="outlined"
-								placeholder="Fulano..."
-								:disabled="loadingRes"
-							/>
-							<h3 class="mb-2">E-mail</h3>
-							<v-text-field
-								v-model="formData.email"
-								type="email"
-								variant="outlined"
-								placeholder="fulano@ufpr.br"
-								:disabled="loadingRes"
-							/>
-							<h3 class="mb-2">Endereço (opcional)</h3>
-							<v-text-field
-								v-model="formData.address"
-								type="text"
-								variant="outlined"
-								clearable
-								placeholder="Rua dos hormônios"
-								:disabled="loadingRes"
-							/>
-							<h3 class="mb-2">Telefone (opcional)</h3>
-							<v-text-field
-								v-model="formData.phone"
-								type="tel"
-								variant="outlined"
-								clearable
-								placeholder="(XX) XXXXXXXX"
-								prepend-inner-icon="mdi-phone-outline"
-								:disabled="loadingRes"
-								@input="formatPhone"
-							/>
-							<h3 class="mb-2">Troca de senha (opcional)</h3>
-							<v-text-field
-								v-model="formData.pwdChange"
-								type="password"
-								variant="outlined"
-								clearable
-								placeholder="Nova senha"
-								:disabled="loadingRes"
-							/>
-							<div v-if="formData.pwdChange !== ''">
-								<h3 class="mb-2">
-									Confirmação da troca de senha
-								</h3>
-								<v-text-field
-									v-model="formData.pwdChangeConfirmation"
-									type="password"
-									variant="outlined"
-									clearable
-									placeholder="Confirmação da nova senha"
-									:disabled="loadingRes"
-								/>
-							</div>
-							<v-row class="ma-0 mt-4">
-								<v-col class="pa-0 pr-1" cols="12" md="6">
-									<v-btn
-										type="submit"
-										class="cancel-btn rounded-lg"
-										variant="outlined"
-										color="var(--secondary-color-alt)"
-										:disabled="loadingRes"
-										@click="cancelEdit()"
-									>
-										<h1>Cancelar</h1>
-									</v-btn>
-								</v-col>
-								<v-col class="pa-0 pl-1" cols="12" md="6">
-									<v-btn
-										type="submit"
-										class="update-btn rounded-lg"
-										color="var(--secondary-color)"
-										theme="dark"
-										:disabled="loadingRes"
-										@click="updateUser()"
-									>
-										<h1>Salvar</h1>
-									</v-btn>
-								</v-col>
-							</v-row>
-						</v-form>
-					</div>
-				</div>
-			</div>
 			<Loading :status="status" />
+			<v-dialog v-model="isEditing" transition="slide-y-transition">
+				<v-card class="pa-8">
+					<v-card-title class="text-center">
+						Altere suas informações
+					</v-card-title>
+
+					<v-form v-model="validForm" @submit.prevent>
+						<v-text-field
+							v-model="userForm.name"
+							label="Nome"
+							prepend-inner-icon="mdi-account"
+							variant="outlined"
+							:rules="rules.required"
+							class="field-content mt-3"
+							tile
+							hint
+							hide-details="auto"
+						/>
+						<v-text-field
+							v-model="userForm.email"
+							label="E-mail"
+							prepend-inner-icon="mdi-email-outline"
+							variant="outlined"
+							:rules="rules.email"
+							class="field-content mt-3"
+							tile
+							hint
+							hide-details="auto"
+							type="email"
+						/>
+						<v-text-field
+							v-model="userForm.address"
+							label="Endereço"
+							prepend-inner-icon="mdi-road-variant"
+							variant="outlined"
+							class="field-content mt-3"
+							tile
+							hint
+							:rules="rules.required"
+							hide-details="auto"
+						/>
+						<v-text-field
+							v-model="userForm.phone"
+							label="Telefone"
+							prepend-inner-icon="mdi-phone"
+							variant="outlined"
+							class="field-content mt-3"
+							tile
+							hint
+							hide-details="auto"
+							type="tel"
+							:rules="rules.phone"
+							@input="formatPhone"
+						/>
+
+						<h3 class="mt-4">Foto de perfil (opcional)</h3>
+						<v-file-input
+							v-model="userForm.imageFile"
+							label="Imagem de perfil"
+							prepend-inner-icon="mdi-image"
+							prepend-icon=""
+							variant="outlined"
+							:rules="rules.image"
+							accept="image/jpg,image/jpeg,image/png"
+							class="field-content mt-3"
+							tile
+							hint
+							hide-details="auto"
+							show-size
+						/>
+
+						<div class="d-flex justify-end ga-4">
+							<v-btn
+								class="rounded-lg mt-4"
+								variant="text"
+								color="error"
+								:disabled="loadingRes"
+								@click="cancelEdit()"
+							>
+								<span class="login-btn__text"> Cancelar </span>
+							</v-btn>
+							<v-btn
+								type="submit"
+								class="login-btn rounded-lg mt-4"
+								color="primary"
+								:loading="loadingRes"
+								@click="updateUser()"
+							>
+								<span class="login-btn__text">
+									Atualizar cadastro
+								</span>
+							</v-btn>
+						</div>
+					</v-form>
+				</v-card>
+			</v-dialog>
 		</v-container>
 	</div>
 </template>
-<script setup lang="js">
-// ENV (PAGE VARIABLES)
-const urlRequistion = "/api/user"
-
-const user = reactive({
-	image: "/placeholder/avatar.jpg",
-	name: "",
-	address: "",
-	email: "",
-	phone: "",
-	isAdmin: 1,
+<script setup>
+// Requisicao inicial
+const {
+	data: user,
+	error,
+	status,
+	refresh,
+} = useAsyncData("fetch-user-profile", () => useDataLoader(urlRequistion), {
+	server: true,
 })
 
-const formData = reactive({
-	image: "/placeholder/avatar.jpg",
+watch(error, (newError) => {
+	if (newError && process.client) {
+		notify({
+			title: "Erro!",
+			type: "error",
+			text: formatError(newError),
+		})
+	}
+})
+
+import { useAuthStore } from "~/store/auth"
+
+const { logUserOut } = useAuthStore()
+const { notify } = useNotification()
+
+const urlRequistion = "/api/user"
+
+const userForm = reactive({
+	imageFile: null,
 	name: "",
 	address: "",
 	email: "",
 	phone: "",
-	pwdChange: "",
-	pwdChangeConfirmation: "",
 })
 
 const userNameForTitle = ref("Perfil")
-const isEditing = ref(false)
 const validForm = ref(false)
+const isEditing = ref(false)
 const loadingRes = ref(false)
 
-// Requisicao inicial
-const { status, refresh } = useAsyncData(
-	() =>
-		useDataLoader(urlRequistion)
-			.then((response) => {
-				user.image = response.image
-				user.name = response.name
-				userNameForTitle.value = response.name
-				user.address = response.address
-				user.email = response.email
-				user.phone = response.phone
+const rules = {
+	email: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+		(value) => {
+			if (/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i.test(value))
+				return true
+			return "O e-mail deve ser válido"
+		},
+	],
+	required: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+	],
+	phone: [
+		(value) => {
+			if (value) return true
+			return "O campo é obrigatório"
+		},
+		(value) => {
+			if (value.length == 15) return true
+			return "O telefone deve ser válido"
+		},
+	],
+	image: [
+		(value) => {
+			if (!value || value.length === 0) return true
+			if (value[0] && value[0].size < 5000000) return true
+			return "A imagem deve ser menor que 5MB"
+		},
+	],
+}
 
-				user.isAdmin = response.admin || 0
+const formatPhone = () => {
+	let cleaned = userForm.phone.replace(/\D/g, "").slice(0, 11)
 
-				return response
-			})
-			.catch((error) => {
-				console.error(error)
-				notify({
-					title: "Erro!",
-					type: "error",
-					text: formatError(error),
-				})
-				return {}
-			}),
-	{
-		server: true,
-	},
-)
+	if (cleaned.length > 2) {
+		cleaned = `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`
+	}
+
+	userForm.phone = cleaned
+}
+
+function openCreateUser() {
+	isEditing.value = true
+	userForm.imageFile = null
+	userForm.name = user.value.name
+	userForm.address = user.value.address
+	userForm.email = user.value.email
+	userForm.phone = user.value.phone
+}
+
+function deleteAccount() {
+	// Implementar a lógica de exclusão de conta
+	const ok = confirm("Tem certeza que deseja excluir sua conta?")
+	if (!ok) return
+
+	notify({
+		title: "Conta excluída",
+		type: "success",
+	})
+
+	// TODO: Implementar a exclusão de conta no backend
+}
+
+async function logout() {
+	const ok = confirm("Tem certeza que deseja sair?")
+	if (!ok) return
+
+	const router = useRouter()
+	await logUserOut()
+	router.push("/")
+}
 
 async function updateUser() {
 	// Validacoes
 	if (!validForm.value) return
 
 	loadingRes.value = true
-	// await useDataLoader(`${urlRequistion}`, {
-	// 	method: "PUT",
-	// 	body: __user,
-	// 	"Content-Type": "application/json",
-	// })
-	// 	.then(() => {
-	// 		refresh()
-	// 		notify({
-	// 			title: "Usuário atualizado",
-	// 			type: "success",
-	// 		})
-	// 	})
-	// 	.catch((error) => {
-	// 		console.error(error)
-	// 		notify({
-	// 			title: "Erro ao atualizar!",
-	// 			type: "error",
-	// 			text: formatError(error),
-	// 		})
-	// 	})
-	loadingRes.value = false
-}
 
-const formatPhone = () => {
-	let cleaned = user.phone.replace(/\D/g, "").slice(0, 11)
+	notify({
+		id: "loading",
+		text: "Carregando...",
+		type: "info",
+	})
 
-	if (cleaned.length > 2) {
-		cleaned = `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`
+	const formData = new FormData()
+	formData.append("name", userForm.name)
+	formData.append("email", userForm.email)
+	formData.append("phone", userForm.phone)
+	formData.append("address", userForm.address || "")
+
+	if (userForm.imageFile) {
+		// Verifica se uma nova imagem foi selecionada
+		formData.append("image", userForm.imageFile)
+	}
+	formData.append("_method", "PUT")
+
+	try {
+		const response = await useDataLoader(`/api/user_update`, {
+			method: "POST",
+			body: formData,
+		})
+
+		refresh()
+		notify({
+			title: "Usuário atualizado",
+			type: "success",
+		})
+
+		if (response && response.data.image) {
+			const cookieImageProfile = useCookie("imageProfile", {
+				sameSite: true,
+			})
+			cookieImageProfile.value = response.data.image
+		}
+
+		isEditing.value = false
+	} catch (error) {
+		console.error(error)
+		notify({
+			title: "Erro ao atualizar!",
+			type: "error",
+			text: formatError(error),
+		})
 	}
 
-	user.phone = cleaned
+	notify.close("loading")
+	loadingRes.value = false
 }
 
 function cancelEdit() {
@@ -273,133 +432,14 @@ definePageMeta({
 })
 </script>
 <style lang="css" scoped>
-/* Transicao */
-.v-enter-active,
-.v-leave-active {
-	transition: transform 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-	transform: scale(0);
-	position: absolute;
-}
-
-@keyframes bg {
-	0% {
-		background-position: 0% 0%;
-	}
-	50% {
-		background-position: 50% 50%;
-	}
-	100% {
-		background-position: 0% 0%;
-	}
-}
-
-.profile__wrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	min-height: 100vh;
-	height: 100%;
-	background: var(--primary-color);
-	background: linear-gradient(
-		0deg,
-		var(--primary-color) 0%,
-		var(--secondary-color) 100%
-	);
-	background-size: 400% 400%;
-	animation: bg 10s infinite;
-}
-
 .profile__image {
-	margin-top: -100px;
 	border: 5px solid #fff;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.profile__content {
-	background-color: #fff;
-	width: 100%;
-	height: calc(100% - 200px);
-	margin-top: 200px;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-}
-
-.profile__content h1 {
-	color: var(--primary-color);
-	font-size: 3.5rem;
-	line-height: 3rem;
-}
-
-.profile__row__wrapper {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	margin: 32px 16px 0 16px;
-}
-
-.profile__row {
-	display: flex;
-	gap: 100px;
-	justify-content: space-between;
-	align-items: center;
-	text-align: right;
-}
-
-.profile__row strong {
-	font-weight: 800;
-	color: var(--primary-color);
-	text-align: left;
-}
-
-.edit__wrapper {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.edit__card {
-	background-color: #fff;
-	width: 95%;
-	max-height: 95%;
-	border-radius: 15px;
-	border: 1px solid #fff;
-	flex-direction: column;
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-.edit__form {
-	width: 100%;
-	height: 100%;
-	justify-content: center;
-	align-items: center;
-}
-
-.edit__title {
-	width: 100%;
-	height: 80px;
-	background-color: var(--secondary-color);
-	color: #fff;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.edit__content {
-	padding: 32px;
-}
-
-.update-btn,
-.cancel-btn {
-	width: 100%;
-	height: 48px;
-	font-size: 0.75rem;
+.button__action {
+	font-weight: 600;
+	text-transform: none;
+	letter-spacing: 0;
 }
 </style>

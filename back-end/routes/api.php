@@ -21,7 +21,7 @@ Route::post('login', 'API\AuthController@login');
 // se os valores são iguais
 Route::post('signup', 'API\AuthController@signup');
 
-/* 
+/*
     Rota de cadastro:
     Realiza GET, POST, PUT, DELETE
 */
@@ -32,7 +32,7 @@ Route::post ('user', 'API\UserController@store');
 // Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('contato', 'API\ContactController')->only(['show','index']);
-  
+
     Route::apiResource('notificacao', 'API\NotificationIconController')->only('index','get','store','update','delete');
 
     // CRUD Perguntas. Precisa da chave estrangeira da fase
@@ -49,7 +49,7 @@ Route::middleware(['auth:api'])->group(function () {
     // A rota abaixo é a mais complexa do projeto, então coloquei comentários para ajudar o front
     // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
     // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk. Com o id da pergunta criada, crie um raw como abaixo
-    /* 
+    /*
     {
         "respostas": [
             {
@@ -84,13 +84,17 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('users', 'API\UserController@index');
         //consegue mudar qualquer campo do usuário, por isso só o admin pode utilizar. Também pode mudar a senha do próprio admin,
         Route::put('user/{id}', 'API\UserController@update');
-        //retorna o usuário pelo id 
+        //retorna o usuário pelo id
         Route::get('user/{id}', 'API\UserController@show');
 
         Route::apiResource('tema_do_video', 'API\VideoThemeController');
     });
 
-    Route::get('logout', 'API\AuthController@logout'); 
+    Route::get('logout', 'API\AuthController@logout');
+
+    // altera os dados do usuário logado
+    Route::put('user_update', 'API\UserController@updateUser');
+
     // retorna os campos do usuário logado
 	Route::get('user', 'API\AuthController@user');
 });
