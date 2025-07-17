@@ -93,7 +93,7 @@ class AuthController extends Controller
      */
     public function signup(UserRequest $request)
     {
-    
+
         if ($request->hasFile('image')) {
             $file_path = $request->file('image')->store('image', 'public');
         }
@@ -106,7 +106,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'image' => $file_path,
         ]);
-    
+
         return response()->json([
             'message' => 'Usuário criado com sucesso!',
             'data' => $user,
@@ -215,7 +215,8 @@ class AuthController extends Controller
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString(),
-            'admin' => $user->admin
+            'admin' => $user->admin,
+            'image' => $user->image
         ]);
     }
 

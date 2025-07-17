@@ -1,105 +1,109 @@
 /* eslint-disable */
 import { defineStore } from "pinia"
+
 export const useAuthStore = defineStore("auth", {
 	state: () => ({
 		authenticated: false,
 	}),
 	actions: {
-		// Função de autenticação
-		async authenticateUser({ email, password, remember_me }) {
+		/**
+		 * Função de autenticação.
+		 * Aceita o nuxtApp para funcionar corretamente no SSR.
+		 */
+		async authenticateUser(payload) {
+			// ✅ Obtém o contexto do Nuxt. Essencial para SSR.
+			const nuxtApp = useNuxtApp()
+			const config = useRuntimeConfig(nuxtApp)
+
 			try {
-				// Tentar fazer o LOGIN usando os campos de email & password
 				const response = await $fetch(`/api/login`, {
-					baseURL: useRuntimeConfig().public.baseURL,
-					method: "post",
-					headers: { "Content-Type": "application/json" },
-					body: {
-						email,
-						password,
-						remember_me,
-					},
+					baseURL: config.public.baseURL,
+					method: "POST",
+					body: payload, // Recebe { email, password, remember_me }
 				})
 
-				// Pega a data de expiração dos tokens
-				const expiresDate = new Date(response.expires_at)
+				// Se o login for bem-sucedido, definimos os cookies
+				const expiresDate = payload.remember_me
+					? new Date(response.expires_at)
+					: undefined
 
-				// Utilizar o useCookies do Nuxt3 para armazenar dados locais
-				const authenticated = useCookie("authenticated", {
-					sameSite: true,
-					expires: expiresDate,
-				})
 				const token = useCookie("token", {
 					sameSite: true,
 					expires: expiresDate,
+					nuxtApp,
+				})
+
+				const imageProfile = useCookie("imageProfile", {
+					sameSite: true,
+					expires: expiresDate,
+					nuxtApp,
+				})
+
+				const authenticated = useCookie("authenticated", {
+					sameSite: true,
+					expires: expiresDate,
+					nuxtApp,
 				})
 
 				const admin = useCookie("admin", {
 					sameSite: true,
 					expires: expiresDate,
+					nuxtApp,
 				})
 
-				/**
-				 * Se não der algum erro, vai ser feito as seguintes ações:
-				 * 		- Definir o token de acesso
-				 * 		- Definir o estado com autenticado
-				 **/
 				token.value = response.access_token
 				authenticated.value = true
-				admin.value =
-					!response.admin || response.admin === 0 ? false : true
+				admin.value = !!response.admin // Forma mais simples de converter para booleano
+				imageProfile.value = response.image || null
 				this.authenticated = true
-			} catch (err) {
-				const authenticated = useCookie("authenticated", {
-					sameSite: true,
-					expires: expiresDate,
-				})
-				const token = useCookie("token", {
-					sameSite: true,
-					expires: expiresDate,
-				})
-				const admin = useCookie("admin", {
-					sameSite: true,
-					expires: expiresDate,
-				})
 
-				/**
-				 * Caso de algum erro durante o LOGIN
-				 * 		- Remove o token de acesso
-				 * 		- Remove o estado de autenticado
-				 * 		- Coloca o ERRO no console
-				 **/
-				this.authenticated = false // set authenticated  state value to false
-				token.value = null // clear the token cookie
-				admin.value = false
-				authenticated.value = false
+				return true // Retorna sucesso
+			} catch (err) {
+				// Em caso de erro, simplesmente limpamos os dados
+				console.error("Falha na autenticação:", err)
+				this.clearAuthData(nuxtApp)
+				return false // Retorna falha
 			}
 		},
 
-		// Função de deslogar
-		async logUserOut() {
-			// Utilizar o useCookies do Nuxt3 para armazenar dados locais
-			const token = useCookie("token", {
-				sameSite: true,
-			})
-			const authenticated = useCookie("authenticated", {
-				sameSite: true,
-			})
-			const admin = useCookie("admin", {
-				sameSite: true,
-			})
+		/**
+		 * Função de logout.
+		 * Aceita o nuxtApp para funcionar corretamente no SSR.
+		 */
+		async logUserOut(nuxtApp = useNuxtApp()) {
+			const config = useRuntimeConfig(nuxtApp)
 
-			// Desconecta o usuário (deletar o TOKEN de autenticacao)
-			await $fetch(`/api/logout`, {
-				baseURL: useRuntimeConfig().public.baseURL,
-			}).catch((err) => {
-				console.error(err)
-			})
+			try {
+				// Tenta fazer logout na API, mas continua mesmo se falhar
+				await $fetch(`/api/logout`, {
+					baseURL: config.public.baseURL,
+					method: "POST",
+				})
+			} catch (err) {
+				console.error(
+					"Erro no endpoint de logout, limpando dados localmente:",
+					err,
+				)
+			} finally {
+				this.clearAuthData(nuxtApp)
+			}
+		},
 
-			// Remove token de acesso e estado de autorizado
-			this.authenticated = false
-			authenticated.value = false
-			admin.value = false
+		/**
+		 * Ação auxiliar para limpar todos os dados de autenticação.
+		 * Reutiliza a lógica e mantém o código limpo.
+		 */
+		clearAuthData(nuxtApp = useNuxtApp()) {
+			const token = useCookie("token", { nuxtApp })
+			const authenticated = useCookie("authenticated", { nuxtApp })
+			const admin = useCookie("admin", { nuxtApp })
+			const imageProfile = useCookie("imageProfile", { nuxtApp })
+
 			token.value = null
+			authenticated.value = null
+			admin.value = null
+			imageProfile.value = null
+			this.authenticated = false
 		},
 	},
 })

@@ -65,7 +65,7 @@
 					<v-btn to="/fisiologia/perfil" icon aria-label="Perfil">
 						<v-avatar
 							class="navbar__profile"
-							image="/layout/profile.jpeg"
+							:image="formatImage(cookieImageProfile)"
 						/>
 					</v-btn>
 				</div>
@@ -100,6 +100,10 @@
 import { useAuthStore } from "~/store/auth"
 
 const cookieAdmin = useCookie("admin", {
+	sameSite: true,
+})
+
+const cookieImageProfile = useCookie("imageProfile", {
 	sameSite: true,
 })
 
