@@ -30,7 +30,7 @@ else
 	then
 		echo "Inicie o docker"
 		exit 1
-	fi 
+	fi
 
 	php artisan key:generate
 	php artisan migrate:fresh --seed

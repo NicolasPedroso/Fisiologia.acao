@@ -21,7 +21,7 @@
 						color="var(--primary-color)"
 						class="shortcut_help"
 						variant="outlined"
-						@click="navigateTo(randomQuizLink())"
+						@click="navigateTo(randomQuizLink(quizzes))"
 					>
 						<v-icon class="mr-1" style="margin-bottom: 2px">
 							mdi-progress-question
@@ -154,14 +154,14 @@
 
 			<div>
 				<v-data-table
+					:loading="status === 'pending'"
 					:items="quizzes"
 					:headers="headers"
 					:search="searchAllQuizzes"
 					:items-per-page="10"
-					:loading="false"
 					:items-per-page-options="[5, 10, 15]"
 					:sort-by="sortBy"
-					item-value="title"
+					item-value="id"
 					class="mt-6"
 				>
 					<!-- ITEM -->
@@ -170,14 +170,14 @@
 							class="cursor-pointer table__row"
 							:class="{
 								'table__row--completed':
-									item.status === 'Completo',
+									item.user_status === 'Completo',
 							}"
-							@click="item.link && $router.push(item.link)"
+							@click="$router.push(`/fisiologia/quiz/${item.id}`)"
 						>
 							<td>
 								<div class="d-flex align-center ga-2">
 									<img
-										:src="item.image"
+										:src="formatImage(item.image)"
 										width="50"
 										height="50"
 										style="border-radius: 4"
@@ -185,10 +185,12 @@
 									/>
 									<strong>{{ item.title }}</strong>
 									<span
-										v-if="item.status !== 'Não iniciado'"
+										v-if="
+											item.user_status !== 'Não iniciado'
+										"
 										class="text-caption"
 									>
-										({{ item.status }})
+										({{ item.user_status }})
 									</span>
 								</div>
 							</td>
@@ -200,17 +202,19 @@
 									text-color="white"
 									class="ma-1"
 								>
-									{{ dificulty[item.dificulty] }}
+									{{ item.dificulty }}
 								</v-chip>
 							</td>
 
 							<td>
-								<strong>{{ item.quantity }}</strong> questões
+								<strong>{{ item.perguntas_count }}</strong>
+								questões
 							</td>
 
 							<td>
-								<v-icon :icon="item.theme.icon" class="mb-1" />
-								{{ item.theme.title }}
+								<!-- <v-icon :icon="item.theme.icon" class="mb-1" />
+								{{ item.theme.title }} -->
+								Sem tema ainda
 							</td>
 						</tr>
 					</template>
@@ -222,6 +226,22 @@
 </template>
 
 <script setup>
+const quizzesRes = ref([])
+
+const {
+	data: quizzes,
+	error,
+	status,
+} = await useAsyncData(`fetch-all-quizzes`, async () => {
+	try {
+		const response = await useDataLoader(`/api/fase`)
+		return response
+	} catch (e) {
+		console.error(`Error fetching quizzes: ${e.message || e}`)
+		return []
+	}
+})
+
 const search = shallowRef("")
 const searchAllQuizzes = shallowRef("")
 
@@ -237,11 +257,11 @@ const themes = [
 // Funcao para retorno de cores pra as dificuldades/status
 const getColor = (status) => {
 	switch (status) {
-		case 0: // Dificuldade fácil
+		case "Fácil": // Dificuldade fácil
 			return "success"
-		case 1: // Dificuldade média
+		case "Médio": // Dificuldade média
 			return "warning"
-		case 2: // Dificuldade difícil
+		case "Difícil": // Dificuldade difícil
 			return "error"
 		default: // Fallback
 			return "grey"
@@ -249,7 +269,7 @@ const getColor = (status) => {
 }
 
 const sortBy = ref([
-	{ key: "status", order: "desc" },
+	{ key: "user_status", order: "desc" },
 	{ key: "dificulty", order: "asc" },
 	{ key: "title", order: "asc" },
 ])
@@ -282,15 +302,6 @@ const headers = [
 ]
 
 const dificulty = ["Fácil", "Médio", "Difícil"]
-const quizzes = Array.from({ length: 50 }, (_, i) => ({
-	title: "Quiz " + (i + 1),
-	image: "/layout/profile.jpeg",
-	dificulty: i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : 2,
-	status: Math.random() > 0.5 ? "Completo" : "Não iniciado",
-	quantity: Math.floor(Math.random() * 20) + 1,
-	theme: { title: "Tema 1", icon: "mdi-cat" },
-	link: "/fisiologia/quiz/" + (i + 1),
-}))
 
 // Funcoes de sorteio de TEMA
 const randomThemeLink = () => {
@@ -299,10 +310,10 @@ const randomThemeLink = () => {
 }
 
 // Funcoes de sorteio de QUIZ
-const randomQuizLink = () => {
+const randomQuizLink = (arr) => {
 	// Filtra os quizzes nao completos
-	const filteredQuizzes = quizzes.filter(
-		(quiz) => quiz.status === "Não iniciado",
+	const filteredQuizzes = arr.filter(
+		(quiz) => quiz.user_status === "Não iniciado",
 	)
 
 	// Tenta encontrar um quiz aleatório por dificuldade
@@ -315,14 +326,14 @@ const randomQuizLink = () => {
 				const randomIndex = Math.floor(
 					Math.random() * difficultyQuizzes.length,
 				)
-				return difficultyQuizzes[randomIndex].link
+				return `/fisiologia/quiz/${difficultyQuizzes[randomIndex].id}`
 			}
 		}
 	}
 
 	// Fallback (sorteia um quiz aleatório)
-	const randomIndex = Math.floor(Math.random() * quizzes.length)
-	return quizzes[randomIndex].link
+	const randomIndex = Math.floor(Math.random() * arr.length)
+	return `/fisiologia/quiz/${arr[randomIndex].id}`
 }
 
 definePageMeta({

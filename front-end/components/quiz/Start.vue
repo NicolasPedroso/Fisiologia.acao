@@ -89,10 +89,6 @@ defineProps({
 		type: String,
 		default: "Tema",
 	},
-	blocked: {
-		type: Boolean,
-		default: false,
-	},
 })
 </script>
 <style scoped>

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RespostaController;
+use App\Http\Controllers\API\FaseController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,14 +36,9 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::apiResource('notificacao', 'API\NotificationIconController')->only('index','get','store','update','delete');
 
-    // CRUD Perguntas. Precisa da chave estrangeira da fase
-    Route::apiResource('perguntas', 'API\PerguntaController');
-
-    // CRUD individual de Respostas. Precisa da chave estrangeira da pergunta
-    Route::apiResource('respostas', 'API\RespostaController');
-
     // CRUD Fase. Para ter uma pergunta e resposta deve existir uma fase criada
     Route::apiResource('fase', 'API\FaseController');
+    Route::post('fase/{fase}/status', [FaseController::class, 'updateUserStatus']);
 
     Route::apiResource('tema_do_video', 'API\VideoThemeController')->only(['show','index']);
 

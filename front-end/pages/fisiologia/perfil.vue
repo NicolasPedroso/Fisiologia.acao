@@ -111,6 +111,7 @@
 									height="200px"
 									:src="formatImage(user.image)"
 									:aspect-ratio="1 / 1"
+									cover
 									class="profile__image"
 								/>
 							</div>
@@ -378,6 +379,8 @@ async function updateUser() {
 	formData.append("email", userForm.email)
 	formData.append("phone", userForm.phone)
 	formData.append("address", userForm.address || "")
+
+	//TODO: trocar senha
 
 	if (userForm.imageFile) {
 		// Verifica se uma nova imagem foi selecionada

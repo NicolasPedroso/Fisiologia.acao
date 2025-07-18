@@ -23,7 +23,7 @@ export const useDataLoader = async (request, opts) => {
 	const config = useRuntimeConfig()
 	const { logUserOut } = useAuthStore()
 	const { value: token } = useCookie("token", { sameSite: true })
-	const nuxtApp = useNuxtApp() // ✅ 1. Obtenha a instância do NuxtApp
+	const nuxtApp = useNuxtApp()
 
 	let headersOpts = {}
 	if (opts?.headers) headersOpts = opts.headers
@@ -35,13 +35,13 @@ export const useDataLoader = async (request, opts) => {
 			headers: headersOpts,
 			...opts,
 		})
-
 		return data
 	} catch (error) {
 		// Verifica se o erro é de "Não Autorizado"
+
 		if (error.response?.status === 401) {
 			await logUserOut(nuxtApp)
-			return router.push("/fisiologia")
+			return router.push("/")
 		}
 
 		// Se for outro erro, apenas o relance para ser tratado em outro lugar
