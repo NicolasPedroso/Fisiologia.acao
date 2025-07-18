@@ -301,8 +301,6 @@ const headers = [
 	},
 ]
 
-const dificulty = ["Fácil", "Médio", "Difícil"]
-
 // Funcoes de sorteio de TEMA
 const randomThemeLink = () => {
 	const randomIndex = Math.floor(Math.random() * themes.length)
@@ -316,11 +314,13 @@ const randomQuizLink = (arr) => {
 		(quiz) => quiz.user_status === "Não iniciado",
 	)
 
+	console.log("Filtered quizzes:", filteredQuizzes)
+
 	// Tenta encontrar um quiz aleatório por dificuldade
 	if (filteredQuizzes.length > 0) {
 		for (let i = 0; i < 3; i++) {
 			const difficultyQuizzes = filteredQuizzes.filter(
-				(quiz) => quiz.dificulty === i,
+				(quiz) => quiz.dificulty === ["Fácil", "Médio", "Difícil"][i],
 			)
 			if (difficultyQuizzes.length > 0) {
 				const randomIndex = Math.floor(
