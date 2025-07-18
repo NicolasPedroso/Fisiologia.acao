@@ -226,11 +226,8 @@
 </template>
 
 <script setup>
-const quizzesRes = ref([])
-
 const {
 	data: quizzes,
-	error,
 	status,
 } = await useAsyncData(`fetch-all-quizzes`, async () => {
 	try {

@@ -94,6 +94,17 @@
 				@fisiologia.em.acao
 			</a>
 		</v-footer>
+
+		<ActionPopup
+			v-model="showDialog"
+			:title="popupConfig.title"
+			:text="popupConfig.text"
+			:icon="popupConfig.icon"
+			:color="popupConfig.color"
+			:loading="isLoading"
+			@confirm="popupConfig.action"
+			@cancel="handleCancel"
+		/>
 	</v-app>
 </template>
 <script setup>
@@ -132,10 +143,33 @@ const links = [
 	},
 ]
 
+const showDialog = ref(false)
+const popupConfig = ref({})
+
+function handleSuccess() {
+	console.log("Ação foi confirmada pelo usuário.")
+	showDialog.value = false
+}
+
+function handleCancel() {
+	console.log("Ação foi cancelada pelo usuário.")
+	// O próprio popup já se fecha, aqui podemos apenas registrar o log se quisermos.
+}
+
 async function logout() {
-	const router = useRouter()
-	await logUserOut()
-	router.push("/")
+	popupConfig.value = {
+		title: "Tem certeza que deseja sair?",
+		text: "Você será desconectado da sua conta.",
+		icon: "mdi-exit-to-app",
+		color: "#1d3b5f",
+		action: async () => {
+			const router = useRouter()
+			await logUserOut()
+			router.push("/")
+			showDialog.value = false
+		},
+	}
+	showDialog.value = true
 }
 </script>
 <style scoped>

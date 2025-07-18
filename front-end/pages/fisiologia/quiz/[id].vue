@@ -27,6 +27,17 @@
 		/>
 	</v-container>
 	<Loading :status="status" />
+
+	<ActionPopup
+		v-model="showDialog"
+		:title="popupConfig.title"
+		:text="popupConfig.text"
+		:icon="popupConfig.icon"
+		:color="popupConfig.color"
+		:loading="isLoading"
+		@confirm="popupConfig.action"
+		@cancel="handleCancel"
+	/>
 </template>
 <script setup>
 // Propriedade que diz o momento do quiz
@@ -35,46 +46,48 @@ const selected = ref(0)
 const routeURL = useRoute()
 const quizID = routeURL.params.id
 
-const {
-	data: quizRes,
-	error,
-	status,
-} = await useAsyncData(`fetch-quiz-data-${quizID}`, async () => {
-	try {
-		const response = await useDataLoader(`/api/fase/${quizID}`)
-		return response
-	} catch (e) {
-		console.error(`Error fetching quiz data: ${e.message || e}`)
+const { data: quizRes, status } = await useAsyncData(
+	`fetch-quiz-data-${quizID}`,
+	async () => {
+		try {
+			const response = await useDataLoader(`/api/fase/${quizID}`)
+			return response
+		} catch (e) {
+			console.error(`Error fetching quiz data: ${e.message || e}`)
 
-		throw createError({
-			statusCode: e.response?.status || 500,
-			message: "Ocorreu um erro ao buscar o quiz",
-			fatal: true,
-		})
+			throw createError({
+				statusCode: e.response?.status || 500,
+				message: "Ocorreu um erro ao buscar o quiz",
+				fatal: true,
+			})
+		}
+	},
+)
 
-		return null
-	}
-})
+const showDialog = ref(false)
+const popupConfig = ref({})
 
-const quiz = {
-	title: "Quiz 1",
-	image: "/layout/profile.jpeg",
-	dificulty: 0,
-	status: "Completo",
-	quantity: 10,
-	theme: { title: "Tema 1", icon: "mdi-cat" },
-	description:
-		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-	link: "/fisiologia/quiz/1",
+function handleSuccess() {
+	console.log("Ação foi confirmada pelo usuário.")
+	showDialog.value = false
+}
+
+function handleCancel() {
+	console.log("Ação foi cancelada pelo usuário.")
+	// O próprio popup já se fecha, aqui podemos apenas registrar o log se quisermos.
 }
 
 const finishQuiz = async (time) => {
-	if (time) {
-		alert(`Tempo gasto: ${time} segundos`)
-	}
 	selected.value = 0
 
-	console.log(`/api/fase/${route.params.id}/status`)
+	popupConfig.value = {
+		title: "Quiz finalizado com sucesso!",
+		text: "Tempo gasto: " + time + " segundos",
+		icon: "mdi-check",
+		color: "green",
+		action: handleSuccess,
+	}
+	showDialog.value = true
 
 	await useDataLoader(`/api/fase/${route.params.id}/status`, {
 		method: "POST",
