@@ -65,22 +65,26 @@
 			</div>
 
 			<v-data-iterator
-				:items="themes"
+				:items="apiData.themes"
 				:items-per-page="12"
 				:search="search"
 				:loading="false"
 			>
 				<template #default="{ items }">
 					<v-row class="mt-6" dense>
-						<v-col
-							v-for="item in items"
-							:key="item.title"
-							cols="4"
-							lg="3"
-							class="pa-2"
-						>
-							<theme-card :theme="item.raw" />
-						</v-col>
+						<template v-for="item in items" :key="item.title">
+							<v-col
+								v-if="
+									item.raw.fases_count &&
+									item.raw.fases_count !== 0
+								"
+								cols="4"
+								lg="3"
+								class="pa-2"
+							>
+								<theme-card :theme="item.raw" />
+							</v-col>
+						</template>
 					</v-row>
 				</template>
 
@@ -155,7 +159,7 @@
 			<div>
 				<v-data-table
 					:loading="status === 'pending'"
-					:items="quizzes"
+					:items="apiData.fases"
 					:headers="headers"
 					:search="searchAllQuizzes"
 					:items-per-page="10"
@@ -226,18 +230,28 @@
 </template>
 
 <script setup>
-const {
-	data: quizzes,
-	status,
-} = await useAsyncData(`fetch-all-quizzes`, async () => {
-	try {
-		const response = await useDataLoader(`/api/fase`)
-		return response
-	} catch (e) {
-		console.error(`Error fetching quizzes: ${e.message || e}`)
-		return []
-	}
-})
+const { data: apiData, status } = await useAsyncData(
+	"fetch-fases-and-themes", // É uma boa prática dar um nome único e descritivo
+	async () => {
+		try {
+			// Inicia as duas requisições em paralelo
+			const [fasesResponse, themesResponse] = await Promise.all([
+				useDataLoader("/api/fase"),
+				useDataLoader("/api/themes"),
+			])
+
+			// Retorna um objeto com os dois resultados
+			return {
+				fases: fasesResponse,
+				themes: themesResponse.data || [],
+			}
+		} catch (e) {
+			console.error(`Error fetching data: ${e.message || e}`)
+			// Retorna um estado de erro ou valores padrão
+			return { fases: [], themes: [] }
+		}
+	},
+)
 
 const search = shallowRef("")
 const searchAllQuizzes = shallowRef("")

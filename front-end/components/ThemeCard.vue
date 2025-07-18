@@ -1,7 +1,10 @@
 <template>
-	<v-card :to="theme.link" class="theme-card__wrapper d-flex flex-column">
+	<v-card
+		:to="`/fisiologia/tema/${theme.id}`"
+		class="theme-card__wrapper d-flex flex-column"
+	>
 		<h3 class="w50">{{ theme.title }}</h3>
-		<p class="w50">{{ theme.quantity }} quizzes disponíveis</p>
+		<p class="w50">{{ theme.fases_count }} quizzes disponíveis</p>
 		<v-icon class="theme-card__image"> {{ theme.icon }} </v-icon>
 	</v-card>
 </template>
@@ -13,7 +16,6 @@ defineProps({
 		default: () => ({
 			title: "Tema de exemplo",
 			icon: "mdi-cat",
-			link: "/fisiologia",
 			quantity: 0,
 		}),
 	},

@@ -15,15 +15,15 @@ use App\Models\Pergunta;
 class FaseController extends Controller
 {
     /**
-     * Lista todas as fases, incluindo o status do usuário logado em cada uma.
+     * Lista todas as fases.
      */
     public function index()
     {
         $user = Auth::user();
 
         $fases = Fase::withCount('perguntas')
-            // Pré-carrega a relação 'users', mas APENAS para o ID do usuário logado.
-            // Isso é uma otimização crucial para evitar carregar dados de todos os usuários.
+            // ADICIONAL: Carrega os dados do tema junto com a fase
+            ->with('theme')
             ->with(['users' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             }])
@@ -32,12 +32,15 @@ class FaseController extends Controller
         return response()->json($fases);
     }
 
-    // ... store e update NÃO precisam mais validar o 'status'
-
-public function store(Request $request)
+    /**
+     * Cria uma nova fase e suas perguntas.
+     */
+    public function store(Request $request)
     {
-        // 2. ATUALIZAR A VALIDAÇÃO
         $validatedData = $request->validate([
+            // 1. ADICIONAR VALIDAÇÃO PARA O THEME_ID
+            'theme_id'    => 'required|integer|exists:themes,id', // Garante que o tema exista
+
             // Regras para a Fase
             'title'       => 'required|string|max:255',
             'image'       => 'required|image|mimes:jpg,png,jpeg|max:2048',
@@ -45,78 +48,64 @@ public function store(Request $request)
             'dificulty'   => ['required', Rule::in(['Fácil', 'Médio', 'Difícil'])],
             'description' => 'required|string',
 
-            // Regras para o array de Perguntas (que virão no corpo da requisição)
-            'perguntas'          => 'required|array|min:1',
-            'perguntas.*.question'     => 'required|string',
-            'perguntas.*.image'        => 'required|image|mimes:jpg,png,jpeg|max:2048',
-            'perguntas.*.option_a'     => 'required|string',
-            'perguntas.*.option_b'     => 'required|string',
-            'perguntas.*.option_c'     => 'required|string',
-            'perguntas.*.option_d'     => 'required|string',
+            // Regras para o array de Perguntas
+            'perguntas'              => 'required|array|min:1',
+            'perguntas.*.question'   => 'required|string',
+            'perguntas.*.image'      => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'perguntas.*.option_a'   => 'required|string',
+            'perguntas.*.option_b'   => 'required|string',
+            'perguntas.*.option_c'   => 'required|string',
+            'perguntas.*.option_d'   => 'required|string',
             'perguntas.*.correct_answer' => ['required', Rule::in(['A', 'B', 'C', 'D'])],
         ]);
 
         $fase = null;
 
-        // 3. ENVOLVER TUDO EM UMA TRANSAÇÃO
         try {
             DB::transaction(function () use ($request, $validatedData, &$fase) {
-                // Primeiro, cuida do upload da imagem da Fase
                 $imagePath = $request->file('image')->store('image', 'public');
 
-                // Segundo, cria a Fase no banco de dados
+                // 2. INCLUIR O THEME_ID NA CRIAÇÃO
                 $fase = Fase::create([
+                    'theme_id'    => $validatedData['theme_id'], // <-- AQUI
                     'title'       => $validatedData['title'],
-                    'image'       => $imagePath, // Salva o caminho da imagem
+                    'image'       => $imagePath,
                     'video_link'  => $validatedData['video_link'],
                     'dificulty'   => $validatedData['dificulty'],
                     'description' => $validatedData['description'],
                 ]);
 
-                // Itera sobre o array de perguntas para processá-las
                 foreach ($validatedData['perguntas'] as $key => $perguntaData) {
-
-                    // === AQUI ESTÁ A LÓGICA CORRIGIDA ===
-                    // Verifica se existe um arquivo de imagem para esta pergunta específica
                     if ($request->hasFile("perguntas.{$key}.image")) {
-                        // Salva a imagem da pergunta
                         $perguntaImagePath = $request->file("perguntas.{$key}.image")->store('image', 'public');
-                        // Adiciona o caminho da imagem aos dados da pergunta antes de salvar
                         $perguntaData['image'] = $perguntaImagePath;
                     }
-
-                    // Cria a pergunta usando os dados (que agora podem conter o caminho da imagem)
                     $fase->perguntas()->create($perguntaData);
                 }
             });
         } catch (\Exception $e) {
-            // Se algo der errado, a transação é revertida e nada é salvo.
             return response()->json([
                 'message' => 'Ocorreu um erro ao criar a fase e suas perguntas.',
-                'error' => $e->getMessage() // Útil para depuração
+                'error' => $e->getMessage()
             ], 500);
         }
 
-        // 4. RETORNAR A FASE COMPLETA COM AS PERGUNTAS
-        $fase->load('perguntas');
-
+        $fase->load('perguntas', 'theme'); // Carrega o tema recém-criado também
         return response()->json($fase, 201);
     }
 
+    /**
+     * Mostra uma fase específica.
+     */
     public function show(Fase $fase)
     {
         $user = Auth::user();
 
-        $fase->loadCount('perguntas')
-            // Carrega o status apenas para o usuário logado
-            ->load(['users' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }]);
-
+        // Carrega todas as relações necessárias de uma vez
         $fase->load([
-            'perguntas', // <<--- AQUI ESTÁ A MUDANÇA PRINCIPAL
+            'theme', // Carrega o tema pai
+            'perguntas',
             'users' => function ($query) use ($user) {
-                // Filtra o status para o usuário logado
                 $query->where('user_id', $user->id);
             }
         ]);
@@ -124,9 +113,15 @@ public function store(Request $request)
         return response()->json($fase, 200);
     }
 
+    /**
+     * Atualiza uma fase existente.
+     */
     public function update(Request $request, Fase $fase)
     {
         $validatedData = $request->validate([
+            // 3. ADICIONAL: Validação para mudar o tema de uma fase (opcional)
+            'theme_id'    => 'sometimes|required|integer|exists:themes,id',
+
             'title'       => 'required|string|max:255',
             'image'       => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'video_link'  => 'required|url',
@@ -135,11 +130,9 @@ public function store(Request $request)
         ]);
 
         if ($request->hasFile('image')) {
-            // CORREÇÃO: Deleta a imagem antiga se ela existir
             if ($fase->image && Storage::disk('public')->exists($fase->image)) {
                 Storage::disk('public')->delete($fase->image);
             }
-            // Salva a nova imagem
             $file_path = $request->file('image')->store('image', 'public');
             $validatedData['image'] = $file_path;
         }
@@ -147,6 +140,8 @@ public function store(Request $request)
         $fase->update($validatedData);
         return response()->json($fase, 200);
     }
+
+    // ... destroy e updateUserStatus permanecem os mesmos ...
 
     public function destroy(Fase $fase)
     {
@@ -158,9 +153,6 @@ public function store(Request $request)
         return response()->json(null, 204);
     }
 
-    /**
-     * Novo método para atualizar o status de uma fase para o usuário logado.
-     */
     public function updateUserStatus(Request $request, Fase $fase)
     {
         $validated = $request->validate([
@@ -169,8 +161,6 @@ public function store(Request $request)
 
         $user = Auth::user();
 
-        // O método syncWithoutDetaching é perfeito aqui:
-        // Ele cria a relação se não existir, ou atualiza se já existir.
         $user->fases()->syncWithoutDetaching([
             $fase->id => ['status' => $validated['status']]
         ]);

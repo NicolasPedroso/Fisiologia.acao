@@ -1,6 +1,6 @@
 <template>
 	<v-card
-		:to="quiz.link"
+		:to="`/fisiologia/quiz/${quiz.id}`"
 		:disabled="blocked"
 		class="theme-card__wrapper d-flex flex-column pa-1"
 	>
@@ -10,7 +10,7 @@
 			}"
 		>
 			<v-img
-				:src="quiz.image"
+				:src="formatImage(quiz.image)"
 				class="theme-card__image"
 				height="200"
 				width="100%"
@@ -19,9 +19,13 @@
 			<div class="pa-2">
 				<h3>
 					{{ quiz.title }}
-					<span v-if="quiz.status === 'Completo'"> - Completo</span>
+					<span v-if="quiz.user_status === 'Completo'">
+						- Completo
+					</span>
 				</h3>
-				<p>{{ quiz.quantity }} questões</p>
+				<p class="text-caption">
+					{{ quiz.description }}
+				</p>
 			</div>
 		</div>
 

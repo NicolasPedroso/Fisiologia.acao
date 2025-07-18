@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Fase extends Model
 {
@@ -24,7 +25,8 @@ class Fase extends Model
         'image',
         'video_link',
         'dificulty',
-        'description'
+        'description',
+        'theme_id'
     ];
 
     protected $hidden = [
@@ -42,6 +44,11 @@ class Fase extends Model
     {
         // O 'fase_id' é a coluna que relaciona perg->fase
         return $this->hasMany(Pergunta::class, 'fase_id');
+    }
+
+    public function theme(): BelongsTo
+    {
+        return $this->belongsTo(Theme::class);
     }
 
     public function users()

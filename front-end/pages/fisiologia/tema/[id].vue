@@ -1,10 +1,10 @@
 <template>
-	<v-container fluid>
+	<v-container fluid v-if="status === 'success'">
 		<div
 			class="shortcuts__container d-flex align-center justify-center ga-2"
 		>
-			<v-icon>mdi-cat</v-icon>
-			<h1>Nome do tema</h1>
+			<v-icon> {{ themeRes.icon }} </v-icon>
+			<h1>{{ themeRes.title }}</h1>
 		</div>
 
 		<div
@@ -29,7 +29,11 @@
 			</div>
 
 			<v-data-iterator
-				:items="quizzes.filter((item) => item.dificulty === type.value)"
+				:items="
+					themeRes.fases.filter(
+						(item) => item.dificulty === type.value,
+					)
+				"
 				:items-per-page="8"
 				:search="search"
 				:loading="false"
@@ -106,21 +110,33 @@
 
 <script setup>
 const search = shallowRef("")
-const quizzes = Array.from({ length: 50 }, (_, i) => ({
-	title: "Quiz " + (i + 1),
-	image: "/layout/profile.jpeg",
-	dificulty: i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : 2,
-	status: i % 3 === 0 ? "Completo" : "Não iniciado",
-	quantity: Math.floor(Math.random() * 20) + 1,
-	theme: { title: "Tema 1", icon: "mdi-cat" },
-	link: "/fisiologia/quiz/1",
-}))
+
+const routeURL = useRoute()
+const quizID = routeURL.params.id
+
+const { data: themeRes, status } = await useAsyncData(
+	`fetch-theme-data-${quizID}`,
+	async () => {
+		try {
+			const response = await useDataLoader(`/api/themes/${quizID}`)
+			return response.data
+		} catch (e) {
+			console.error(`Error fetching theme data: ${e.message || e}`)
+
+			throw createError({
+				statusCode: e.response?.status || 500,
+				message: "Ocorreu um erro ao buscar o tema",
+				fatal: true,
+			})
+		}
+	},
+)
 
 const dificultyOptions = [
 	{
 		text: "Fáceis",
 		color: "green",
-		value: 0,
+		value: "Fácil",
 		blockedFunction: () => {
 			return false
 		},
@@ -128,22 +144,28 @@ const dificultyOptions = [
 	{
 		text: "Intermediários",
 		color: "yellow",
-		value: 1,
+		value: "Médio",
 		blockedFunction: () => {
-			return !quizzes.some((quiz) => {
-				return quiz.dificulty == 0 && quiz.status === "Completo"
-			})
+			return false
 		},
+		// blockedFunction: (quizzes) => {
+		// 	return !quizzes.some((quiz) => {
+		// 		return quiz.dificulty == "Fácil" && quiz.status === "Completo"
+		// 	})
+		// },
 	},
 	{
 		text: "Difíceis",
 		color: "red",
-		value: 2,
+		value: "Difícil",
 		blockedFunction: () => {
-			return !quizzes.some((quiz) => {
-				return quiz.dificulty == 1 && quiz.status === "Completo"
-			})
+			return false
 		},
+		// blockedFunction: (quizzes) => {
+		// 	return !quizzes.some((quiz) => {
+		// 		return quiz.dificulty == "Médio" && quiz.status === "Completo"
+		// 	})
+		// },
 	},
 ]
 

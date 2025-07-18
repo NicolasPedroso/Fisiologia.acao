@@ -36,7 +36,10 @@
 					>
 						{{ themeTitle }} - {{ quantity }} questões
 					</strong>
-					<span class="quiz__card__text text-body-2 mt-2">
+					<span
+						class="quiz__card__text text-body-2 mt-2"
+						style="max-width: 360px"
+					>
 						{{ description.split(" ").slice(0, 24).join(" ") }}...
 					</span>
 				</div>

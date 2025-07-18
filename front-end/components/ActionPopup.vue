@@ -22,25 +22,25 @@
 				<v-btn
 					:text="cancelText"
 					variant="text"
-					@click="onCancel"
 					style="
 						text-transform: none;
 						font-weight: 600;
 						letter-spacing: 0;
 					"
+					@click="onCancel"
 				/>
 				<v-btn
 					:color="color"
 					:text="confirmText"
 					:loading="loading"
 					variant="flat"
-					@click="onConfirm"
 					class="px-6"
 					style="
 						text-transform: none;
 						font-weight: 600;
 						letter-spacing: 0;
 					"
+					@click="onConfirm"
 				/>
 				<v-spacer />
 			</v-card-actions>

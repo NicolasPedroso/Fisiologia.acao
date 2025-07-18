@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RespostaController;
 use App\Http\Controllers\API\FaseController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,59 +23,21 @@ Route::post('login', 'API\AuthController@login');
 // se os valores são iguais
 Route::post('signup', 'API\AuthController@signup');
 
-/*
-    Rota de cadastro:
-    Realiza GET, POST, PUT, DELETE
-*/
-
-// Rota alternativa pra cadastro de usuário, aceita somente POST
-Route::post ('user', 'API\UserController@store');
-
 // Rotas que exigem autenticação por token
 Route::middleware(['auth:api'])->group(function () {
-    Route::apiResource('contato', 'API\ContactController')->only(['show','index']);
+    // Route::apiResource('contato', 'API\ContactController')->only(['show','index']);
+    // Route::apiResource('notificacao', 'API\NotificationIconController');
 
-    Route::apiResource('notificacao', 'API\NotificationIconController')->only('index','get','store','update','delete');
+    Route::apiResource('themes', 'API\ThemeController')->only(['index', 'show']);
 
     // CRUD Fase. Para ter uma pergunta e resposta deve existir uma fase criada
-    Route::apiResource('fase', 'API\FaseController');
+    Route::apiResource('fase', 'API\FaseController')->only(['index', 'show']);
     Route::post('fase/{fase}/status', [FaseController::class, 'updateUserStatus']);
-
-    Route::apiResource('tema_do_video', 'API\VideoThemeController')->only(['show','index']);
-
-    // A rota abaixo é a mais complexa do projeto, então coloquei comentários para ajudar o front
-    // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
-    // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk. Com o id da pergunta criada, crie um raw como abaixo
-    /*
-    {
-        "respostas": [
-            {
-                "texto": "Uma pergunta",
-                "correta": 0
-            }
-        ]
-    }
-
-    Ou assim:
-    /**
-     * Criar VÁRIAS respostas de uma só vez (bulk),
-     * vinculado a uma pergunta específica (via URL).
-     *
-     * Exemplo de body (JSON) esperado:
-     * {
-     *   "respostas": [
-     *     { "texto": "Alternativa A", "correta": false },
-     *     { "texto": "Alternativa B", "correta": true },
-     *     ...
-     *   ]
-     * }
-     */
-
-    Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
 
     // middleware de ações realizadas somente pelo admin, setado no Kernel e no middleware como CheckIsAdmin
     Route::middleware(['admin'])->group(function () {
-        Route::apiResource('contato', 'API\ContactController')->only(['store','update','destroy']);
+        // Route::apiResource('contato', 'API\ContactController')->only(['store','update','destroy']);
+        Route::apiResource('themes', 'API\ThemeController')->only(['store', 'update', 'destroy']);
 
         //retorna todos os usuários existentes
         Route::get('users', 'API\UserController@index');
@@ -83,7 +46,7 @@ Route::middleware(['auth:api'])->group(function () {
         //retorna o usuário pelo id
         Route::get('user/{id}', 'API\UserController@show');
 
-        Route::apiResource('tema_do_video', 'API\VideoThemeController');
+        Route::apiResource('fase', 'API\FaseController')->only(['store', 'update', 'destroy']);
     });
 
     Route::get('logout', 'API\AuthController@logout');
