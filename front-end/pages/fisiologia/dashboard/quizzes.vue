@@ -26,14 +26,75 @@
 			</v-row>
 
 			<v-data-table
-				:loading="status === 'idle' || status === 'pending'"
+				:loading="
+					status === 'idle' ||
+					status === 'pending' ||
+					loadingThemes === 'pending'
+				"
 				:headers="headers"
 				:items="quizzes"
 				:search="search"
+				:group-by="groupBy"
 				density="compact"
 				:hover="true"
 				mobile-breakpoint="md"
 			>
+				<template
+					v-slot:group-header="{
+						item,
+						columns,
+						toggleGroup,
+						isGroupOpen,
+					}"
+				>
+					<tr>
+						<td :colspan="columns.length">
+							<div class="d-flex align-center">
+								<v-btn
+									:icon="
+										isGroupOpen(item) ? '$expand' : '$next'
+									"
+									color="medium-emphasis"
+									density="comfortable"
+									size="small"
+									variant="outlined"
+									@click="toggleGroup(item)"
+								></v-btn>
+
+								<span class="ms-4">
+									Tema:
+									{{
+										themesList.find(
+											(theme) => theme.id === item.value,
+										)?.title || "Sem tema"
+									}}
+								</span>
+							</div>
+						</td>
+					</tr>
+				</template>
+
+				<template #[`item.theme`]="{ item }">
+					<div v-if="item.theme" class="d-flex align-center">
+						<v-icon
+							:icon="item.theme.icon"
+							size="small"
+							class="mr-2"
+						/>
+						<span>{{ item.theme.title }}</span>
+					</div>
+					<span v-else class="text--secondary">Sem tema</span>
+				</template>
+
+				<template #[`item.description`]="{ item }">
+					<div v-if="item.description">
+						<span style="text-wrap: wrap; word-wrap: break-word">
+							{{ item.description }}
+						</span>
+					</div>
+					<span v-else class="text--secondary">Sem descrição</span>
+				</template>
+
 				<template #[`item.image`]="{ item }">
 					<div v-if="item.image">
 						<v-img
@@ -46,9 +107,11 @@
 					</div>
 					<span v-else class="text--secondary">Sem imagem</span>
 				</template>
+
 				<template #[`item.video_link`]="{ item }">
-					<a :href="item.video_link" target="_blank">Video</a>
+					<a :href="item.video_link" target="_blank">Vídeo</a>
 				</template>
+
 				<template #[`item.actions`]="{ item }">
 					<div class="table__actions flex-column py-2">
 						<v-btn
@@ -93,6 +156,30 @@
 				>
 					<v-card-text class="pt-4">
 						<div class="dialog__content__gap">
+							<v-select
+								v-model="formData.theme_id"
+								:items="themesList"
+								item-title="title"
+								item-value="id"
+								label="Tema do Quiz"
+								:rules="rules.required"
+								:loading="loadingThemes === 'pending'"
+								required
+							>
+								<template #item="{ props, item }">
+									<v-list-item
+										v-bind="props"
+										:title="item.raw.title"
+									>
+										<template #prepend>
+											<v-icon :icon="item.raw.icon" />
+										</template>
+									</v-list-item>
+								</template>
+							</v-select>
+
+							{{ formData.theme_id }}
+
 							<v-text-field
 								v-model="formData.title"
 								label="Título do Quiz"
@@ -117,7 +204,7 @@
 								:rules="rules.youtube"
 								label="Link do Vídeo de Apoio"
 								type="url"
-								placeholder="https://www.youtube.com/watch?v=X3_MbFNm-3A&list=RDX3_MbFNm-3A"
+								placeholder="https://www.youtube.com/watch?v=..."
 								clearable
 							/>
 							<v-file-input
@@ -161,12 +248,15 @@
 									elevation="2"
 								>
 									<v-expansion-panel-title>
-										<strong
-											>Pergunta {{ index + 1 }}:</strong
-										>
-										<span class="text-truncate ml-2">{{
-											pergunta.question || "Nova Pergunta"
-										}}</span>
+										<strong>
+											Pergunta {{ index + 1 }}:
+										</strong>
+										<span class="text-truncate ml-2"
+											>{{
+												pergunta.question ||
+												"Nova Pergunta"
+											}}
+										</span>
 									</v-expansion-panel-title>
 									<v-expansion-panel-text>
 										<div class="dialog__content__gap py-4">
@@ -293,10 +383,11 @@ const { notify } = useNotification()
 
 // Tabela
 const search = ref("")
+// ATUALIZADO: Headers da tabela
 const headers = [
 	{ title: "ID", key: "id", width: 80 },
 	{ title: "Título", key: "title" },
-	{ title: "Descrição", key: "description" },
+	{ title: "Descrição", key: "description", maxWidth: 400 },
 	{ title: "Dificuldade", key: "dificulty" },
 	{ title: "Nº de Perguntas", key: "perguntas_count" },
 	{
@@ -309,7 +400,7 @@ const headers = [
 	{
 		title: "Link do Vídeo",
 		key: "video_link",
-		width: 200,
+		width: 120,
 		sortable: false,
 		align: "center",
 	},
@@ -333,17 +424,17 @@ const difficulties = ["Fácil", "Médio", "Difícil"]
 const rules = {
 	required: [(v) => !!v || "Este campo é obrigatório."],
 	youtube: [
-		(v) => !!v || "Este campo é obrigatório.",
 		(v) =>
-			!v ||
+			!v || // Permite campo vazio
 			/^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11}).*$/.test(
 				v,
 			) ||
 			"O link do YouTube não é válido.",
 	],
 }
+const groupBy = ref([{ key: "theme_id", order: "asc" }])
 
-// Objeto do formulário reativo
+// ATUALIZADO: Objeto do formulário reativo
 const formData = reactive({
 	id: null,
 	title: "",
@@ -352,8 +443,12 @@ const formData = reactive({
 	video_link: "",
 	description: "",
 	perguntas: [],
+	theme_id: null,
 })
 
+// --- FETCH DE DADOS ---
+
+// Fetch de Quizzes
 const {
 	data: quizzes,
 	status,
@@ -362,9 +457,7 @@ const {
 	"fetch-quizzes",
 	() =>
 		useDataLoader("/api/fase")
-			.then((response) => {
-				return response
-			})
+			.then((response) => response)
 			.catch((err) => {
 				notify({
 					title: "Erro ao carregar quizzes",
@@ -373,9 +466,21 @@ const {
 				})
 				return []
 			}),
-	{
-		server: true,
-	},
+	{ server: true },
+)
+
+// NOVO: Fetch de Temas
+const {
+	data: themesList,
+	refresh: refreshThemes,
+	status: loadingThemes,
+} = await useAsyncData(
+	"fetch-themes-for-select",
+	() =>
+		useDataLoader("/api/themes")
+			.then((response) => response.data || [])
+			.catch(() => []),
+	{ server: true },
 )
 
 // --- FUNÇÕES DO DIALOG ---
@@ -390,10 +495,10 @@ function openCreate() {
 		title: "",
 		difficulty: "Fácil",
 		image: null,
-		video_link:
-			"https://www.youtube.com/watch?v=X3_MbFNm-3A&list=RDX3_MbFNm-3A",
+		video_link: "",
 		description: "",
 		perguntas: [],
+		theme_id: null, // NOVO
 	})
 
 	title.value = "Criar Novo Quiz"
@@ -448,48 +553,37 @@ async function createItem() {
 
 	loadingRes.value = true
 
-	// IMPORTANTE: Para enviar arquivos (imagem), você DEVE usar FormData.
+	// ATUALIZADO: Payload com theme_id
 	const payload = new FormData()
 	payload.append("title", formData.title)
 	payload.append("description", formData.description)
 	payload.append("dificulty", formData.difficulty)
-	payload.append("video_link", formData.video_link)
-	payload.append("image", formData.image)
+	payload.append("video_link", formData.video_link || "") // Garante que envie string vazia se nulo
+	if (formData.image) payload.append("image", formData.image)
+	payload.append("theme_id", formData.theme_id) // NOVO
 
 	for (let i = 0; i < formData.perguntas.length; i++) {
-		payload.append(
-			`perguntas[${i}][question]`,
-			formData.perguntas[i].question,
-		)
-		payload.append(
-			`perguntas[${i}][option_a]`,
-			formData.perguntas[i].option_a,
-		)
-		payload.append(
-			`perguntas[${i}][option_b]`,
-			formData.perguntas[i].option_b,
-		)
-		payload.append(
-			`perguntas[${i}][option_c]`,
-			formData.perguntas[i].option_c,
-		)
-		payload.append(
-			`perguntas[${i}][option_d]`,
-			formData.perguntas[i].option_d,
-		)
-		payload.append(`perguntas[${i}][image]`, formData.perguntas[i].image)
+		const pergunta = formData.perguntas[i]
+		payload.append(`perguntas[${i}][question]`, pergunta.question)
+		payload.append(`perguntas[${i}][option_a]`, pergunta.option_a)
+		payload.append(`perguntas[${i}][option_b]`, pergunta.option_b)
+		payload.append(`perguntas[${i}][option_c]`, pergunta.option_c)
+		payload.append(`perguntas[${i}][option_d]`, pergunta.option_d)
+		if (pergunta.image)
+			payload.append(`perguntas[${i}][image]`, pergunta.image)
 		payload.append(
 			`perguntas[${i}][correct_answer]`,
-			formData.perguntas[i].correct_answer,
+			pergunta.correct_answer,
 		)
 	}
 
 	await useDataLoader("/api/fase", {
 		method: "POST",
-		body: payload, // Envia como FormData, não JSON
+		body: payload,
 	})
 		.then(() => {
-			refresh() // Recarrega a lista de quizzes
+			refresh()
+			refreshThemes()
 			closeDialog()
 			notify({
 				title: "Sucesso!",

@@ -10,7 +10,8 @@
 			:title="quizRes.title"
 			:image="formatImage(quizRes.image)"
 			:description="quizRes.description"
-			theme-title="Placeholder"
+			:theme-title="quizRes.theme.title"
+			:is-completed="quizRes.user_status === 'Completo'"
 			:quantity="quizRes.perguntas_count"
 			@start-video="selected = 1"
 		/>
@@ -34,9 +35,12 @@
 		:text="popupConfig.text"
 		:icon="popupConfig.icon"
 		:color="popupConfig.color"
-		:loading="isLoading"
 		@confirm="popupConfig.action"
-		@cancel="handleCancel"
+		@cancel="
+			() => {
+				showDialog = false
+			}
+		"
 	/>
 </template>
 <script setup>
@@ -68,13 +72,7 @@ const showDialog = ref(false)
 const popupConfig = ref({})
 
 function handleSuccess() {
-	console.log("Ação foi confirmada pelo usuário.")
 	showDialog.value = false
-}
-
-function handleCancel() {
-	console.log("Ação foi cancelada pelo usuário.")
-	// O próprio popup já se fecha, aqui podemos apenas registrar o log se quisermos.
 }
 
 const finishQuiz = async (time) => {

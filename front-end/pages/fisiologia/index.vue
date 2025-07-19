@@ -22,7 +22,7 @@
 						color="var(--primary-color)"
 						class="shortcut_help"
 						variant="outlined"
-						@click="navigateTo(randomQuizLink(quizzes))"
+						@click="navigateTo(randomQuizLink(apiData.fases))"
 					>
 						<v-icon class="mr-1" style="margin-bottom: 2px">
 							mdi-progress-question
@@ -38,7 +38,7 @@
 						color="var(--primary-color)"
 						class="shortcut_help"
 						variant="outlined"
-						@click="navigateTo(randomThemeLink())"
+						@click="navigateTo(randomThemeLink(apiData.themes))"
 					>
 						<v-icon class="mr-1" style="margin-bottom: 2px">
 							mdi-progress-question
@@ -232,23 +232,20 @@
 
 <script setup>
 const { data: apiData, status } = await useAsyncData(
-	"fetch-fases-and-themes", // É uma boa prática dar um nome único e descritivo
+	"fetch-fases-and-themes",
 	async () => {
 		try {
-			// Inicia as duas requisições em paralelo
 			const [fasesResponse, themesResponse] = await Promise.all([
 				useDataLoader("/api/fase"),
 				useDataLoader("/api/themes"),
 			])
 
-			// Retorna um objeto com os dois resultados
 			return {
 				fases: fasesResponse,
 				themes: themesResponse.data || [],
 			}
 		} catch (e) {
 			console.error(`Error fetching data: ${e.message || e}`)
-			// Retorna um estado de erro ou valores padrão
 			return { fases: [], themes: [] }
 		}
 	},
@@ -256,15 +253,6 @@ const { data: apiData, status } = await useAsyncData(
 
 const search = shallowRef("")
 const searchAllQuizzes = shallowRef("")
-
-const themes = [
-	{
-		title: "Tema 1",
-		icon: "mdi-cat",
-		link: "/fisiologia/tema/1",
-		quantity: 5,
-	},
-]
 
 // Funcao para retorno de cores pra as dificuldades/status
 const getColor = (status) => {
@@ -314,13 +302,21 @@ const headers = [
 ]
 
 // Funcoes de sorteio de TEMA
-const randomThemeLink = () => {
-	const randomIndex = Math.floor(Math.random() * themes.length)
-	return themes[randomIndex].link
+const randomThemeLink = (arr) => {
+	const length = arr.length || 0
+	if (length === 0) {
+		return "/fisiologia" // Retorna um tema padrão se não houver temas
+	} else {
+		const randomIndex = Math.floor(Math.random() * length)
+		return `/fisiologia/tema/${arr[randomIndex].id}`
+	}
 }
 
 // Funcoes de sorteio de QUIZ
 const randomQuizLink = (arr) => {
+	if (!arr || arr.length === 0) {
+		return "/fisiologia" // Retorna um quiz padrão se não houver quizzes
+	}
 	// Filtra os quizzes nao completos
 	const filteredQuizzes = arr.filter(
 		(quiz) => quiz.user_status === "Não iniciado",

@@ -98,7 +98,6 @@
 			:text="popupConfig.text"
 			:icon="popupConfig.icon"
 			:color="popupConfig.color"
-			:loading="isLoading"
 			@confirm="popupConfig.action"
 			@cancel="handleCancel"
 		/>

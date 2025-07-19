@@ -13,8 +13,8 @@
 				alt="Quiz Image"
 				class="quiz__image"
 				width="100%"
-				:aspect-ratio="3 / 1"
-				cover
+				max-height="600"
+				fill
 				style="border-radius: 8px"
 			/>
 			<h2 class="mt-6">{{ questions[actualQuestion].question }}</h2>

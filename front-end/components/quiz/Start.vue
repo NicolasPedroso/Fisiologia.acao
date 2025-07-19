@@ -16,6 +16,7 @@
 				<v-img
 					:src="image"
 					class="quiz__card__image"
+					:class="isCompleted ? 'quiz__card__image--completed' : ''"
 					width="100%"
 					min-width="280"
 					cover
@@ -53,12 +54,15 @@
 				</div>
 			</v-card>
 		</div>
-		<div class="quiz__content d-flex flex-column" style="max-width: 480px">
+		<div
+			class="quiz__content d-flex flex-column"
+			style="max-width: 480px; min-width: 200px"
+		>
 			<h1>{{ title }}</h1>
 			<h3>Tema: {{ themeTitle }}</h3>
 			<p class="mt-4">{{ description }}</p>
 			<v-btn class="start-btn mt-5" elevation="0" @click="startVideo()">
-				<span class="start-btn__text"> Iniciar Quiz </span>
+				<span class="start-btn__text px-2"> Iniciar Quiz </span>
 			</v-btn>
 		</div>
 	</v-container>
@@ -83,6 +87,10 @@ defineProps({
 		type: String,
 		default:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+	},
+	isCompleted: {
+		type: Boolean,
+		default: false,
 	},
 	quantity: {
 		type: Number,
@@ -128,5 +136,30 @@ defineProps({
 	letter-spacing: 0.05rem;
 	text-transform: none;
 	font-weight: 600;
+}
+
+.quiz__card__image--completed::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.quiz__card__image--completed::after {
+	filter: none !important;
+	content: "Quiz Completo";
+	text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: rgb(255, 255, 255);
+	font-size: 2rem;
+	line-height: 1.5rem;
+	font-weight: bold;
+	text-align: center;
 }
 </style>
