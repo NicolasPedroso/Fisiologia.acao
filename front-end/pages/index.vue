@@ -1,6 +1,6 @@
 <template>
 	<NuxtNotifications />
-	<!-- Conteudo da pagina -->
+	<!-- Página de login -->
 	<v-container fluid class="ma-0 pa-0 text-center">
 		<h1 class="text-center">Entre no Fisiologia Em Ação</h1>
 		<h3 class="description text-center mb-12">
@@ -37,9 +37,6 @@
 					hide-details
 					label="Permanecer logado"
 				/>
-				<!-- <nuxt-link class="link" to="/esqueceu-a-senha">
-					Esqueceu a senha?
-				</nuxt-link> -->
 			</v-row>
 			<v-btn
 				type="submit"
@@ -59,10 +56,13 @@
 			</nuxt-link>
 		</div>
 	</v-container>
-	<!-- Conteudo da pagina -->
 </template>
 <script setup>
-// Import das funções e gerenciamento de STORE
+/**
+ * Página de login do sistema
+ * Gerencia autenticação de usuários e redirecionamento
+ */
+
 import { storeToRefs } from "pinia"
 import { useAuthStore } from "~/store/auth"
 
@@ -70,18 +70,19 @@ import { useAuthStore } from "~/store/auth"
 const email = ref("")
 const password = ref("")
 const remember_me = ref(false)
+const showPassword = ref(false)
+const valid = ref(false)
 
-// Usar o snackbar
 const { notify } = useNotification()
 
-const showPassword = ref(false)
-
+/**
+ * Alterna visibilidade da senha
+ */
 const togglePassword = () => {
 	showPassword.value = !showPassword.value
 }
 
-// Regras e validade do formulário
-const valid = ref(false)
+// Regras de validação do formulário
 const rules = {
 	email: [
 		(value) => {
@@ -102,33 +103,33 @@ const rules = {
 	],
 }
 
-// Função de autenticação da STORE
+// Store de autenticação
 const { authenticateUser } = useAuthStore()
 const { authenticated } = storeToRefs(useAuthStore())
 const router = useRouter()
 
-// Funções
+/**
+ * Função de login
+ * Valida formulário e autentica usuário
+ */
 async function login() {
-	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
-		// Feedback que está carregando a requisição
 		notify({
 			id: "loading",
 			text: "Carregando...",
 			type: "info",
 		})
-		// Envia os dados para o backend
+
 		try {
 			await authenticateUser({
 				email: email.value,
 				password: password.value,
 				remember_me: remember_me.value,
 			})
+
 			if (authenticated.value) {
-				// Redireciona para a dashboard
 				router.push("/fisiologia")
 			} else {
-				// Feedback de erro, caso a autenticação não tenha sido bem-sucedida
 				notify.close("loading")
 				notify({
 					title: "Erro de autenticação",
@@ -153,11 +154,11 @@ async function login() {
 	}
 }
 
-// Layout da página e middlewares
 definePageMeta({
 	layout: "login",
 	middleware: ["auth"],
 })
+
 useSeoMeta({
 	title: "Login - Fisiologia em Ação",
 	description: "Faça login na Fisiologia em Ação",
@@ -165,30 +166,30 @@ useSeoMeta({
 })
 </script>
 <style scoped>
+/* Estilo do título principal */
 h1 {
 	align-self: flex-start;
 	text-align: left;
 	font-size: 28px;
 }
 
+/* Customização dos campos de input */
 :deep(.v-field__outline) {
 	--v-field-border-width: 2px !important;
 	--v-field-border-opacity: 1 !important;
 }
+
 :deep(.v-field__overlay) {
 	background-color: #ffff !important;
 }
 
+/* Estilo do botão de login */
 .login-btn {
 	width: 100%;
 	height: 3.5rem;
-	font-size: 1.5rem;
-	line-height: 0;
-	font-weight: 600;
 	background-color: var(--secondary-color);
 	color: #ffffff;
 	transition: background-color 1s ease;
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -200,16 +201,11 @@ h1 {
 
 .login-btn__text {
 	font-size: 1.2rem;
-	line-height: 1.2rem;
-	letter-spacing: 0.05rem;
 	text-transform: none;
 	font-weight: 600;
 }
 
-.register-link {
-	font-size: 28px;
-}
-
+/* Estilo dos links */
 .link {
 	color: var(--secondary-color);
 	font-size: 1rem;
@@ -217,14 +213,6 @@ h1 {
 	font-weight: 400;
 	transition: all 0.25s;
 	text-align: center;
-}
-
-.field-content :deep(.v-field__outline) {
-	border-radius: 8px;
-}
-
-:deep(.v-text-field input) {
-	font-size: 1.2rem;
 }
 
 .link strong {
@@ -236,6 +224,15 @@ h1 {
 .link:hover {
 	color: var(--secondary-color);
 	text-decoration: underline;
+}
+
+/* Estilo dos campos de texto */
+.field-content :deep(.v-field__outline) {
+	border-radius: 8px;
+}
+
+:deep(.v-text-field input) {
+	font-size: 1.2rem;
 }
 
 .description {

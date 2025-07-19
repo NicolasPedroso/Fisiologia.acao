@@ -1,5 +1,6 @@
 <template>
 	<v-container fluid>
+		<!-- Atalhos rápidos -->
 		<div class="shortcuts__container">
 			<h1>Quizzes</h1>
 			<v-row class="pa-2">
@@ -48,7 +49,7 @@
 			</v-row>
 		</div>
 
-		<!-- TEMAS -->
+		<!-- Lista de temas -->
 		<div class="themes__container mt-12">
 			<div class="themes__header d-flex align-center">
 				<h1>Temas de estudo</h1>

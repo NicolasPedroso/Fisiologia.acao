@@ -1,5 +1,5 @@
 <template>
-	<v-container fluid v-if="status === 'success'">
+	<v-container v-if="status === 'success'" fluid>
 		<div
 			class="shortcuts__container d-flex align-center justify-center ga-2"
 		>

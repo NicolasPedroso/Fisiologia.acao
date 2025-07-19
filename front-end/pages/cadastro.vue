@@ -1,6 +1,6 @@
 <template>
 	<NuxtNotifications />
-	<!-- Conteudo da pagina -->
+	<!-- Página de cadastro -->
 	<v-container fluid class="ma-0 pa-0 text-left">
 		<h1 class="text-center">Cadastre-se no Fisiologia em Ação</h1>
 		<h3 class="description text-center mb-6">
@@ -108,9 +108,13 @@
 			</nuxt-link>
 		</div>
 	</v-container>
-	<!-- Conteudo da pagina -->
 </template>
 <script setup>
+/**
+ * Página de cadastro de novos usuários
+ * Coleta dados pessoais e cria conta no sistema
+ */
+
 // Campos do formulário
 const name = ref("")
 const email = ref("")
@@ -119,12 +123,11 @@ const phone = ref("")
 const address = ref("")
 const passwordConfirmation = ref("")
 const imageFile = ref(null)
-
-// Usar o snackbar
-const { notify } = useNotification()
-
-// Regras e validade do formulário
 const valid = ref(false)
+
+const { notify } = useNotification()
+const router = useRouter()
+// Regras de validação
 const rules = {
 	email: [
 		(value) => {
@@ -175,6 +178,9 @@ const rules = {
 	],
 }
 
+/**
+ * Formata o número de telefone conforme digitação
+ */
 const formatPhone = () => {
 	let cleaned = phone.value.replace(/\D/g, "").slice(0, 11)
 
@@ -185,13 +191,12 @@ const formatPhone = () => {
 	phone.value = cleaned
 }
 
-const router = useRouter()
-
-// Funções
+/**
+ * Função de cadastro
+ * Valida dados e cria nova conta
+ */
 async function login() {
-	// Verifica se o formulário está preenchido corretamente
 	if (valid.value) {
-		// Feedback que está carregando a requisição
 		notify({
 			id: "loading",
 			text: "Carregando...",
@@ -207,7 +212,6 @@ async function login() {
 		formData.append("password_confirmation", passwordConfirmation.value)
 		formData.append("image", imageFile.value)
 
-		// Envia os dados para o backend
 		try {
 			await useDataLoader("/api/signup", {
 				method: "POST",
@@ -233,42 +237,42 @@ async function login() {
 	}
 }
 
-// Layout da página e middlewares
 definePageMeta({
 	layout: "login",
 	middleware: ["auth"],
 })
+
 useSeoMeta({
 	title: "Cadastro - Fisiologia em Ação",
-	description: "",
+	description: "Crie sua conta no Fisiologia em Ação",
 	keywords: "cadastro, acesso, fisiologia, ação",
 })
 </script>
 <style scoped>
+/* Estilo do título principal */
 h1 {
 	align-self: flex-start;
 	text-align: left;
 	font-size: 28px;
 }
 
+/* Customização dos campos de input */
 :deep(.v-field__outline) {
 	--v-field-border-width: 1px !important;
 	--v-field-border-opacity: 1 !important;
 }
+
 :deep(.v-field__overlay) {
 	background-color: #ffff !important;
 }
 
+/* Estilo do botão de cadastro */
 .login-btn {
 	width: 100%;
 	height: 3.5rem;
-	font-size: 1.5rem;
-	line-height: 0;
-	font-weight: 600;
 	background-color: var(--secondary-color);
 	color: #ffffff;
 	transition: background-color 1s ease;
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -280,16 +284,11 @@ h1 {
 
 .login-btn__text {
 	font-size: 1.2rem;
-	line-height: 1.2rem;
-	letter-spacing: 0.05rem;
 	text-transform: none;
 	font-weight: 600;
 }
 
-.register-link {
-	font-size: 28px;
-}
-
+/* Estilo dos links */
 .link {
 	color: var(--secondary-color);
 	font-size: 1rem;
@@ -297,14 +296,6 @@ h1 {
 	font-weight: 400;
 	transition: all 0.25s;
 	text-align: center;
-}
-
-.field-content :deep(.v-field__outline) {
-	border-radius: 8px;
-}
-
-:deep(.v-text-field input) {
-	font-size: 1rem;
 }
 
 .link strong {
@@ -316,6 +307,15 @@ h1 {
 .link:hover {
 	color: var(--secondary-color);
 	text-decoration: underline;
+}
+
+/* Estilo dos campos de texto */
+.field-content :deep(.v-field__outline) {
+	border-radius: 8px;
+}
+
+:deep(.v-text-field input) {
+	font-size: 1rem;
 }
 
 .description {

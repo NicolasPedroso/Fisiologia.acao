@@ -1,4 +1,5 @@
 <template>
+	<!-- Card de quiz com estado bloqueado/desbloqueado -->
 	<v-card
 		:to="`/fisiologia/quiz/${quiz.id}`"
 		:disabled="blocked"
@@ -29,6 +30,7 @@
 			</div>
 		</div>
 
+		<!-- Overlay de bloqueio -->
 		<div
 			v-if="blocked"
 			class="theme-card__blocked d-flex flex-column align-center justify-center pa-2"
@@ -39,6 +41,10 @@
 	</v-card>
 </template>
 <script setup>
+/**
+ * Componente de card para exibição de quizzes
+ * Mostra informações do quiz e estado de bloqueio
+ */
 defineProps({
 	quiz: {
 		type: Object,
@@ -60,6 +66,7 @@ defineProps({
 })
 </script>
 <style scoped>
+/* Card principal do quiz */
 .theme-card__wrapper {
 	background-color: var(--white);
 	color: var(--text-color);
@@ -67,7 +74,6 @@ defineProps({
 	border-radius: 8px;
 	text-align: left;
 	box-shadow: 0 0px 4px rgba(0, 0, 0, 0.25);
-
 	width: 100%;
 	height: 100%;
 	min-height: 200px;
@@ -80,10 +86,12 @@ defineProps({
 	transform: scale(1.05);
 }
 
+/* Imagem do quiz */
 .theme-card__image {
 	border-radius: 8px;
 }
 
+/* Overlay quando bloqueado */
 .theme-card__blocked {
 	position: absolute;
 	top: 4px;
@@ -91,7 +99,6 @@ defineProps({
 	width: calc(100% - 8px);
 	height: calc(100% - 8px);
 	border-radius: 4px;
-
 	background: rgba(0, 0, 0, 0.8);
 	color: #fff;
 }
@@ -99,11 +106,11 @@ defineProps({
 .theme-card__blocked span {
 	font-size: 1.5rem;
 	text-align: center;
-	line-height: 1.5rem;
 	margin-top: 4px;
 	font-weight: 800;
 }
 
+/* Efeito blur quando bloqueado */
 .theme-card__blocked_blur {
 	filter: blur(16px);
 }

@@ -1,20 +1,10 @@
 /**
- * * Função que SETA alguns padrões para o fetch utilizado
- * ?    TOKEN - Bearer token recebido do back-end, armazenado no cookie
- * ?    baseURL - URL base da aplicação, recebida do back-end, armazenada no nuxtConfig
+ * Composable para requisições HTTP com autenticação automática
+ * Configura token Bearer e baseURL automaticamente
  *
- * * Exemplo de uso:
- * let data = await useDataLoader("/api/endpoint", {
- * method: "GET",
- * })
- * }
- *
- * ! Atenção: comente a linha da AUTHORIZATION caso não esteja utilizando autenticação por token
- * !    Como em back-end simulado, ao exemplo do json-server que tem problemas com o header Authorization
- *
- * @param {*} request - Endpoint da API (rotas: /api/...)
- * @param {*} opts - Opções do fetch (método, headers, etc...)
- * @returns {Object} - Retorna um objeto com as propriedades: data, error, loading proprias do $fetch
+ * @param {string} request - Endpoint da API
+ * @param {Object} opts - Opções do fetch (método, headers, etc)
+ * @returns {Object} - Dados da resposta ou erro
  */
 import { useAuthStore } from "~/store/auth"
 
@@ -25,6 +15,7 @@ export const useDataLoader = async (request, opts) => {
 	const { value: token } = useCookie("token", { sameSite: true })
 	const nuxtApp = useNuxtApp()
 
+	// Configurar headers com token se disponível
 	let headersOpts = {}
 	if (opts?.headers) headersOpts = opts.headers
 	if (token) headersOpts.Authorization = `Bearer ${token}`
@@ -37,14 +28,12 @@ export const useDataLoader = async (request, opts) => {
 		})
 		return data
 	} catch (error) {
-		// Verifica se o erro é de "Não Autorizado"
-
+		// Logout automático em caso de não autorizado
 		if (error.response?.status === 401) {
 			await logUserOut(nuxtApp)
 			return router.push("/")
 		}
 
-		// Se for outro erro, apenas o relance para ser tratado em outro lugar
 		throw error
 	}
 }
