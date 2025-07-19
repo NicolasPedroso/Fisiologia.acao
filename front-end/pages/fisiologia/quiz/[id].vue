@@ -3,7 +3,8 @@
 		v-if="status === 'success'"
 		fluid
 		class="d-flex align-center justify-center"
-		height="calc(100% - 64px)"
+		min-height="calc(100% - 64px)"
+		:key="selected"
 	>
 		<quiz-start
 			v-if="selected === 0"
@@ -24,9 +25,13 @@
 		<quiz-main
 			v-else-if="selected === 2"
 			:questions="quizRes.perguntas"
+			:title="quizRes.title"
 			@finish-quiz="finishQuiz"
+			@next-error="nextError"
+			@abandon-quiz="abandonQuiz"
 		/>
 	</v-container>
+
 	<Loading :status="status" />
 
 	<ActionPopup
@@ -50,29 +55,57 @@ const selected = ref(0)
 const routeURL = useRoute()
 const quizID = routeURL.params.id
 
-const { data: quizRes, status } = await useAsyncData(
-	`fetch-quiz-data-${quizID}`,
-	async () => {
-		try {
-			const response = await useDataLoader(`/api/fase/${quizID}`)
-			return response
-		} catch (e) {
-			console.error(`Error fetching quiz data: ${e.message || e}`)
+const {
+	data: quizRes,
+	status,
+	refresh,
+} = await useAsyncData(`fetch-quiz-data-${quizID}`, async () => {
+	try {
+		const response = await useDataLoader(`/api/fase/${quizID}`)
+		return response
+	} catch (e) {
+		console.error(`Error fetching quiz data: ${e.message || e}`)
 
-			throw createError({
-				statusCode: e.response?.status || 500,
-				message: "Ocorreu um erro ao buscar o quiz",
-				fatal: true,
-			})
-		}
-	},
-)
+		throw createError({
+			statusCode: e.response?.status || 500,
+			message: "Ocorreu um erro ao buscar o quiz",
+			fatal: true,
+		})
+	}
+})
 
 const showDialog = ref(false)
 const popupConfig = ref({})
 
 function handleSuccess() {
 	showDialog.value = false
+}
+
+const nextError = () => {
+	popupConfig.value = {
+		title: "Acerte a questão antes",
+		text: "Você precisa acertar a questão antes de prosseguir.",
+		icon: "mdi-alert-circle",
+		color: "red",
+		action: () => {
+			showDialog.value = false
+		},
+	}
+	showDialog.value = true
+}
+
+const abandonQuiz = () => {
+	popupConfig.value = {
+		title: "Quiz abandonado",
+		text: "Você abandonou o quiz. Deseja continuar?",
+		icon: "mdi-alert",
+		color: "orange",
+		action: () => {
+			showDialog.value = false
+			selected.value = 0
+		},
+	}
+	showDialog.value = true
 }
 
 const finishQuiz = async (time) => {
@@ -93,6 +126,8 @@ const finishQuiz = async (time) => {
 			status: "Completo",
 		},
 	})
+
+	refresh()
 }
 
 definePageMeta({

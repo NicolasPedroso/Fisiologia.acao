@@ -127,6 +127,10 @@ const props = defineProps({
 			},
 		],
 	},
+	title: {
+		type: String,
+		default: "Quiz",
+	},
 })
 
 const changeQuestion = (direction) => {
@@ -153,19 +157,16 @@ const changeQuestion = (direction) => {
 			actualQuestion.value++
 			selectedOptions.value = []
 			return
+		} else {
+			// Se a resposta estiver errada, chama o evento nextError
+			nextError()
+			return
 		}
 	} else if (direction === "previous" && actualQuestion.value > 0) {
 		actualQuestion.value--
 		selectedOptions.value = []
 		return
 	}
-}
-
-const abortQuiz = () => {
-	const ok = confirm("Tem certeza que deseja abandonar o quiz?")
-	if (!ok) return
-
-	navigateTo("/fisiologia")
 }
 
 const selectOption = (option, index) => {
@@ -178,12 +179,16 @@ const selectOption = (option, index) => {
 	}
 }
 
-const emit = defineEmits(["finishQuiz"])
+const emit = defineEmits(["finishQuiz", "nextError", "abandonQuiz"])
 const finishQuiz = (time) => {
 	emit("finishQuiz", time)
 }
-
-const title = "Quiz Title"
+const abortQuiz = () => {
+	emit("abandonQuiz")
+}
+const nextError = () => {
+	emit("nextError")
+}
 </script>
 <style scoped>
 .quiz__actions_text {

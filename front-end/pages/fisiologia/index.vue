@@ -217,9 +217,8 @@
 							</td>
 
 							<td>
-								<!-- <v-icon :icon="item.theme.icon" class="mb-1" />
-								{{ item.theme.title }} -->
-								Sem tema ainda
+								<v-icon :icon="item.theme.icon" class="mb-1" />
+								{{ item.theme.title }}
 							</td>
 						</tr>
 					</template>
@@ -271,6 +270,7 @@ const getColor = (status) => {
 const sortBy = ref([
 	{ key: "user_status", order: "desc" },
 	{ key: "dificulty", order: "asc" },
+	{ key: "theme.id", order: "asc" },
 	{ key: "title", order: "asc" },
 ])
 
