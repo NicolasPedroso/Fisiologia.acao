@@ -2,7 +2,7 @@
  * Middleware para verificação de permissões administrativas
  * Redireciona usuários não-admin para a página principal
  */
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware(() => {
 	const cookieAdmin = useCookie("admin", { sameSite: true })
 
 	if (cookieAdmin.value !== true) {

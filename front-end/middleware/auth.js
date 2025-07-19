@@ -2,7 +2,7 @@
  * Middleware de autenticação
  * Verifica se o usuário está autenticado e redireciona conforme necessário
  */
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware(() => {
 	const cookieAuth = useCookie("authenticated", { sameSite: true })
 	const cookieToken = useCookie("token", { sameSite: true })
 
