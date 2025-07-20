@@ -2,7 +2,7 @@
 	<div style="width: 100%; height: 100%">
 		<nuxt-notifications />
 		<v-container
-			v-if="status !== 'pending'"
+			v-if="status !== 'pending' && user"
 			class="profile__wrapper pa-0 ma-0"
 			full-height
 			fluid
@@ -324,8 +324,8 @@ const rules = {
 	],
 	image: [
 		(value) => {
-			if (!value || value.length === 0) return true
-			if (value[0] && value[0].size < 5000000) return true
+			if (!value) return true
+			if (value && value.size < 5000000) return true
 			return "A imagem deve ser menor que 5MB"
 		},
 	],
@@ -392,6 +392,7 @@ async function updateUser() {
 	})
 
 	const formData = new FormData()
+
 	formData.append("name", userForm.name)
 	formData.append("email", userForm.email)
 	formData.append("phone", userForm.phone)
@@ -451,12 +452,12 @@ function handleCancel() {
 }
 
 // Cabeçalhos da pagina
+definePageMeta({
+	middleware: ["guest"],
+})
 useSeoMeta({
 	title: userNameForTitle,
 	description: "",
-})
-definePageMeta({
-	middleware: ["guest"],
 })
 </script>
 <style lang="css" scoped>

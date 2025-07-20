@@ -16,9 +16,7 @@ export const useAuthStore = defineStore("auth", {
 		 * @returns {Boolean} - Sucesso da autenticação
 		 */
 		async authenticateUser(payload) {
-			const nuxtApp = useNuxtApp()
-			const config = useRuntimeConfig(nuxtApp)
-
+			const config = useRuntimeConfig()
 			try {
 				const response = await $fetch(`/api/login`, {
 					baseURL: config.public.baseURL,
@@ -34,7 +32,6 @@ export const useAuthStore = defineStore("auth", {
 				const cookieConfig = {
 					sameSite: true,
 					expires: expiresDate,
-					nuxtApp,
 				}
 
 				// Definir cookies de autenticação
@@ -52,7 +49,7 @@ export const useAuthStore = defineStore("auth", {
 				return true
 			} catch (err) {
 				console.error("Falha na autenticação:", err)
-				this.clearAuthData(nuxtApp)
+				this.clearAuthData()
 				return false
 			}
 		},
@@ -60,29 +57,28 @@ export const useAuthStore = defineStore("auth", {
 		/**
 		 * Realiza logout do usuário
 		 */
-		async logUserOut(nuxtApp = useNuxtApp()) {
-			const config = useRuntimeConfig(nuxtApp)
-
+		async logUserOut() {
+			const config = useRuntimeConfig()
 			try {
 				await $fetch(`/api/logout`, {
 					baseURL: config.public.baseURL,
-					method: "POST",
+					method: "GET",
 				})
 			} catch (err) {
 				console.error("Erro no logout da API:", err)
 			} finally {
-				this.clearAuthData(nuxtApp)
+				this.clearAuthData()
 			}
 		},
 
 		/**
 		 * Limpa dados de autenticação
 		 */
-		clearAuthData(nuxtApp = useNuxtApp()) {
-			const token = useCookie("token", { nuxtApp })
-			const authenticated = useCookie("authenticated", { nuxtApp })
-			const admin = useCookie("admin", { nuxtApp })
-			const imageProfile = useCookie("imageProfile", { nuxtApp })
+		clearAuthData() {
+			const token = useCookie("token")
+			const authenticated = useCookie("authenticated")
+			const admin = useCookie("admin")
+			const imageProfile = useCookie("imageProfile")
 
 			token.value = null
 			authenticated.value = null

@@ -1,7 +1,22 @@
 <template>
 	<v-container fluid full-height class="ma-0 pa-0 text-center">
 		<v-row class="mt-12">
-			<v-col cols="12" class="text-h3">
+			<v-col cols="12" class="text-center">
+				<h1 class="text-h3 font-weight-black">
+					O que é o FISIOLOGIA EM AÇÃO?
+				</h1>
+				<p class="mt-2">
+					O FISIOLOGIA EM AÇÃO é uma plataforma dedicada ao ensino e à
+					prática da fisiologia, oferecendo recursos interativos e
+					informações atualizadas para estudantes e profissionais da
+					área.
+				</p>
+				<p>
+					O que é importante frisar aqui? Imagens do site, falar do
+					projeto do instagram...
+				</p>
+			</v-col>
+			<v-col cols="12" class="mt-6 text-h3">
 				<span class="font-weight-black">
 					Questões frequentemente perguntadas (FAQ)
 				</span>
@@ -79,14 +94,40 @@
 	</v-container>
 </template>
 <script setup>
-definePageMeta({
-	middleware: ["guest"],
-})
-
 const members = [
 	{
-		name: "...",
-		role: "...",
+		name: "Nicolas Pedroso",
+		role: "Gestão de Projeto",
+		github: "",
+	},
+	{
+		name: "Ricardo",
+		role: "?",
+		github: "",
+	},
+	{
+		name: "Felipe Duarte",
+		role: "Back-end",
+		github: "",
+	},
+	{
+		name: "Gabriel Fabri",
+		role: "Back-end",
+		github: "",
+	},
+	{
+		name: "Guilherme Eduardo",
+		role: "Back-end",
+		github: "",
+	},
+	{
+		name: "Paulo",
+		role: "Front-end",
+		github: "",
+	},
+	{
+		name: "Matheus Marquesini",
+		role: "Front-end",
 		github: "",
 	},
 ]
@@ -97,6 +138,10 @@ const faqs = [
 		resposta: "...",
 	},
 ]
+
+definePageMeta({
+	middleware: ["guest"],
+})
 </script>
 <style scoped>
 /* Define a largura para deixar 20% de margem nas laterais */

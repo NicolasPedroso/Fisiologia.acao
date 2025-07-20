@@ -2610,15 +2610,12 @@ async function deleteItem() {
 			loadingRes.value = false
 		})
 }
-
-// --- METADADOS DA PÁGINA (Nuxt) ---
 definePageMeta({
 	layout: "dashboard",
 	middleware: ["guest", "admin"],
 })
-
 useSeoMeta({
-	title: "Dashboard - Gestão de Temas",
+	title: "Dashboard - Edição de Temas",
 })
 </script>
 

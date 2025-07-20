@@ -10,6 +10,7 @@
 						elevation="0"
 						color="var(--primary-color)"
 						class="shortcut_help"
+						to="/fisiologia/faq"
 					>
 						O que é o fisiologia em ação?
 					</v-btn>
@@ -22,6 +23,7 @@
 						color="var(--primary-color)"
 						class="shortcut_help"
 						variant="outlined"
+						:disabled="!apiData.fases || apiData.fases.length === 0"
 						@click="navigateTo(randomQuizLink(apiData.fases))"
 					>
 						<v-icon class="mr-1" style="margin-bottom: 2px">
@@ -38,6 +40,9 @@
 						color="var(--primary-color)"
 						class="shortcut_help"
 						variant="outlined"
+						:disabled="
+							!apiData.themes || apiData.themes.length === 0
+						"
 						@click="navigateTo(randomThemeLink(apiData.themes))"
 					>
 						<v-icon class="mr-1" style="margin-bottom: 2px">
@@ -226,6 +231,10 @@
 				</v-data-table>
 			</div>
 		</div>
+
+		<div>
+			<v-btn @click="corromper"> Corromper token </v-btn>
+		</div>
 	</v-container>
 </template>
 
@@ -240,15 +249,20 @@ const { data: apiData, status } = await useAsyncData(
 			])
 
 			return {
-				fases: fasesResponse,
+				fases: fasesResponse || [],
 				themes: themesResponse.data || [],
 			}
 		} catch (e) {
-			console.error(`Error fetching data: ${e.message || e}`)
+			console.error(`Error fetch: ${e.message || e}`)
 			return { fases: [], themes: [] }
 		}
 	},
 )
+
+const corromper = () => {
+	const cookieToken = useCookie("token", { sameSite: true })
+	cookieToken.value = "DAJIASDJIkADSIJSADIJ213" // Simula um token inválido
+}
 
 const search = shallowRef("")
 const searchAllQuizzes = shallowRef("")

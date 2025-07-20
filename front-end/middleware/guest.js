@@ -6,7 +6,12 @@ export default defineNuxtRouteMiddleware(() => {
 	const cookieAuth = useCookie("authenticated", { sameSite: true })
 	const cookieToken = useCookie("token", { sameSite: true })
 
-	if (cookieAuth.value === false || cookieToken.value === null) {
-		return navigateTo("/", { redirectCode: 401 })
+	if (
+		!cookieAuth.value ||
+		cookieAuth.value === false ||
+		!cookieToken.value ||
+		cookieToken.value === false
+	) {
+		return navigateTo("/")
 	}
 })

@@ -170,7 +170,7 @@ const dificultyOptions = [
 ]
 
 definePageMeta({
-	middleware: ["guest", "id-check"],
+	middleware: ["id-check", "guest"],
 })
 
 useSeoMeta({

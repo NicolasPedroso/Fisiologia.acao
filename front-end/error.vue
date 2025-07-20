@@ -52,24 +52,7 @@ const handleError = (route) => clearError({ redirect: route })
  * Determina a mensagem de erro baseada no status code
  */
 function errorMessage() {
-	if (!props.error || !props.error.statusCode) {
-		return "Um erro inesperado aconteceu!"
-	}
-
-	const status = props.error.statusCode
-
-	switch (status) {
-		case 404:
-			return "Esta página não existe!"
-		case 401:
-			return "Você não tem autorização para acessar esta página!"
-		case 403:
-			return "Acesso negado!"
-		case 500:
-			return "Erro interno do servidor!"
-		default:
-			return props.error.message || "Um erro inesperado aconteceu!"
-	}
+	return props.error.message || props.error || "Ocorreu um erro inesperado"
 }
 
 useSeoMeta({

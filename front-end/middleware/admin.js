@@ -6,6 +6,9 @@ export default defineNuxtRouteMiddleware(() => {
 	const cookieAdmin = useCookie("admin", { sameSite: true })
 
 	if (cookieAdmin.value !== true) {
-		return navigateTo("/fisiologia", { redirectCode: 200 })
+		return abortNavigation({
+			statusCode: 403,
+			message: "Você não tem permissão para acessar esta página",
+		})
 	}
 })

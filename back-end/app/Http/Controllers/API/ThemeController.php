@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule; // Importante para a validação no update
+use Illuminate\Validation\Rule;
 
 class ThemeController extends Controller
 {

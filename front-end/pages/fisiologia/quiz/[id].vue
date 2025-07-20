@@ -131,7 +131,7 @@ const finishQuiz = async (time) => {
 }
 
 definePageMeta({
-	middleware: ["guest", "id-check"],
+	middleware: ["id-check", "guest"],
 })
 
 const route = useRoute()

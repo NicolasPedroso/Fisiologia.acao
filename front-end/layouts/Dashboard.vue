@@ -81,12 +81,12 @@ const drawerItems = [
 		subtitle: "Atualize seu e-mail",
 		link: "/fisiologia/dashboard/email",
 	},
-	{
-		icon: "mdi-account-multiple",
-		title: "Usuários",
-		subtitle: "Gerencie os usuários",
-		link: "/fisiologia/dashboard/users",
-	},
+	// {
+	// 	icon: "mdi-account-multiple",
+	// 	title: "Usuários",
+	// 	subtitle: "Gerencie os usuários",
+	// 	link: "/fisiologia/dashboard/users",
+	// },
 	{ type: "subheader", title: "Edição de conteúdo" },
 	{
 		icon: "mdi-book-open-page-variant",

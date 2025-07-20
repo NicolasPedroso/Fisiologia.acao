@@ -374,7 +374,6 @@ async function deleteItem() {
 			})
 		})
 }
-
 definePageMeta({
 	layout: "dashboard",
 	middleware: ["guest", "admin"],
