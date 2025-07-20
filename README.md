@@ -1,19 +1,20 @@
-<h1 align="center">
-    🐧 Informações do projeto
-</h1>
+<p align="center">
+  <img alt="Emblema da Fisiologia em ação" src="/front-end/public/login/logo-vector.png" height="120">
+  <h3 align="center">Fisiologia em ação</h3>
+  <p align="center">Um website de quizzes para o projeto da FISIOLOGIA EM AÇÃO da UFPR</p>
+</p>
 
-## 🚀 Guias & informações gerais
+## Tecnologias
+- Vue, Nuxt e Vuetify
+- PHP e Laravel
 
-Todas elas devem estar obrigatóriamente na branch MAIN deste projeto
+## Screenshots
 
-## 📎 Branchs
+## Participantes
 
-1. **Main** -> branch praticamente vazia, apenas com guias e informações gerais
-2. **Develop** -> branch mais atualizada do projeto, que deve ser atualizada por Pull Requests ou commits mais emergências
-3. **Branchs** de desenvolvimento -> criadas a partir da develop com o padrao de nome "ID-nome-da-issue"
+Projeto feito e idealizado por alunos de Informática Biomédica[^1]
 
-## ♻️ Pastas
+- <a href="https://github.com/tuildes">tuildes</a>
+- ...
 
-1. **Raiz** -> contém as pastas abaixo e arquivos fora destes contextos, como arquivos para deploy
-2. **Back-end** -> pasta que contém todos os arquivos e funcionamento do back-end
-3. **Front-end** -> pasta que contém todos os arquivos e funcionamento do front-end
+[^1]: Faculdade de **Informática Biomédica** na Universidade Federal do Paraná no ano de 2024 (primeiro semestre), o curso se consiste em uma matriz de ciência da computação com matérias focadas as áreas biomédicas e aplicações da computação em áreas médicas, como genética.
