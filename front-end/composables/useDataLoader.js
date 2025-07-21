@@ -1,44 +1,33 @@
 /**
- * * Função que SETA alguns padrões para o fetch utilizado
- * ?    TOKEN - Bearer token recebido do back-end, armazenado no cookie
- * ?    baseURL - URL base da aplicação, recebida do back-end, armazenada no nuxtConfig
+ * Composable para requisições HTTP com autenticação automática
+ * Configura token Bearer e baseURL automaticamente
  *
- * * Exemplo de uso:
- *      let { data: respostaRes, error, loading } = useDataLoader("/api/endpoint", {
- *          method: "GET",
- *      })
- * }
- *
- * ! Atenção: comente a linha da AUTHORIZATION caso não esteja utilizando autenticação por token
- * ! 	Como em back-end simulado, ao exemplo do json-server que tem problemas com o header Authorization
- *
- * @param {*} request - Endpoint da API (rotas: /api/...)
- * @param {*} opts - Opções do fetch (método, headers, etc...)
- * @returns {Object} - Retorna um objeto com as propriedades: data, error, loading proprias do $fetch
+ * @param {string} request - Endpoint da API
+ * @param {Object} opts - Opções do fetch (método, headers, etc)
+ * @returns {Object} - Dados da resposta ou erro
  */
-import { useAuthStore } from "~/store/auth"
-export const useDataLoader = async (request, opts) => {
-	const router = useRouter()
+export const useDataLoader = async (request, opts = {}) => {
 	const config = useRuntimeConfig()
-	const { logUserOut } = useAuthStore()
-	const { value: token } = useCookie("token", { sameSite: true })
+	const route = useRouter()
+	const token = useCookie("token", { sameSite: true })
 
-	let headersOpts = {}
-	if (opts?.headers) headersOpts = opts.headers
-	if (token) headersOpts.Authorization = `Bearer ${token}`
+	const customHeaders = { ...opts.headers }
+	if (token.value) {
+		customHeaders.Authorization = `Bearer ${token.value}`
+	}
 
 	try {
+		// Executa a chamada real usando $fetch
 		const data = await $fetch(request, {
-			baseURL: config.public.baseURL,
-			headers: headersOpts,
 			...opts,
+			baseURL: config.public.baseURL,
+			headers: customHeaders,
 		})
-
 		return data
 	} catch (error) {
 		if (error.response?.status === 401) {
-			await logUserOut()
-			return router.push("/Endogames")
+			token.value = null
+			route.push("/")
 		}
 
 		throw error

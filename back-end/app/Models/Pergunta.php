@@ -11,10 +11,13 @@ class Pergunta extends Model
 
     protected $fillable = [
         'fase_id',
-        'texto',
-        'dificuldade',
-        'imagem',
-        'video_link',
+        'question',
+        'image',
+        'correct_answer',
+        'option_a',
+        'option_b',
+        'option_c',
+        'option_d',
     ];
 
     /**
@@ -23,13 +26,5 @@ class Pergunta extends Model
     public function fase()
     {
         return $this->belongsTo(Fase::class, 'fase_id');
-    }
-
-    /**
-     * Relacionamento com Respostas (1:N)
-     */
-    public function respostas()
-    {
-        return $this->hasMany(Resposta::class, 'pergunta_id');
     }
 }

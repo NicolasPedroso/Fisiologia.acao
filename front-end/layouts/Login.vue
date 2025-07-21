@@ -1,11 +1,41 @@
 <template>
 	<v-app style="overflow-x: hidden !important">
-		<div class="title-container">
-			<span class="title">Fisiologia em ação</span>
-		</div>
-		<v-main fluid class="d-flex justify-center align-center">
-			<NuxtPage />
-		</v-main>
+		<v-row class="main__wrapper">
+			<v-col cols="12" md="6" class="d-none d-md-block pa-0 ma-0">
+				<div class="gradient">
+					<v-img
+						width="100%"
+						height="100%"
+						src="/login/background.png"
+						cover
+						alt=""
+					/>
+					<div class="image__overlay">
+						<span class="text-center">
+							<strong>FISIOLOGIA EM AÇÃO</strong>
+						</span>
+						<v-img
+							src="/login/logo-vector.png"
+							width="300"
+							height="300"
+							class="mx-auto mb-4"
+							alt="Logo da Fisiologia em Ação"
+						/>
+						<span class="text-center">
+							Transforme o estudo da fisiologia em um jogo de
+							perguntas e respostas!
+						</span>
+					</div>
+				</div>
+			</v-col>
+			<v-col
+				cols="12"
+				md="6"
+				class="main__content d-flex justify-content align-center pa-2 pa-md-12 ma-0"
+			>
+				<NuxtPage />
+			</v-col>
+		</v-row>
 	</v-app>
 </template>
 <script setup></script>
@@ -13,43 +43,60 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;700&display=swap");
 
-.auth-card {
-	box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+.gradient {
+	position: relative;
+	height: 100vh;
+	width: 50vw;
+	overflow: hidden;
 }
 
-.title-container {
-	background-color: var(--primary-color);
+.gradient::after {
+	position: absolute;
+	content: "";
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: var(--gradient);
+	opacity: 0.85;
+	z-index: 2;
+}
 
+.image__overlay {
+	color: white;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-	align-items: center;
-	font-size: 60px;
-	font-weight: 500;
-	color: #ffffff;
+	align-items: space-around;
+	padding: 16px 16px;
+}
+
+.image__overlay span {
+	font-size: 1.15rem;
 	text-align: center;
-	height: 125px;
+}
+
+.main__content {
+	background: white;
+	background-image: radial-gradient(rgba(0, 0, 0, 0.25) 1px, transparent 0);
+	background-size: 20px 20px;
+	background-position: -16px -16px;
+
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
+.main__wrapper {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
 	width: 100vw;
-}
-
-.title {
-	font-family: Kode Mono;
-	font-weight: 500;
-	font-size: 76px;
-	line-height: 122.88px;
-	letter-spacing: -5px;
-	text-shadow: 6px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-@media (max-width: 959px) {
-	.title {
-		font-size: clamp(32px, 8vw, 60px) !important;
-		letter-spacing: -4px;
-	}
-}
-
-@media (max-width: 600px) {
-	.auth-card {
-		height: 50rem;
-	}
 }
 </style>

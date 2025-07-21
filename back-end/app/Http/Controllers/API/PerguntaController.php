@@ -16,18 +16,10 @@ class PerguntaController extends Controller
     {
         $query = Pergunta::query();
 
-        // Filtro por dificuldade (?dificuldade=2)
-        if ($request->has('dificuldade')) {
-            $query->where('dificuldade', $request->dificuldade);
-        }
-
         // Filtro por fase (?fase_id=3)
         if ($request->has('fase_id')) {
             $query->where('fase_id', $request->fase_id);
         }
-
-        // Se quiser carregar as respostas, descomente:
-        $query->with('respostas');
 
         // Em vez de paginate, usamos get()
         $result = $query->get();
@@ -46,9 +38,6 @@ class PerguntaController extends Controller
      */
     public function show(Pergunta $pergunta)
     {
-        // Carrega respostas (opcional)
-        $pergunta->load('respostas');
-
         return response()->json($pergunta, 200);
     }
 
@@ -57,30 +46,50 @@ class PerguntaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'fase_id'      => 'required|exists:fases,id',
-            'texto'        => 'required|string',
-            'dificuldade'  => 'required|integer|in:1,2,3',
-            'imagem'       => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'video_link'   => 'required|string',
+        $validated = $request->validate([
+            'fase_id'        => 'required|exists:fases,id',
+            'question'       => 'required|string|max:1000',
+            'image'          => 'required|image|mimes:jpg,png,jpeg|max:2048',
+
+            // Validando cada opção separadamente
+            'option_a'       => 'required|string|max:255',
+            'option_b'       => 'required|string|max:255',
+            'option_c'       => 'required|string|max:255',
+            'option_d'       => 'required|string|max:255',
+
+            // Validando a resposta correta
+            'correct_answer' => ['required', Rule::in(['A', 'B', 'C', 'D'])],
+
         ], [
-            'fase_id.required' => 'Falta preencher o campo fase_id',
-            'fase_id.exists'   => 'A fase informada não existe',
-            'texto.required'   => 'Falta preencher o campo texto',
-            'dificuldade.required' => 'Falta preencher o campo dificuldade',
-            'dificuldade.in'   => 'Dificuldade deve ser 1, 2 ou 3',
-            'imagem.required'  => 'Falta preencher o campo imagem',
-            'video_link.required' => 'Falta preencher o campo video_link',
+            // Mensagens de erro personalizadas
+            'fase_id.required'         => 'O campo fase é obrigatório.',
+            'fase_id.exists'           => 'A fase informada não existe.',
+            'question.required'        => 'O campo da pergunta é obrigatório.',
+
+            'image.image'              => 'O arquivo deve ser uma imagem.',
+            'image.mimes'              => 'A imagem deve ser do tipo: jpeg, png, jpg, ou svg.',
+
+            'option_a.required'        => 'A opção A é obrigatória.',
+            'option_b.required'        => 'A opção B é obrigatória.',
+            'option_c.required'        => 'A opção C é obrigatória.',
+            'option_d.required'        => 'A opção D é obrigatória.',
+
+            'correct_answer.required'  => 'O campo da resposta correta é obrigatório.',
+            'correct_answer.in'        => 'A resposta correta deve ser A, B, C ou D.',
         ]);
 
-        $data = $request->all();
-
-        if ($request->hasFile('imagem')) {
-            $file_path = $request->file('imagem')->store('image/pergunta', ['disk' => 'public']);
-            $data['imagem'] = $file_path;
-        }
-
-        $pergunta = Pergunta::create($data);
+        // if ($request->hasFile('image')) {}
+        $imagePath = $request->file('image')->store('image', 'public');
+        $pergunta = Pergunta::create([
+            'fase_id'        => $validated['fase_id'],
+            'question'       => $validated['question'],
+            'image'          => $imagePath,
+            'correct_answer' => $validated['correct_answer'],
+            'option_a'       => $validated['option_a'],
+            'option_b'       => $validated['option_b'],
+            'option_c'       => $validated['option_c'],
+            'option_d'       => $validated['option_d'],
+        ]);
         return response()->json($pergunta, 201);
     }
 
@@ -89,34 +98,49 @@ class PerguntaController extends Controller
      */
     public function update(Request $request, Pergunta $pergunta)
     {
-        $request->validate([
-            'fase_id'      => 'required|exists:fases,id',
-            'texto'        => 'required|string',
-            'dificuldade'  => 'required|integer|in:1,2,3',
-            'imagem'       => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'video_link'   => 'required|string',
+        $validated = $request->validate([
+            'fase_id'        => 'required|exists:fases,id',
+            'question'       => 'required|string|max:1000',
+            'image'          => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+
+            // Validando cada opção separadamente
+            'option_a'       => 'required|string|max:255',
+            'option_b'       => 'required|string|max:255',
+            'option_c'       => 'required|string|max:255',
+            'option_d'       => 'required|string|max:255',
+
+            // Validando a resposta correta
+            'correct_answer' => ['required', Rule::in(['A', 'B', 'C', 'D'])],
         ], [
-            'fase_id.required' => 'Falta preencher o campo fase_id',
-            'fase_id.exists'   => 'A fase informada não existe',
-            'texto.required'   => 'Falta preencher o campo texto',
-            'dificuldade.required' => 'Falta preencher o campo dificuldade',
-            'dificuldade.in'   => 'Dificuldade deve ser 1, 2 ou 3',
-            'imagem.required'  => 'Falta preencher o campo imagem',
-            'video_link.required' => 'Falta preencher o campo video_link',
+            // Mensagens de erro personalizadas
+            'fase_id.required'         => 'O campo fase é obrigatório.',
+            'fase_id.exists'           => 'A fase informada não existe.',
+            'question.required'        => 'O campo da pergunta é obrigatório.',
+
+            'image.image'              => 'O arquivo deve ser uma imagem.',
+            'image.mimes'              => 'A imagem deve ser do tipo: jpeg, png, jpg, ou svg.',
+
+            'option_a.required'        => 'A opção A é obrigatória.',
+            'option_b.required'        => 'A opção B é obrigatória.',
+            'option_c.required'        => 'A opção C é obrigatória.',
+            'option_d.required'        => 'A opção D é obrigatória.',
+
+            'correct_answer.required'  => 'O campo da resposta correta é obrigatório.',
+            'correct_answer.in'        => 'A resposta correta deve ser A, B, C ou D.',
         ]);
 
-        $statuscode = 200;
-
-        $data = $request->all();
-
-        if ($request->hasFile('imagem')) {
-            $file_path = $request->file('imagem')->store('image/pergunta', ['disk' => 'public']);
-            $data['imagem'] = $file_path;
-            $statuscode = 201;
+        if ($request->hasFile('image')) {
+            // CORREÇÃO: Deleta a imagem antiga se ela existir
+            if ($pergunta->image && Storage::disk('public')->exists($pergunta->image)) {
+                Storage::disk('public')->delete($pergunta->image);
+            }
+            // Salva a nova imagem
+            $file_path = $request->file('image')->store('image', 'public');
+            $validatedData['image'] = $file_path;
         }
 
-        $pergunta->update($data);
-        return response()->json($pergunta, $statuscode);
+        $pergunta->update($request->all());
+        return response()->json($pergunta, 200);
     }
 
     /**

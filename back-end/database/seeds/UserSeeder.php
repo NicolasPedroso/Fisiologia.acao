@@ -12,22 +12,22 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'email' => 'admin@ecomp.co',
+            'email' => 'admin@fisiologia.com',
             'password' => bcrypt('secret'),
             'address' => "Endereço do admin",
-            'phone' => "4411223344",
-            'image' => "teste.jpg",
+            'phone' => "(00) 44112-23344",
+            'image' => "",
             'admin' => true,
             'name' => "Admin",
         ]);
 
         DB::table('users')->insert([
-            'email' => 'user@ecomp.co',
+            'email' => 'user@fisiologia.com',
             'password' => bcrypt('secret'),
             'address' => "endereço do usuário",
-            'phone' => "4411223344",
-            'image' => "user.jpg",
-            'admin' => false, 
+            'phone' => "(00) 12345-6789",
+            'image' => "",
+            'admin' => false,
             'name' => "Usuário",
         ]);
     }

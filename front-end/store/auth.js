@@ -1,105 +1,90 @@
-/* eslint-disable */
 import { defineStore } from "pinia"
-import admin from "~/middleware/admin"
+
+/**
+ * Store de autenticação
+ * Gerencia login, logout e estado de autenticação
+ */
 export const useAuthStore = defineStore("auth", {
 	state: () => ({
 		authenticated: false,
 	}),
+
 	actions: {
-		// Função de autenticação
-		async authenticateUser({ email, password }) {
+		/**
+		 * Autentica usuário no sistema
+		 * @param {Object} payload - Dados de login (email, password, remember_me)
+		 * @returns {Boolean} - Sucesso da autenticação
+		 */
+		async authenticateUser(payload) {
+			const config = useRuntimeConfig()
 			try {
-				// Tentar fazer o LOGIN usando os campos de email & password
 				const response = await $fetch(`/api/login`, {
-					baseURL: useRuntimeConfig().public.baseURL,
-					method: "post",
-					headers: { "Content-Type": "application/json" },
-					body: {
-						email,
-						password,
-					},
+					baseURL: config.public.baseURL,
+					method: "POST",
+					body: payload,
 				})
 
-				// Pega a data de expiração dos tokens
-				const expiresDate = new Date(response.expires_at)
+				// Configurar cookies baseado no "lembrar-me"
+				const expiresDate = payload.remember_me
+					? new Date(response.expires_at)
+					: undefined
 
-				// Utilizar o useCookies do Nuxt3 para armazenar dados locais
-				const authenticated = useCookie("authenticated", {
+				const cookieConfig = {
 					sameSite: true,
 					expires: expiresDate,
-				})
-				const token = useCookie("token", {
-					sameSite: true,
-					expires: expiresDate,
-				})
+				}
 
-				const admin = useCookie("admin", {
-					sameSite: true,
-					expires: expiresDate,
-				})
+				// Definir cookies de autenticação
+				const token = useCookie("token", cookieConfig)
+				const imageProfile = useCookie("imageProfile", cookieConfig)
+				const authenticated = useCookie("authenticated", cookieConfig)
+				const admin = useCookie("admin", cookieConfig)
 
-				/**
-				 * Se não der algum erro, vai ser feito as seguintes ações:
-				 * 		- Definir o token de acesso
-				 * 		- Definir o estado com autenticado
-				 **/
 				token.value = response.access_token
 				authenticated.value = true
-				admin.value =
-					!response.admin || response.admin === 0 ? false : true
+				admin.value = !!response.admin
+				imageProfile.value = response.image || null
 				this.authenticated = true
-			} catch (err) {
-				const authenticated = useCookie("authenticated", {
-					sameSite: true,
-					expires: expiresDate,
-				})
-				const token = useCookie("token", {
-					sameSite: true,
-					expires: expiresDate,
-				})
-				const admin = useCookie("admin", {
-					sameSite: true,
-					expires: expiresDate,
-				})
 
-				/**
-				 * Caso de algum erro durante o LOGIN
-				 * 		- Remove o token de acesso
-				 * 		- Remove o estado de autenticado
-				 * 		- Coloca o ERRO no console
-				 **/
-				this.authenticated = false // set authenticated  state value to false
-				token.value = null // clear the token cookie
-				admin.value = false
-				authenticated.value = false
+				return true
+			} catch (err) {
+				console.error("Falha na autenticação:", err)
+				this.clearAuthData()
+				return false
 			}
 		},
 
-		// Função de deslogar
+		/**
+		 * Realiza logout do usuário
+		 */
 		async logUserOut() {
-			// Utilizar o useCookies do Nuxt3 para armazenar dados locais
-			const token = useCookie("token", {
-				sameSite: true,
-			})
-			const authenticated = useCookie("authenticated", {
-				sameSite: true,
-			})
-			const admin = useCookie("admin", {
-				sameSite: true,
-			})
+			const config = useRuntimeConfig()
+			try {
+				await $fetch(`/api/logout`, {
+					baseURL: config.public.baseURL,
+					method: "GET",
+				})
+			} catch (err) {
+				console.error("Erro no logout da API:", err)
+			} finally {
+				this.clearAuthData()
+			}
+		},
 
-			// Desconecta o usuário (deletar o TOKEN de autenticacao)
-			await $fetch(`/api/logout`, {
-				baseURL: useRuntimeConfig().public.baseURL,
-			}).catch((err) => {
-				console.error(err)
-			})
+		/**
+		 * Limpa dados de autenticação
+		 */
+		clearAuthData() {
+			const token = useCookie("token")
+			const authenticated = useCookie("authenticated")
+			const admin = useCookie("admin")
+			const imageProfile = useCookie("imageProfile")
 
-			// Remove token de acesso e estado de autorizado
-			this.authenticated = false
-			authenticated.value = false
-			admin.value = false
 			token.value = null
+			authenticated.value = null
+			admin.value = null
+			imageProfile.value = null
+			this.authenticated = false
 		},
 	},
 })

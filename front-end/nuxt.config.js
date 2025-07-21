@@ -26,14 +26,34 @@ export default defineNuxtConfig({
 			 * Se houver um titulo, ele pega o nome do projeto do package.json e concatena com o titulo
 			 * 		Exemplo: "Titulo - Nome do Projeto do package.json"
 			 */
-			titleTemplate: `%s - ${process.env.npm_package_name}`,
+			titleTemplate: `%s`,
 			title: process.env.npm_package_name || "",
+
 			// Define o icone padrão do projeto
 			link: [
 				{
 					rel: "icon",
 					type: "image/ico",
-					href: "/images.ico",
+					href: "/favicon/favicon-96x96.png",
+					sizes: "96x96",
+				},
+				{
+					rel: "icon",
+					type: "image/svg+xml",
+					href: "/favicon/favicon.svg",
+				},
+				{
+					rel: "shortcut icon",
+					href: "/favicon/favicon.ico",
+				},
+				{
+					rel: "apple-touch-icon",
+					sizes: "180x180",
+					href: "/favicon/apple-touch-icon.png",
+				},
+				{
+					rel: "manifest",
+					href: "/favicon/site.webmanifest",
 				},
 			],
 		},
@@ -71,7 +91,6 @@ export default defineNuxtConfig({
 				config.plugins.push(vuetify({ autoImport: true }))
 			})
 		},
-		// "@nuxtjs/eslint-module",
 		"nuxt3-notifications",
 		"@pinia/nuxt",
 	],
@@ -85,5 +104,5 @@ export default defineNuxtConfig({
 		plugins: [],
 	},
 
-	compatibilityDate: "2025-02-13",
+	compatibilityDate: "2025-07-15",
 })

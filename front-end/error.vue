@@ -1,4 +1,5 @@
 <template>
+	<!-- Página de erro com fundo animado -->
 	<v-container
 		fluid
 		class="background-error h-screen d-flex justify-center align-center"
@@ -22,7 +23,7 @@
 				prepend-icon="mdi-account-box"
 				color="#fff"
 				variant="tonal"
-				@click="handleError('/')"
+				@click="handleError('/contato')"
 			>
 				Contato
 			</v-btn>
@@ -30,48 +31,37 @@
 	</v-container>
 </template>
 <script setup>
-// Handlers de erro do nuxt
+/**
+ * Página de tratamento de erros do Nuxt.js
+ * Exibe interface amigável para diferentes tipos de erro
+ */
+
 const props = defineProps({
-	error: { type: Object, value: () => NuxtError },
+	error: {
+		type: Object,
+		default: () => ({}),
+	},
 })
 
+/**
+ * Limpa o erro e redireciona para nova rota
+ */
 const handleError = (route) => clearError({ redirect: route })
 
+/**
+ * Determina a mensagem de erro baseada no status code
+ */
 function errorMessage() {
-	if (!props.error) return "Um erro aconteceu!"
-
-	const status = props.error.statusCode
-
-	switch (status) {
-		case 404:
-			return "Esta página não existe!"
-
-		case 401:
-			return "Sem autorização necessária!"
-
-		default:
-			return props.error.message || "Um erro aconteceu!" // Fallback
-	}
+	return props.error.message || props.error || "Ocorreu um erro inesperado"
 }
 
-// Cabeçalhos da pagina
 useSeoMeta({
-	title: "Erro!",
-})
-useHead({
-	htmlAttrs: {
-		lang: "pt-br",
-	},
-	link: [
-		{
-			rel: "icon",
-			type: "image/ico",
-			href: "/favicon.ico",
-		},
-	],
+	title: "Erro - Fisiologia em Ação",
+	description: "Página de erro do sistema Fisiologia em Ação",
 })
 </script>
 <style scoped>
+/* Animação do gradiente de fundo */
 @keyframes bg {
 	0% {
 		background-position: 0% 0%;
@@ -84,6 +74,7 @@ useHead({
 	}
 }
 
+/* Fundo animado da página de erro */
 .background-error {
 	background: var(--primary-color);
 	background: linear-gradient(
@@ -95,11 +86,13 @@ useHead({
 	animation: bg 10s infinite;
 }
 
+/* Texto branco para elementos de erro */
 .error-text,
 .error-text :deep(.v-empty-state__headline) {
 	color: #fff;
 }
 
+/* Estilização do código de status */
 .error-text :deep(.v-empty-state__headline) {
 	color: #fff;
 	mix-blend-mode: overlay;
@@ -107,9 +100,5 @@ useHead({
 	font-weight: 800;
 	line-height: 13rem;
 	letter-spacing: -5px;
-}
-
-:deep(v-btn__content) {
-	font-family: "Roboto", sans-serif;
 }
 </style>

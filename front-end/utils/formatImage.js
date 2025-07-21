@@ -11,6 +11,11 @@ export default (url) => {
 	const config = useRuntimeConfig()
 	const configURL = config.public.baseURL
 
+	if (!url) {
+		// Placeholder
+		return "/layout/profile.jpeg"
+	}
+
 	// Troca o public/ por storage/ na URL da imagem
-	return `${configURL}/${url.replace("public/", "storage/")}`
+	return `${configURL}/storage/${url}`
 }

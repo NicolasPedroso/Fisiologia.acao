@@ -12,10 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fases', function (Blueprint $table) {
-            $table->id();                  // PK
-            $table->integer('numero')->unique();     // Número da fase (ex.: 1, 2, 3)
-            $table->string('descricao')->nullable(); // Descrição (opcional)
-            $table->timestamps();          // created_at, updated_at
+            $table->id();
+            $table->string('title');
+            $table->string('image')->nullable();
+            $table->string('video_link');
+            $table->string('dificulty')->default('Médio');
+            $table->text('description')->nullable();
+            $table->timestamps();
         });
     }
 

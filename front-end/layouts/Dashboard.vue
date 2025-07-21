@@ -1,22 +1,23 @@
 <template>
 	<v-app full-height theme="light">
-		<!-- Drawer que contém os links para as páginas -->
+		<!-- Menu lateral de navegação -->
 		<v-no-ssr>
-			<v-navigation-drawer v-model="drawer">
+			<v-navigation-drawer v-model="drawer" color="var(--primary-color)">
 				<template #image>
 					<div class="drawer-color" />
 				</template>
-				<!-- Logo e nome do Projeto -->
+
+				<!-- Logo do projeto -->
 				<v-list lines="3" class="my-2">
 					<v-list-item
 						class="drawer-logo"
 						title="Fisiologia em ação"
 						subtitle="@fisiologia.em.acao"
-						prepend-avatar="/logo.png"
+						prepend-avatar="/layout/logoEmblem.svg"
 					/>
 				</v-list>
-				<!-- Logo e nome do Projeto -->
-				<!-- Itens do drawer -->
+
+				<!-- Itens do menu -->
 				<v-list nav>
 					<v-list-item
 						v-for="(item, i) in drawerItems"
@@ -30,11 +31,10 @@
 						class="my-1 py-1 drawer-text"
 					/>
 				</v-list>
-				<!-- Itens do drawer -->
 			</v-navigation-drawer>
 		</v-no-ssr>
-		<!-- Drawer que contém os links para as páginas -->
-		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
+
+		<!-- Barra superior -->
 		<v-app-bar class="primary-color">
 			<v-app-bar-nav-icon
 				class="text-color"
@@ -47,92 +47,93 @@
 				<v-btn class="text-color" @click="logout()"> Voltar </v-btn>
 			</template>
 		</v-app-bar>
-		<!-- Navbar que contém TITULO, DRAWER-OPENER e LOGOUT BTN -->
-		<!-- Conteúdo -->
-		<v-main>
+
+		<!-- Conteúdo principal -->
+		<v-main class="background__main">
 			<NuxtPage />
 		</v-main>
-		<!-- Conteúdo -->
 	</v-app>
 </template>
 <script setup>
-// Import do roteamento e dos arquivos de STORE
+/**
+ * Layout do painel administrativo
+ * Contém navegação lateral e barra superior
+ */
+
 import { useRouter } from "vue-router"
 
-// Variáveis de ambiente
 const router = useRouter()
 const drawer = ref(true)
 
-// Array de paginas que serão exibidas no drawer
+// Itens do menu de navegação
 const drawerItems = [
 	{ type: "subheader", title: "Ajuda" },
 	{
 		icon: "mdi-help",
-		title: "FAQ e tutorial de uso",
+		title: "Tutorial de uso",
 		subtitle: "Entenda como funciona o painel do adminstrador",
-		link: "/fea/dashboard/",
+		link: "/fisiologia/dashboard/",
 	},
-	{ type: "subheader", title: "Edição de conteúdo" },
-	{
-		icon: "mdi-video-box",
-		title: "Temas e vídeos",
-		subtitle: "Edite os vídeos/temas",
-		link: "/fea/dashboard/video",
-	},
+	{ type: "subheader", title: "Segurança" },
 	{
 		icon: "mdi-email-edit",
 		title: "Edição de e-mail",
 		subtitle: "Atualize seu e-mail",
-		link: "/fea/dashboard/email",
+		link: "/fisiologia/dashboard/email",
+	},
+	// {
+	// 	icon: "mdi-account-multiple",
+	// 	title: "Usuários",
+	// 	subtitle: "Gerencie os usuários",
+	// 	link: "/fisiologia/dashboard/users",
+	// },
+	{ type: "subheader", title: "Edição de conteúdo" },
+	{
+		icon: "mdi-book-open-page-variant",
+		title: "Quizzes",
+		subtitle: "Edite os quizzes",
+		link: "/fisiologia/dashboard/quizzes",
+	},
+	{
+		icon: "mdi-note-text",
+		title: "Temas",
+		subtitle: "Edite os temas",
+		link: "/fisiologia/dashboard/themes",
 	},
 ]
 
-// Tema que será utilizado na dashboard
+// Configuração de tema
 const theme = {
-	/* Fundo do Drawer da dashboard */
-	drawerTextColor: "#ffffff",
-	/* Cores de fundo da dashboard  */
-	backgroundColor: "var(--secondary-color)",
-	/* Cores de texto da dashboard  */
+	drawerTextColor: "#fff",
+	backgroundColor: "var(--primary-color)",
 	textColor: "#fff",
 }
 
-// Métodos e funções
+/**
+ * Função de logout/voltar
+ */
 function logout() {
 	router.push("/")
 }
 
-// Cabeçalhos da pagina
 useSeoMeta({
 	title: "Dashboard",
-	description: "Página para controlar os conteudos da DataBase.",
+	description: "Página para controlar os conteudos da DataBase",
 	middleware: ["guest"],
-	// Endereço da imagem que será exibida quando a página for compartilhada
-	// ogImage: "endereco-da-imagem",
-})
-useHead({
-	htmlAttrs: {
-		lang: "pt-br",
-	},
-	link: [
-		{
-			rel: "icon",
-			type: "image/ico",
-			href: "/favicon.ico",
-		},
-	],
 })
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+/* Logo do drawer */
 .drawer-logo {
-	/* Imagens e alterações do fundo do Drawer */
 	font-family: "Poppins", sans-serif;
 }
+
+/* Fundo do drawer */
 .drawer-color {
 	height: 100%;
 	width: 100%;
-	/* Imagens e alterações do fundo do Drawer */
 	background: linear-gradient(
 		180deg,
 		var(--secondary-color) 0%,
@@ -141,21 +142,36 @@ useHead({
 	background-size: cover;
 	background-position: center center;
 }
+
+/* Cor de fundo da barra superior */
 .primary-color {
 	background-color: v-bind("theme.backgroundColor") !important;
 }
+
+/* Cor do texto */
 .text-color {
 	color: v-bind("theme.textColor") !important;
 }
 
+/* Remove borda do drawer */
 .v-navigation-drawer--left {
 	border: none !important;
 }
 
+/* Cor do texto do drawer */
 .drawer-logo :deep(.v-list-item-title),
 .drawer-logo :deep(.v-list-item-subtitle),
 .drawer-text :deep(.v-list-item-subtitle) {
 	word-break: normal !important;
 	color: #fff !important;
+}
+
+/* Fundo principal com padrão pontilhado */
+.background__main {
+	background: white;
+	background-image: radial-gradient(rgba(0, 0, 0, 0.25) 1px, transparent 0);
+	background-size: 20px 20px;
+	background-position: -16px -16px;
+	width: 100%;
 }
 </style>

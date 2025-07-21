@@ -3,85 +3,95 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contact;
+use App\Models\Theme;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Illuminate\Http\Response; // Usado para os códigos de status HTTP
 
-class ContactController extends Controller
+class ThemeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Exibe uma lista paginada de temas.
+     * Cada tema inclui a contagem de fases relacionadas.
      */
     public function index()
     {
-        $link = Contact::all();
+        // Usar paginate é melhor para performance do que all()
+        // withCount('fases') adiciona um campo 'fases_count' a cada tema
+        $themes = Theme::withCount('fases')->latest()->paginate(15);
+
         return response()->json([
             'message' => 'sucesso',
-            'data' => $link        
-        ],200);
+            'data' => $themes
+        ], Response::HTTP_OK); // 200
     }
 
-    
+
     /**
-     * Mostra um link específico pelo ID.
+     * Mostra um tema específico pelo seu ID, incluindo as fases.
+     * Usa Route Model Binding: o Laravel encontra o tema ou retorna 404 automaticamente.
      */
-    public function show($id)
+    public function show(Theme $tema) // Note que mudei de $id para Theme $tema
     {
-        $dados = Contact::find($id);
-        if (!$dados) {
-            return response()->json(['message' => 'Link não encontrado', 'data' => null], 404);
-        }
-        return response()->json(['message' => 'success', 'data' => $dados], 200);
+        // Carrega a relação com as fases para incluir na resposta
+        $tema->load('fases');
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $tema
+        ], Response::HTTP_OK); // 200
     }
 
     /**
-     * Cria um novo link.
+     * Cria um novo tema.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'url' => 'required|url|max:2083'
+        // Validação dos dados de entrada
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255|unique:themes,title',
+            'icone' => 'nullable|string|max:100',
         ]);
 
-        $dados = $request->all();
-        $link = Contact::create($dados);
+        $theme = Theme::create($validatedData);
 
-        if (!$link) {
-            return response()->json(['message' => 'Erro ao criar link', 'data' => null], 500);
-        }
-        return response()->json(['message' => 'Link criado', 'data' => $link], 201);
+        return response()->json([
+            'message' => 'Tema criado',
+            'data' => $theme
+        ], Response::HTTP_CREATED); // 201
     }
 
     /**
-     * Atualiza um link existente.
+     * Atualiza um tema existente.
+     * Usa Route Model Binding.
      */
-    public function update($id, Request $request)
+    public function update(Request $request, Theme $tema)
     {
-        $dados = Contact::find($id);
-        if (!$dados) {
-            return response()->json(['message' => 'Link não encontrado', 'data' => null], 404);
-        }
-
-        $request->validate([
-            'url' => 'url|max:2083'
+        // Validação, garantindo que o título seja único, exceto para o próprio tema
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255|unique:themes,title,' . $tema->id,
+            'icone' => 'nullable|string|max:100',
         ]);
 
-        $dados->update($request->all());
-        return response()->json(['message' => 'Link atualizado', 'data' => $dados], 200);
+        $tema->update($validatedData);
+
+        return response()->json([
+            'message' => 'Tema atualizado',
+            'data' => $tema
+        ], Response::HTTP_OK); // 200
     }
 
     /**
-     * Remove um link do sistema.
+     * Remove um tema do sistema.
+     * Usa Route Model Binding.
      */
-    public function destroy($id)
+    public function destroy(Theme $tema)
     {
-        $dados = Contact::find($id);
-        if (!$dados) {
-            return response()->json(['message' => 'Link não encontrado', 'data' => null], 404);
-        }
+        $tema->delete();
 
-        $dados->delete();
-        return response()->json(['message' => 'Link removido', 'data' => $dados], 200);
+        // Retorna o tema que foi removido, seguindo o seu padrão
+        return response()->json([
+            'message' => 'Tema removido',
+            'data' => $tema
+        ], Response::HTTP_OK); // 200
     }
 }
-

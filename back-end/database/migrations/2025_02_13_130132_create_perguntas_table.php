@@ -12,18 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perguntas', function (Blueprint $table) {
-            $table->id();                                  // Chave primária
-            $table->foreignId('fase_id')                   // FK para 'fases'
-                  ->nullable()                             // Caso a pergunta não seja vinculada a fase
-                  ->constrained('fases')                   // Referencia a tabela 'fases'
-                  ->cascadeOnDelete();                     // Ao deletar uma fase, deleta perguntas relacionadas (opcional)
+            $table->id();
+            $table->foreignId('fase_id')
+                  ->constrained('fases')
+                  ->cascadeOnDelete();
 
-            $table->text('texto');                         // Enunciado da pergunta (obrigatório)
-            $table->integer('dificuldade');                // 1, 2 ou 3
-            $table->string('imagem')->nullable();          // Caminho/URL da imagem, opcional
-            $table->string('video_link')->nullable();      // Link do vídeo, opcional
+            $table->text('question');
+            $table->string('image')->nullable();
 
-            $table->timestamps();                          // created_at e updated_at (Laravel)
+            $table->enum('correct_answer', ['A', 'B', 'C', 'D']);
+
+            $table->string('option_a');
+            $table->string('option_b');
+            $table->string('option_c');
+            $table->string('option_d');
+
+
+            $table->timestamps();
         });
     }
 

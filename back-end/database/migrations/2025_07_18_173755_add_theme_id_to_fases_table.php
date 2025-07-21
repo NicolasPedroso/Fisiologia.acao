@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('video_themes', function (Blueprint $table) {
-            $table->id();
-            $table->string('link');
-            $table->string('tema');
-            $table->integer('identification');
-            $table->timestamps();
+        Schema::table('fases', function (Blueprint $table) {
+            $table->foreignId('theme_id')
+                  ->constrained('themes')
+                  ->onDelete('cascade');
         });
     }
 
@@ -25,6 +23,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('videothemes');
+        Schema::table('fases', function (Blueprint $table) {
+            $table->dropForeign(['theme_id']);
+            $table->dropColumn('theme_id');
+        });
     }
 };

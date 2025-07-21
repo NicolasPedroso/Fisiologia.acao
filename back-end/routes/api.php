@@ -4,93 +4,88 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RespostaController;
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Aqui você registra as rotas da sua API. Elas são carregadas pelo
-| RouteServiceProvider dentro de um grupo que contém o middleware "api".
-|
-*/
+use App\Http\Controllers\API\FaseController;
 
-// Rotas públicas de login/signup, ambas funcionais
+/**
+ * Rotas da API - Fisiologia em Ação
+ *
+ * Documentação dos principais retornos:
+ * - Todas as rotas autenticadas retornam 401 se token inválido
+ * - Todas as rotas admin retornam 403 se usuário não for admin
+ */
+
+/**
+ * Rotas públicas (sem autenticação)
+ */
+
+// POST /api/login
+// Retorna: { access_token, expires_at, admin (boolean), image }
 Route::post('login', 'API\AuthController@login');
 
-// A Signup tem o campo password_confirmation, mesmo não aparecendo na request!!! O laravel vai verificar
-// se os valores são iguais
+// POST /api/signup
+// Retorna: { message, data: { id, name, email, address, phone, image, created_at, updated_at } }
 Route::post('signup', 'API\AuthController@signup');
 
-/* 
-    Rota de cadastro:
-    Realiza GET, POST, PUT, DELETE
-*/
-
-// Rota alternativa pra cadastro de usuário, aceita somente POST
-Route::post ('user', 'API\UserController@store');
-
-// Rotas que exigem autenticação por token
+/**
+ * Rotas autenticadas (requerem Bearer token)
+ */
 Route::middleware(['auth:api'])->group(function () {
-    Route::apiResource('contato', 'API\ContactController')->only(['show','index']);
-  
-    Route::apiResource('notificacao', 'API\NotificationIconController')->only('index','get','store','update','delete');
 
-    // CRUD Perguntas. Precisa da chave estrangeira da fase
-    Route::apiResource('perguntas', 'API\PerguntaController');
+    // GET /api/themes
+    // Retorna: [{ id, title, description, image, created_at, updated_at }]
 
-    // CRUD individual de Respostas. Precisa da chave estrangeira da pergunta
-    Route::apiResource('respostas', 'API\RespostaController');
+    // GET /api/themes/{id}
+    // Retorna: { id, title, description, image, created_at, updated_at }
+    Route::apiResource('themes', 'API\ThemeController')->only(['index', 'show']);
 
-    // CRUD Fase. Para ter uma pergunta e resposta deve existir uma fase criada
-    Route::apiResource('fase', 'API\FaseController');
+    // GET /api/fase
+    // Retorna: [{ id, title, description, difficulty, theme_id, user_status, created_at, updated_at }]
 
-    Route::apiResource('tema_do_video', 'API\VideoThemeController')->only(['show','index']);
+    // GET /api/fase/{id}
+    // Retorna: { id, title, description, difficulty, theme_id, perguntas: [...], created_at, updated_at }
+    Route::apiResource('fase', 'API\FaseController')->only(['index', 'show']);
 
-    // A rota abaixo é a mais complexa do projeto, então coloquei comentários para ajudar o front
-    // Rota adicional para criar múltiplas respostas de uma só vez (bulk)
-    // Receberá algo do tipo POST /api/perguntas/1/respostas/bulk. Com o id da pergunta criada, crie um raw como abaixo
-    /* 
-    {
-        "respostas": [
-            {
-                "texto": "Uma pergunta",
-                "correta": 0
-            }
-        ]
-    }
+    // POST /api/fase/{fase}/status
+    // Retorna: { message, user_status }
+    Route::post('fase/{fase}/status', [FaseController::class, 'updateUserStatus']);
 
-    Ou assim:
     /**
-     * Criar VÁRIAS respostas de uma só vez (bulk),
-     * vinculado a uma pergunta específica (via URL).
-     *
-     * Exemplo de body (JSON) esperado:
-     * {
-     *   "respostas": [
-     *     { "texto": "Alternativa A", "correta": false },
-     *     { "texto": "Alternativa B", "correta": true },
-     *     ...
-     *   ]
-     * }
+     * Rotas administrativas (requerem admin = true)
      */
-
-    Route::post('perguntas/{pergunta}/respostas/bulk', [RespostaController::class, 'storeBulk']);
-
-    // middleware de ações realizadas somente pelo admin, setado no Kernel e no middleware como CheckIsAdmin
     Route::middleware(['admin'])->group(function () {
-        Route::apiResource('contato', 'API\ContactController')->only(['store','update','destroy']);
 
-        //retorna todos os usuários existentes
+        // Temas (CRUD completo para admin)
+        // POST /api/themes - Retorna: { id, title, description, image, created_at, updated_at }
+        // PUT /api/themes/{id} - Retorna: { id, title, description, image, updated_at }
+        // DELETE /api/themes/{id} - Retorna: { message }
+        Route::apiResource('themes', 'API\ThemeController')->only(['store', 'update', 'destroy']);
+
+        // Usuários (gerenciamento)
+        // GET /api/users - Retorna: [{ id, name, email, admin, image, created_at, updated_at }]
         Route::get('users', 'API\UserController@index');
-        //consegue mudar qualquer campo do usuário, por isso só o admin pode utilizar. Também pode mudar a senha do próprio admin,
+
+        // PUT /api/user/{id} - Retorna: { message, user: {...} }
         Route::put('user/{id}', 'API\UserController@update');
-        //retorna o usuário pelo id 
+
+        // GET /api/user/{id} - Retorna: { id, name, email, admin, image, address, phone, created_at, updated_at }
         Route::get('user/{id}', 'API\UserController@show');
 
-        Route::apiResource('tema_do_video', 'API\VideoThemeController');
+        // Fases (CRUD completo para admin)
+        // POST /api/fase - Retorna: { id, title, description, difficulty, theme_id, created_at, updated_at }
+        // PUT /api/fase/{id} - Retorna: { message, fase: {...} }
+        // DELETE /api/fase/{id} - Retorna: { message }
+        Route::apiResource('fase', 'API\FaseController')->only(['store', 'update', 'destroy']);
     });
 
-    Route::get('logout', 'API\AuthController@logout'); 
-    // retorna os campos do usuário logado
-	Route::get('user', 'API\AuthController@user');
+    // GET /api/logout
+    // Retorna: { message: "Successfully logged out" }
+    Route::get('logout', 'API\AuthController@logout');
+
+    // PUT /api/user_update
+    // Retorna: { message, user: { id, name, email, image, address, phone, updated_at } }
+    Route::put('user_update', 'API\UserController@updateUser');
+
+    // GET /api/user
+    // Retorna: { id, name, email, admin, image, address, phone, created_at, updated_at }
+    Route::get('user', 'API\AuthController@user');
 });
