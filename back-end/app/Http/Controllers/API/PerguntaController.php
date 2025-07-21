@@ -111,7 +111,6 @@ class PerguntaController extends Controller
 
             // Validando a resposta correta
             'correct_answer' => ['required', Rule::in(['A', 'B', 'C', 'D'])],
-
         ], [
             // Mensagens de erro personalizadas
             'fase_id.required'         => 'O campo fase é obrigatório.',
